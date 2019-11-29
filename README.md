@@ -1,0 +1,52 @@
+# Antivirus Evasion
+
+The goal is to obtain remote code execution on  machine through, e.g.,:
+- phishing
+- physical transfer of file
+
+
+## General Resources
+
+- [Top 5 ways to breach the external perimeter][1]
+- [External engagement through spear-phishing][2]
+
+
+
+## Test a malware
+
+To test virus/backdoor/payload without pushing files to virustotal:
+- [NoDistribute](http://nodistribute.com/)
+- [SpyralScanner](https://www.spyralscanner.net)
+
+To dynamically run an executable without using our own machine, we can use the
+following online service:
+- [AppAnyRun](https://app.any.run/)
+
+
+### Antivirus Test Baseline
+We can go on `eicar.com`, to have a baseline of antivirus detection.
+```com
+X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*
+```
+
+### Spam Filter Test Baseline
+
+Test string `https://spamassassin.apache.org/gtube/gtube.txt`
+```mail
+XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X
+```
+
+## Lolbins
+
+A list of lolbins with description:
+[Lolbins](https://lolbas-project.github.io/)
+
+## Tools
+
+- unicorn
+- the fatrat
+
+
+
+[1]: https://medium.com/@adam.toscher/top-five-ways-the-red-team-breached-the-external-perimeter-262f99dc9d17
+[2]: https://blog.sublimesecurity.com/red-team-techniques-gaining-access-on-an-external-engagement-through-spear-phishing/
