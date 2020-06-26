@@ -1,6 +1,8 @@
 # AV Vulnerabilities
 
 - [Exploiting AVs](https://www.rack911labs.com/research/exploiting-almost-every-antivirus-software/)
+- [Engineering AV Evasion](https://blog.scrt.ch/2020/06/19/engineering-antivirus-evasion/)
+
 
 # Sandboxes
 
