@@ -2,6 +2,7 @@
 
 - [Exploiting AVs](https://www.rack911labs.com/research/exploiting-almost-every-antivirus-software/)
 - [Engineering AV Evasion](https://blog.scrt.ch/2020/06/19/engineering-antivirus-evasion/)
+- [Unhook DLL using C++](https://ired.team/offensive-security/defense-evasion/how-to-unhook-a-dll-using-c++)
 
 
 # Sandboxes
