@@ -9,6 +9,7 @@ The goal is to obtain remote code execution on  machine through, e.g.,:
 
 - [Top 5 ways to breach the external perimeter][1]
 - [External engagement through spear-phishing][2]
+- [AV/EDR Bypass for Mimikatz][3]
 
 
 
@@ -36,6 +37,13 @@ Test string `https://spamassassin.apache.org/gtube/gtube.txt`
 XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X
 ```
 
+### Useful Tools for AV-Detection
+
+Splits a file until it finds out which byte sections are
+flagged by Windows Defender.
+[DefenderCheck](https://github.com/matterpreter/DefenderCheck)
+
+
 ## Lolbins
 
 A list of lolbins with description:
@@ -50,3 +58,4 @@ A list of lolbins with description:
 
 [1]: https://medium.com/@adam.toscher/top-five-ways-the-red-team-breached-the-external-perimeter-262f99dc9d17
 [2]: https://blog.sublimesecurity.com/red-team-techniques-gaining-access-on-an-external-engagement-through-spear-phishing/
+[3]:_https://s3cur3th1ssh1t.github.io/Building-a-custom-Mimikatz-binary/
