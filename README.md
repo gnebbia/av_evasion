@@ -54,6 +54,12 @@ A list of lolbins with description:
 - unicorn
 - the fatrat
 
+## Papers
+https://raw.githubusercontent.com/kmkz/Pentesting/master/AV_Evasion/AV_Bypass.ps1
+
+## Other References
+
+https://github.com/gnebbia/Pentesting
 
 
 [1]: https://medium.com/@adam.toscher/top-five-ways-the-red-team-breached-the-external-perimeter-262f99dc9d17
