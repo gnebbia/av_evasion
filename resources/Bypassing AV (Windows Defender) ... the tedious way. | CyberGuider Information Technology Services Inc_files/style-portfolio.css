@@ -1,0 +1,290 @@
+/* Start: Recommended Quicksand styles */
+
+/*---------------------------------------------------- */
+/* Quicksand styles */
+/*---------------------------------------------------- */
+
+.element img {
+	height: auto;
+}
+
+
+/*---------------------------------------------------- */
+/* Filter styles  */
+/*---------------------------------------------------- */
+
+#filter.portfolio-filter {  
+    margin-left: 5px;
+    margin-bottom: 20px;
+    list-style-type: none;  
+}
+#filter.portfolio-filter li {  
+    display: inline-block;  
+    padding-right: 3px;  
+}
+#filter.portfolio-filter li a {
+	color: inherit;
+	font-size: 12px;
+	text-transform: uppercase;
+	display: inline-block;
+	padding: 2px 10px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+}
+#filter.portfolio-filter li:first-child a {
+	padding-left: 5px;
+}
+#filter.portfolio-filter li a:hover,
+#filter.portfolio-filter li a.selected {
+	color: #4cab59;
+}
+.portfolio-wrapper {
+	position: relative;
+	display:block;
+	overflow:hidden;
+	height: auto !important;
+}
+.portfolio-wrapper #container-inner {
+	max-width: 100%;
+	position: relative !important;
+}
+.portfolio-wrapper .outer-link {
+	margin: 0 4px 0 0;
+	padding: 2px 15px;
+}
+#filter.portfolio-filter li:after {
+	font-size: smaller;
+	color: #CCC;
+	content: "|";
+	position: relative;
+	top: -2px;
+}
+#filter.portfolio-filter li:last-child:after {
+	content: "";
+}
+
+
+/*---------------------------------------------------- */
+/* Hover styles  */
+/*---------------------------------------------------- */
+
+/* Portolio Hover */
+.da-thumbs li ,
+.da-thumbs li > a img {
+	display: block;
+	position: relative;
+}
+.da-thumbs li {
+	overflow: hidden;
+}
+.da-thumbs li article {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 2;
+	overflow: hidden;
+	top: 0;
+	left: 0;
+}
+.da-thumbs li article::before {
+	content: '';
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+}
+.hover-excerpt {
+	position: relative;
+	margin: 10px 10% 20px 10%;
+}
+.hover-excerpt,
+.hover-excerpt a {
+	color:white;
+	font-style: italic;
+}
+.hover-excerpt a {
+	text-decoration: underline;
+}
+
+/* Initial state classes: */
+.da-thumbs {
+	text-align:center;
+	margin: 0;
+}
+.da-thumbs .entry-content {
+	width:100%;
+	display: inline-block;
+	vertical-align: middle;
+	position: relative;
+	z-index: 2
+}
+.da-thumbs .hover-title {
+	display: table;
+	color:#fff;
+	font-size: 14px !important;
+	font-weight: bold;
+	text-transform: uppercase;
+	width: 100%;
+	margin-bottom: 10px;
+	padding: 6px 0;
+}
+.da-thumbs .hover-title a {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 0 15px;
+	white-space: nowrap
+}
+.da-thumbs .entry-content a ,
+.da-thumbs .entry-content a:hover {
+	color: white;
+}
+.da-thumbs .entry-content em {
+	display:block;
+	color:#fff;
+	margin-bottom:10px;
+}
+.da-thumbs .entry-content img {
+	display:inline-block;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	-ms-box-shadow: none;
+	-o-box-shadow: none;
+	box-shadow: none;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	-ms-border-radius: 0px;
+	-o-border-radius: 0px;
+	border-radius: 0px;
+}
+.da-thumbs .image-overlay {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+}
+img.hover-link, 
+img.hover-zoom,
+.da-thumbs a.prettyPhoto img {
+	display:block;
+	width:35px;
+	height:35px;
+	background-color: #4cab59;
+	cursor:pointer;
+	background-repeat:no-repeat;
+	background-position:center;
+}
+img.hover-link {
+	margin-right: 5px;
+	background-image:url('../lib/custom_posts/portfolio/images/link.png');
+}
+img.hover-zoom{
+	margin-left: 5px;
+	background-image:url('../lib/custom_posts/portfolio/images/zoom.png');
+}
+
+/* Remove PrettyPhoto on zoom hover */
+.da-thumbs a.prettyPhoto {
+}
+.da-thumbs a.prettyPhoto:hover {
+	opacity: 1;
+}
+
+
+/*---------------------------------------------------- */
+/* Hover effect  */
+/*---------------------------------------------------- */
+
+/* Timing of events - Entry */
+.da-thumbs li .wp-post-image {
+	-webkit-transition: all 0.4s ease-in-out;
+	-moz-transition: all 0.4s ease-in-out;
+	-ms-transition: all 0.4s ease-in-out;
+	-o-transition: all 0.4s ease-in-out;
+	transition: all 0.4s ease-in-out;
+}
+.da-thumbs article {
+	-webkit-transition: all 0.4s ease-in-out;
+	-moz-transition: all 0.4s ease-in-out;
+	-ms-transition: all 0.4s ease-in-out;
+	-o-transition: all 0.4s ease-in-out;
+	transition: all 0.4s ease-in-out;
+}
+.da-thumbs:hover article {
+	-webkit-transition-delay: 0.2s;
+	-moz-transition-delay: 0.2s;
+	-ms-transition-delay: 0.2s;
+	-o-transition-delay: 0.2s;
+	transition-delay: 0.2s;
+}
+
+/* Timing of events - Exit */
+.da-thumbs li .wp-post-image {
+	-webkit-transition-delay: 0.1s;
+	-moz-transition-delay: 0.1s;
+	-ms-transition-delay: 0.1s;
+	-o-transition-delay: 0.1s;
+	transition-delay: 0.1s;
+}
+.da-thumbs:hover li .wp-post-image {
+	-webkit-transition-delay: 0;
+	-moz-transition-delay: 0;
+	-ms-transition-delay: 0;
+	-o-transition-delay: 0;
+	transition-delay: 0;
+}
+
+/* Opacity before hover */
+.da-thumbs article {
+	opacity: 0;
+	filter: alpha(opacity=0);
+	-ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
+
+/* Opacity after hover */
+.da-thumbs:hover article,
+article:hover img.hover-zoom,
+.da-thumbs:hover img.hover-link, 
+.da-thumbs:hover img.hover-zoom {
+	opacity: 1;
+	filter: alpha(opacity=100);
+	-ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
+}
+
+/* Image and article effect */
+.da-thumbs li:hover .wp-post-image { 
+	-webkit-transform: scale(0);
+	-moz-transform: scale(0);
+	-ms-transform: scale(0);
+	-o-transform: scale(0);
+	transform: scale(0);
+} 
+
+.da-thumbs li article {
+	display:block !important;
+}
+.da-thumbs article {
+	-webkit-transform: scale(0) rotate(-180deg);
+	-moz-transform: scale(0) rotate(-180deg);
+	-ms-transform: scale(0) rotate(-180deg);
+	-o-transform: scale(0) rotate(-180deg);
+	transform: scale(0) rotate(-180deg);
+}
+.da-thumbs:hover article{
+	background-color: rgba(0, 0, 0, 0.8);
+	-webkit-transform: translate(0, 0);
+	-moz-transform: translate(0, 0);
+	-ms-transform: translate(0, 0);
+	-o-transform: translate(0, 0);
+	transform: translate(0, 0);
+}
+
+/* Title effect */
+
+
+/* Excerpt effect */
+
+
+/* Link & lightbox image effect */

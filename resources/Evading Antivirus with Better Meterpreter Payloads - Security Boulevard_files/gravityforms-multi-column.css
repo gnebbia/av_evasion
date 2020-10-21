@@ -1,0 +1,32 @@
+.gform_multi_column_wrapper .gform_body,
+.gform_page_multi_column .gform_page_fields {
+	margin-left: -15px;
+	margin-right: -15px;
+}
+.gform_multi_column_wrapper .gform_body:after,
+.gform_page_multi_column .gform_page_fields:after {
+	content: ' ';
+	display: table;
+	clear: both;
+}
+.gform_multi_column_wrapper ul.gform_fields,
+.gform_page_multi_column ul.gform_fields {
+	float: left;
+	width: 100%;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+@media (min-width: 768px) {
+	.gform_column_count_2_wrapper ul.gform_fields,
+	.gform_page_column_count_2 ul.gform_fields {
+		width: 50%;
+	}
+	.gform_column_count_3_wrapper ul.gform_fields,
+	.gform_page_column_count_3 ul.gform_fields {
+		width: 33.333333%;
+	}
+	.gform_column_count_4_wrapper ul.gform_fields,
+	.gform_page_column_count_4 ul.gform_fields {
+		width: 25%;
+	}
+}

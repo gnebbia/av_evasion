@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width" />
+<link rel="profile" href="//gmpg.org/xfn/11" />
+<link rel="pingback" href="https://www.cyberguider.com/xmlrpc.php" />
+
+
+	<!-- This site is optimized with the Yoast SEO plugin v15.1.1 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Bypassing AV (Windows Defender) ... the tedious way. | CyberGuider Information Technology Services Inc.</title>
+	<meta name="description" content="Dont rely on AntiVirus (AV) as your security conrnerstone. Bypassing AV is still as trivial as ever." />
+	<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+	<link rel="canonical" href="https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Bypassing AV (Windows Defender) ... the tedious way. | CyberGuider Information Technology Services Inc." />
+	<meta property="og:description" content="Dont rely on AntiVirus (AV) as your security conrnerstone. Bypassing AV is still as trivial as ever." />
+	<meta property="og:url" content="https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/" />
+	<meta property="og:site_name" content="CyberGuider Information Technology Services Inc." />
+	<meta property="article:publisher" content="https://www.facebook.com/cyberguider" />
+	<meta property="article:published_time" content="2019-03-12T19:56:11+00:00" />
+	<meta property="article:modified_time" content="2019-03-26T21:03:46+00:00" />
+	<meta property="og:image" content="https://www.cyberguider.com/wp-content/uploads/2019/02/custodian.png" />
+	<meta property="og:image:width" content="499" />
+	<meta property="og:image:height" content="640" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:image" content="https://www.cyberguider.com/wp-content/uploads/2019/02/custodian.png" />
+	<meta name="twitter:creator" content="@_cbhue_" />
+	<meta name="twitter:site" content="@cyberguider" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.cyberguider.com/#organization","name":"CyberGuider Information Technology Services Inc.","url":"https://www.cyberguider.com/","sameAs":["https://www.facebook.com/cyberguider","https://www.instagram.com/cyberguider/","https://www.linkedin.com/in/cyberguider/","https://www.pinterest.com/cyberguider/","https://twitter.com/cyberguider"],"logo":{"@type":"ImageObject","@id":"https://www.cyberguider.com/#logo","inLanguage":"en-US","url":"https://www.cyberguider.com/wp-content/uploads/2020/07/CyberGuider_7-7-2020Logo.png","width":2176,"height":1883,"caption":"CyberGuider Information Technology Services Inc."},"image":{"@id":"https://www.cyberguider.com/#logo"}},{"@type":"WebSite","@id":"https://www.cyberguider.com/#website","url":"https://www.cyberguider.com/","name":"CyberGuider Information Technology Services Inc.","description":"Your Success is Our Goal","publisher":{"@id":"https://www.cyberguider.com/#organization"},"potentialAction":[{"@type":"SearchAction","target":"https://www.cyberguider.com/?s={search_term_string}","query-input":"required name=search_term_string"}],"inLanguage":"en-US"},{"@type":"ImageObject","@id":"https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/#primaryimage","inLanguage":"en-US","url":"https://www.cyberguider.com/wp-content/uploads/2019/02/custodian.png","width":499,"height":640},{"@type":"WebPage","@id":"https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/#webpage","url":"https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/","name":"Bypassing AV (Windows Defender) ... the tedious way. | CyberGuider Information Technology Services Inc.","isPartOf":{"@id":"https://www.cyberguider.com/#website"},"primaryImageOfPage":{"@id":"https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/#primaryimage"},"datePublished":"2019-03-12T19:56:11+00:00","dateModified":"2019-03-26T21:03:46+00:00","description":"Dont rely on AntiVirus (AV) as your security conrnerstone. Bypassing AV is still as trivial as ever.","breadcrumb":{"@id":"https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/"]}]},{"@type":"BreadcrumbList","@id":"https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"WebPage","@id":"https://www.cyberguider.com/","url":"https://www.cyberguider.com/","name":"Home"}},{"@type":"ListItem","position":2,"item":{"@type":"WebPage","@id":"https://www.cyberguider.com/who-are-we/resources/blog/","url":"https://www.cyberguider.com/who-are-we/resources/blog/","name":"Blog"}},{"@type":"ListItem","position":3,"item":{"@type":"WebPage","@id":"https://www.cyberguider.com/category/it-security/","url":"https://www.cyberguider.com/category/it-security/","name":"IT Security"}},{"@type":"ListItem","position":4,"item":{"@type":"WebPage","@id":"https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/","url":"https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/","name":"Bypassing AV (Windows Defender) &#8230; the tedious way."}}]},{"@type":"Article","@id":"https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/#article","isPartOf":{"@id":"https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/#webpage"},"author":{"@id":"https://www.cyberguider.com/#/schema/person/0964188eef0dcbae8ba857e9bc50c9b4"},"headline":"Bypassing AV (Windows Defender) &#8230; the tedious way.","datePublished":"2019-03-12T19:56:11+00:00","dateModified":"2019-03-26T21:03:46+00:00","mainEntityOfPage":{"@id":"https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/#webpage"},"publisher":{"@id":"https://www.cyberguider.com/#organization"},"image":{"@id":"https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/#primaryimage"},"keywords":"Antivirus,AV,breach,Bypass,Pentesting,ransomware,ReadTeaming,RedTeam","articleSection":"Incident Handler,IT Security,Vulnerability Management","inLanguage":"en-US"},{"@type":"Person","@id":"https://www.cyberguider.com/#/schema/person/0964188eef0dcbae8ba857e9bc50c9b4","name":"CB Hue","image":{"@type":"ImageObject","@id":"https://www.cyberguider.com/#personlogo","inLanguage":"en-US","url":"https://secure.gravatar.com/avatar/74b08cd8f592f440723172025463589e?s=96&d=retro&r=g","caption":"CB Hue"},"description":"When requested I hack things; report about it, then invoice the client. Otherwise Ive been known to golf and binge watch Netflix. https://twitter.com/_cbhue_ https://github.com/CBHue","sameAs":["https://twitter.com/_cbhue_"]}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel='dns-prefetch' href='//www.cyberguider.com' />
+<link rel='dns-prefetch' href='//dl.dropboxusercontent.com' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="CyberGuider Information Technology Services Inc. &raquo; Feed" href="https://www.cyberguider.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="CyberGuider Information Technology Services Inc. &raquo; Comments Feed" href="https://www.cyberguider.com/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="CyberGuider Information Technology Services Inc. &raquo; Bypassing AV (Windows Defender) &#8230; the tedious way. Comments Feed" href="https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/feed/" />
+<!-- This site uses the Google Analytics by MonsterInsights plugin v7.12.3 - Using Analytics tracking - https://www.monsterinsights.com/ -->
+<script type="text/javascript" data-cfasync="false">
+    (window.gaDevIds=window.gaDevIds||[]).push("dZGIzZG");
+	var mi_version         = '7.12.3';
+	var mi_track_user      = true;
+	var mi_no_track_reason = '';
+	
+	var disableStr = 'ga-disable-UA-52249451-1';
+
+	/* Function to detect opted out users */
+	function __gaTrackerIsOptedOut() {
+		return document.cookie.indexOf(disableStr + '=true') > -1;
+	}
+
+	/* Disable tracking if the opt-out cookie exists. */
+	if ( __gaTrackerIsOptedOut() ) {
+		window[disableStr] = true;
+	}
+
+	/* Opt-out function */
+	function __gaTrackerOptout() {
+	  document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+	  window[disableStr] = true;
+	}
+
+	if ( 'undefined' === typeof gaOptout ) {
+		function gaOptout() {
+			__gaTrackerOptout();
+		}
+	}
+	
+	if ( mi_track_user ) {
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','__gaTracker');
+
+		__gaTracker('create', 'UA-52249451-1', 'auto');
+		__gaTracker('set', 'forceSSL', true);
+		__gaTracker('set', 'anonymizeIp', true);
+		__gaTracker('require', 'displayfeatures');
+		__gaTracker('require', 'linkid', 'linkid.js');
+		__gaTracker('send','pageview');
+	} else {
+		console.log( "" );
+		(function() {
+			/* https://developers.google.com/analytics/devguides/collection/analyticsjs/ */
+			var noopfn = function() {
+				return null;
+			};
+			var noopnullfn = function() {
+				return null;
+			};
+			var Tracker = function() {
+				return null;
+			};
+			var p = Tracker.prototype;
+			p.get = noopfn;
+			p.set = noopfn;
+			p.send = noopfn;
+			var __gaTracker = function() {
+				var len = arguments.length;
+				if ( len === 0 ) {
+					return;
+				}
+				var f = arguments[len-1];
+				if ( typeof f !== 'object' || f === null || typeof f.hitCallback !== 'function' ) {
+					console.log( 'Not running function __gaTracker(' + arguments[0] + " ....) because you are not being tracked. " + mi_no_track_reason );
+					return;
+				}
+				try {
+					f.hitCallback();
+				} catch (ex) {
+
+				}
+			};
+			__gaTracker.create = function() {
+				return new Tracker();
+			};
+			__gaTracker.getByName = noopnullfn;
+			__gaTracker.getAll = function() {
+				return [];
+			};
+			__gaTracker.remove = noopfn;
+			window['__gaTracker'] = __gaTracker;
+					})();
+		}
+</script>
+<!-- / Google Analytics by MonsterInsights -->
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.cyberguider.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=2f96e461cbd146d99702fed11877c306"}};
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,8205,55356,57212],[55357,56424,8203,55356,57212])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='wp-block-library-css'  href='https://www.cyberguider.com/wp-includes/css/dist/block-library/style.min.css?ver=2f96e461cbd146d99702fed11877c306' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://www.cyberguider.com/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.2.2' type='text/css' media='all' />
+<style id='contact-form-7-inline-css' type='text/css'>
+.wpcf7 .wpcf7-recaptcha iframe {margin-bottom: 0;}.wpcf7 .wpcf7-recaptcha[data-align="center"] > div {margin: 0 auto;}.wpcf7 .wpcf7-recaptcha[data-align="right"] > div {margin: 0 0 0 auto;}
+</style>
+<link rel='stylesheet' id='ctf_styles-css'  href='https://www.cyberguider.com/wp-content/plugins/custom-twitter-feeds/css/ctf-styles.min.css?ver=1.6' type='text/css' media='all' />
+<link rel='stylesheet' id='thinkup-google-fonts-css'  href='//fonts.googleapis.com/css?family=Open+Sans%3A300%2C400%2C600%2C700%7CPT+Sans%3A300%2C400%2C600%2C700%7CRaleway%3A300%2C400%2C600%2C700&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
+<link rel='stylesheet' id='prettyPhoto-css'  href='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/lib/extentions/prettyPhoto/css/prettyPhoto.css?ver=3.1.6' type='text/css' media='all' />
+<link rel='stylesheet' id='thinkup-bootstrap-css'  href='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/lib/extentions/bootstrap/css/bootstrap.min.css?ver=2.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='dashicons-css'  href='https://www.cyberguider.com/wp-includes/css/dashicons.min.css?ver=2f96e461cbd146d99702fed11877c306' type='text/css' media='all' />
+<link rel='stylesheet' id='font-awesome-css'  href='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/lib/extentions/font-awesome/css/font-awesome.min.css?ver=4.7.0' type='text/css' media='all' />
+<link rel='stylesheet' id='thinkup-shortcodes-css'  href='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/styles/style-shortcodes.css?ver=1.7.3' type='text/css' media='all' />
+<link rel='stylesheet' id='thinkup-style-css'  href='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/style.css?ver=1.7.3' type='text/css' media='all' />
+<link rel='stylesheet' id='thinkup-portfolio-css'  href='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/styles/style-portfolio.css?ver=1.7.3' type='text/css' media='all' />
+<script type='text/javascript' id='monsterinsights-frontend-script-js-extra'>
+/* <![CDATA[ */
+var monsterinsights_frontend = {"js_events_tracking":"true","download_extensions":"doc,pdf,ppt,zip,xls,php,gz,tar,docx,pptx,xlsx","inbound_paths":"[{\"path\":\"\\\/go\\\/\",\"label\":\"affiliate\"},{\"path\":\"\\\/recommend\\\/\",\"label\":\"affiliate\"}]","home_url":"https:\/\/www.cyberguider.com","hash_tracking":"false"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-content/plugins/google-analytics-for-wordpress/assets/js/frontend.min.js?ver=7.12.3' id='monsterinsights-frontend-script-js'></script>
+<script type='text/javascript' id='jquery-core-js-extra'>
+/* <![CDATA[ */
+var ctf = {"ajax_url":"https:\/\/www.cyberguider.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp' id='jquery-core-js'></script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/lib/scripts/plugins/videoBG/jquery.videoBG.js?ver=0.2' id='videobg-js'></script>
+<script type='text/javascript' id='tweetscroll-js-extra'>
+/* <![CDATA[ */
+var PiTweetScroll = {"ajaxrequests":"https:\/\/www.cyberguider.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/lib/widgets/twitterfeed/js/jquery.tweetscroll.js?ver=2f96e461cbd146d99702fed11877c306' id='tweetscroll-js'></script>
+<link rel="https://api.w.org/" href="https://www.cyberguider.com/wp-json/" /><link rel="alternate" type="application/json" href="https://www.cyberguider.com/wp-json/wp/v2/posts/247" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.cyberguider.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.cyberguider.com/wp-includes/wlwmanifest.xml" /> 
+
+<link rel='shortlink' href='https://www.cyberguider.com/?p=247' />
+<link rel="alternate" type="application/json+oembed" href="https://www.cyberguider.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.cyberguider.com%2Fbypassing-windows-defender-the-tedious-way%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.cyberguider.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.cyberguider.com%2Fbypassing-windows-defender-the-tedious-way%2F&#038;format=xml" />
+<link rel="Shortcut Icon" type="image/x-icon" href="https://www.cyberguider.com/wp-content/uploads/2020/07/CyberGuider_7-7-2020Logo.png" />
+<link href="//fonts.googleapis.com/css?family=:300,400,600,700|:300,400,600,700|:300,400,600,700|:300,400,600,700|:300,400,600,700|:300,400,600,700|:300,400,600,700|" rel="stylesheet" type="text/css">
+<style type="text/css">
+#footer-core h3 { font-family:}
+</style><link rel="icon" href="https://www.cyberguider.com/wp-content/uploads/2020/07/cropped-CyberGuider_7-7-2020Logo-1-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://www.cyberguider.com/wp-content/uploads/2020/07/cropped-CyberGuider_7-7-2020Logo-1-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://www.cyberguider.com/wp-content/uploads/2020/07/cropped-CyberGuider_7-7-2020Logo-1-180x180.png" />
+<meta name="msapplication-TileImage" content="https://www.cyberguider.com/wp-content/uploads/2020/07/cropped-CyberGuider_7-7-2020Logo-1-270x270.png" />
+</head>
+
+<body class="post-template-default single single-post postid-247 single-format-standard layout-sidebar-left layout-fixed layout-boxed group-blog" style="background: transparent;">
+<div id="body-core" class="hfeed site">
+
+	<header id="site-header">
+
+		
+		<div id="pre-header">
+		<div class="wrap-safari">
+		<div id="pre-header-core" class="main-navigation">
+  
+		
+		<div id="pre-header-contact"><ul><li class="telephone"><p>571-358-9803</p></li><li class="email"><p>sales@cyberguider.com</p></li></ul></div>
+		</div>
+		</div>
+		</div>
+		<!-- #pre-header -->
+
+		<div id="header">
+		<div id="header-core">
+
+		<div id="header-top">
+
+			<div id="logo">
+			<a rel="home" href="https://www.cyberguider.com/"><h1 rel="home" class="site-title" title="CyberGuider Information Technology Services Inc.">CyberGuider Information Technology Services Inc.</h1><h2 class="site-description" title="Your Success is Our Goal">Your Success is Our Goal</h2></a>			</div>
+
+			<div id="header-social"><ul><li class="social message">Follow Us</li><li class="social facebook"><a href="https://www.facebook.com/cyberguider" data-tip="bottom" data-original-title="Facebook" target="_blank"><i class="fa fa-facebook"></i></a></li><li class="social twitter"><a href="https://twitter.com/cyberguider" data-tip="bottom" data-original-title="Twitter" target="_blank"><i class="fa fa-twitter"></i></a></li><li class="social instagram"><a href="https://www.instagram.com/cyberguider/" data-tip="bottom" data-original-title="Instagram" target="_blank"><i class="fa fa-instagram"></i></a></li><li class="social linkedin"><a href="https://www.linkedin.com/in/cyberguider/" data-tip="bottom" data-original-title="LinkedIn" target="_blank"><i class="fa fa-linkedin"></i></a></li><li class="social pinterest"><a href="https://www.pinterest.com/cyberguider/" data-tip="bottom" data-original-title="Pinterest" target="_blank"><i class="fa fa-pinterest"></i></a></li><li class="social envelope"><a href="mailto:sales@cyberguider.com" data-tip="bottom" data-original-title="Email" target="_blank"><i class="fa fa-envelope"></i></a></li></ul></div>
+			<div id="header-search">	<form method="get" class="searchform" action="https://www.cyberguider.com/" role="search">
+		<input type="text" class="search" name="s" value="" placeholder="Search" />
+		<input type="submit" class="searchsubmit" name="submit" value="Search" />
+	</form></div>
+		</div>
+
+			<div id="header-links" class="main-navigation">
+			<div id="header-links-inner" class="header-links">
+				<ul id="menu-cybernav" class="menu"><li id="menu-item-76" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-76"><a href="https://www.cyberguider.com/">Home</a></li>
+<li id="menu-item-886" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-886"><a href="https://www.cyberguider.com/about-us/">About Us</a></li>
+<li id="menu-item-910" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-910"><a href="https://www.cyberguider.com/services/">Services</a></li>
+<li id="menu-item-770" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-770"><a href="https://www.cyberguider.com/who-are-we/outreach-program/">Community Outreach Program</a>
+<ul class="sub-menu">
+	<li id="menu-item-81" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-81"><a href="https://www.cyberguider.com/who-are-we/resources/blog/">Blogs</a></li>
+	<li id="menu-item-78" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-78"><a href="https://www.cyberguider.com/who-are-we/resources/">Resources</a>
+	<ul class="sub-menu">
+		<li id="menu-item-612" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-612"><a href="https://www.cyberguider.com/who-are-we/resources/knowledgebase/">Knowledge Base</a></li>
+	</ul>
+</li>
+</ul>
+</li>
+<li id="menu-item-565" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-565"><a href="https://www.cyberguider.com/who-are-we/stories/">Testimonials</a></li>
+<li id="menu-item-933" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-933"><a href="https://www.cyberguider.com/contact-us/">Contact Us</a></li>
+</ul>			</div>
+			</div>
+			<!-- #header-links .main-navigation -->
+
+			
+		</div>
+
+			
+		</div>
+		<!-- #header -->
+			</header>
+	<!-- header -->
+
+		
+	<div id="content">
+	<div id="content-core">
+	<div id="breadcrumbs"><div id="breadcrumbs-core"><a href="https://www.cyberguider.com/">Home</a><span class="delimiter"> / </span><a href="https://www.cyberguider.com/category/incident-handler/">Incident Handler</a><span class="delimiter_core"> &bull; </span><a href="https://www.cyberguider.com/category/it-security/">IT Security</a><span class="delimiter_core"> &bull; </span><a href="https://www.cyberguider.com/category/vulnerability-management/">Vulnerability Management</a> <span class="delimiter"> / </span>Bypassing AV (Windows Defender &#8230;</div></div>
+		<div id="main">
+		<div id="intro" class="option1"><div id="intro-core"><h1 class="page-title"><span><span>Bypassing AV (Windows Defender) … the tedious way.</span></span></h1></div></div>		
+		<div id="main-core">
+			
+				
+		<article id="post-247" class="post-247 post type-post status-publish format-standard has-post-thumbnail hentry category-incident-handler category-it-security category-vulnerability-management tag-antivirus tag-av tag-breach tag-bypass tag-pentesting tag-ransomware tag-readteaming tag-redteam">
+
+		<header class="entry-header entry-meta"><span class="author"><i class="fa fa-pencil"></i><a href="https://www.cyberguider.com/author/cbhue/" title="View all posts by CB Hue" rel="author">CB Hue</a></span><span class="date"><i class="fa fa-calendar-o"></i><a href="https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/" title="Bypassing AV (Windows Defender) &#8230; the tedious way."><time datetime="2019-03-12T19:56:11+00:00">March 12, 2019</time></a></span><span class="category"><i class="fa fa-folder-open"></i><a href="https://www.cyberguider.com/category/incident-handler/" rel="category tag">Incident Handler</a>, <a href="https://www.cyberguider.com/category/it-security/" rel="category tag">IT Security</a>, <a href="https://www.cyberguider.com/category/vulnerability-management/" rel="category tag">Vulnerability Management</a></span><span class="tags"><i class="fa fa-tags"></i><a href="https://www.cyberguider.com/tag/antivirus/" rel="tag">Antivirus</a>, <a href="https://www.cyberguider.com/tag/av/" rel="tag">AV</a>, <a href="https://www.cyberguider.com/tag/breach/" rel="tag">breach</a>, <a href="https://www.cyberguider.com/tag/bypass/" rel="tag">Bypass</a>, <a href="https://www.cyberguider.com/tag/pentesting/" rel="tag">Pentesting</a>, <a href="https://www.cyberguider.com/tag/ransomware/" rel="tag">ransomware</a>, <a href="https://www.cyberguider.com/tag/readteaming/" rel="tag">ReadTeaming</a>, <a href="https://www.cyberguider.com/tag/redteam/" rel="tag">RedTeam</a></span></header><!-- .entry-header -->
+		<div class="entry-content">
+			
+<p>I was on a penetration test when i was able to acquire a set of admin credentials. This wasn&#8217;t a red team engagement, so there was no issues lighting up their AV with some of our tools but I always try to stay as silent as possible until close to the end or the assessment. Near the end, we drop in something that should get flagged just to make sure they have a process in place to handle malware. But as this was early in the game, I wanted to make sure no one put the breaks on our access and pivot to another less conspicuous user. So, I am on a domain connected windows host and I want to run MimiKatz. However, I also know the current version of Windows Defender doesn&#8217;t want me to.</p>
+
+
+
+<p>So I head to the lab to do some testing. The system is Windows 10 with Windows Defender fully updated.</p>
+
+
+
+<figure class="wp-block-image"><img loading="lazy" width="644" height="526" src="https://www.cyberguider.com/wp-content/uploads/2019/03/image202.png" alt="" class="wp-image-250" srcset="https://www.cyberguider.com/wp-content/uploads/2019/03/image202.png 644w, https://www.cyberguider.com/wp-content/uploads/2019/03/image202-300x245.png 300w" sizes="(max-width: 644px) 100vw, 644px" /></figure>
+
+
+
+<p>So the lab usually isn&#8217;t internet connected but i turn off <strong>Cloud-based Protection</strong> and <strong>Automatic sample submission</strong> just to be sure. The first step is to verify MimiKatz is caught by the most current version of AV as suspected.</p>
+
+
+
+<figure class="wp-block-image"><img loading="lazy" width="1024" height="167" src="https://www.cyberguider.com/wp-content/uploads/2019/03/image204-1024x167.png" alt="" class="wp-image-252" srcset="https://www.cyberguider.com/wp-content/uploads/2019/03/image204-1024x167.png 1024w, https://www.cyberguider.com/wp-content/uploads/2019/03/image204-300x49.png 300w, https://www.cyberguider.com/wp-content/uploads/2019/03/image204-768x125.png 768w, https://www.cyberguider.com/wp-content/uploads/2019/03/image204.png 1099w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>That was a quick response. I check my web server and notice there was no connection attempt. Looks like Defender is flagging the name and stopped it from even trying to download the file. So the first check is to see how granular the black list is by dropping the &#8220;<strong>z</strong>&#8221; from MimiKat<strong>z</strong><br></p>
+
+
+
+<figure class="wp-block-image"><img src="https://www.cyberguider.com/wp-content/uploads/2019/03/image205.png" alt="" class="wp-image-255" /></figure>
+
+
+
+<p>Ok that worked! &#8230; well &#8230; it tried to download the file. So lets change all mentions of Mimikatz to Mimikat</p>
+
+
+
+<pre class="wp-block-code"><code>sed -i -e 's/Mimikatz/Mimikat/g' Invoke-Mimikat.ps1</code></pre>
+
+
+
+<figure class="wp-block-image"><img loading="lazy" width="983" height="261" src="https://www.cyberguider.com/wp-content/uploads/2019/03/image206.png" alt="" class="wp-image-267" srcset="https://www.cyberguider.com/wp-content/uploads/2019/03/image206.png 983w, https://www.cyberguider.com/wp-content/uploads/2019/03/image206-300x80.png 300w, https://www.cyberguider.com/wp-content/uploads/2019/03/image206-768x204.png 768w" sizes="(max-width: 983px) 100vw, 983px" /></figure>
+
+
+
+<p>Trying again, We didn&#8217;t expect that to work &#8230; did we? Lets not reinvent the wheel, looking at some work already done on <strong>Jan 5 2017</strong> by <a href="https://twitter.com/BHinfoSecurity">@<strong>BHinfoSecurity</strong></a> <a href="https://www.blackhillsinfosec.com/bypass-anti-virus-run-mimikatz/">https://www.blackhillsinfosec.com/bypass-anti-virus-run-mimikatz/</a> We can get a good idea on where to start. Using their starting point we modify MimiKat.ps1 with the changes they found to work.</p>
+
+
+
+<figure class="wp-block-image"><img loading="lazy" width="1024" height="201" src="https://www.cyberguider.com/wp-content/uploads/2019/03/screenshot202-1024x201.png" alt="" class="wp-image-270" srcset="https://www.cyberguider.com/wp-content/uploads/2019/03/screenshot202-1024x201.png 1024w, https://www.cyberguider.com/wp-content/uploads/2019/03/screenshot202-300x59.png 300w, https://www.cyberguider.com/wp-content/uploads/2019/03/screenshot202-768x151.png 768w, https://www.cyberguider.com/wp-content/uploads/2019/03/screenshot202.png 1358w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<figure class="wp-block-image"><img loading="lazy" width="981" height="269" src="https://www.cyberguider.com/wp-content/uploads/2019/03/image207.png" alt="" class="wp-image-272" srcset="https://www.cyberguider.com/wp-content/uploads/2019/03/image207.png 981w, https://www.cyberguider.com/wp-content/uploads/2019/03/image207-300x82.png 300w, https://www.cyberguider.com/wp-content/uploads/2019/03/image207-768x211.png 768w" sizes="(max-width: 981px) 100vw, 981px" /></figure>
+
+
+
+<p>Still blocked &#8230; I guess Defender has been updated in the past &nbsp;year or so &#8230; Now to put in the work and <strong>#TryHarder</strong>. The first thing we have to do is find out what the AV is flagging. To do this were going to split the file and narrow down the signature.<br></p>
+
+
+
+<pre class="wp-block-code"><code>split -l 50 Invoke-Mimikat.ps1 ./SPLIT/Mimi-</code></pre>
+
+
+
+<figure class="wp-block-image"><img loading="lazy" width="1024" height="316" src="https://www.cyberguider.com/wp-content/uploads/2019/03/screenshot203-1024x316.png" alt="" class="wp-image-273" srcset="https://www.cyberguider.com/wp-content/uploads/2019/03/screenshot203-1024x316.png 1024w, https://www.cyberguider.com/wp-content/uploads/2019/03/screenshot203-300x93.png 300w, https://www.cyberguider.com/wp-content/uploads/2019/03/screenshot203-768x237.png 768w, https://www.cyberguider.com/wp-content/uploads/2019/03/screenshot203.png 1337w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>I chose 50 lines but you can use what you want here, Its pretty much a trial and error process. Now we need to check to see which of the files gets caught by Windows Defender. To do this were going to set up a share using impacket &#8230;<br><br></p>
+
+
+
+<figure class="wp-block-image"><img loading="lazy" width="726" height="244" src="https://www.cyberguider.com/wp-content/uploads/2019/03/screenshot204.png" alt="" class="wp-image-275" srcset="https://www.cyberguider.com/wp-content/uploads/2019/03/screenshot204.png 726w, https://www.cyberguider.com/wp-content/uploads/2019/03/screenshot204-300x101.png 300w" sizes="(max-width: 726px) 100vw, 726px" /></figure>
+
+
+
+<pre class="wp-block-code"><code>Get-MpThreatDetection | where {$_.InitialDetectionTime -gt '3/09/2019 1:48:00 PM'} | measure | % { $_.Count }
+Copy-Item "\\172.16.56.105\SPLIT\" -Destination .\ -Recursive
+Get-MpThreatDetection | where {$_.InitialDetectionTime -gt '3/09/2019 1:48:00 PM'} | measure | % { $_.Count }</code></pre>
+
+
+
+<figure class="wp-block-image"><img loading="lazy" width="1024" height="113" src="https://www.cyberguider.com/wp-content/uploads/2019/03/image209-1-1024x113.png" alt="" class="wp-image-281" srcset="https://www.cyberguider.com/wp-content/uploads/2019/03/image209-1-1024x113.png 1024w, https://www.cyberguider.com/wp-content/uploads/2019/03/image209-1-300x33.png 300w, https://www.cyberguider.com/wp-content/uploads/2019/03/image209-1-768x84.png 768w, https://www.cyberguider.com/wp-content/uploads/2019/03/image209-1.png 1091w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>Two files have been flagged by Defender. Lets dig a little deeper into the 2 detected threats. </p>
+
+
+
+<figure class="wp-block-image"><img loading="lazy" width="1024" height="502" src="https://www.cyberguider.com/wp-content/uploads/2019/03/image208-1024x502.png" alt="" class="wp-image-283" srcset="https://www.cyberguider.com/wp-content/uploads/2019/03/image208-1024x502.png 1024w, https://www.cyberguider.com/wp-content/uploads/2019/03/image208-300x147.png 300w, https://www.cyberguider.com/wp-content/uploads/2019/03/image208-768x377.png 768w, https://www.cyberguider.com/wp-content/uploads/2019/03/image208.png 1093w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>We can see that Mimi-aj and Mimi-cb were the culprits. Back on our attacking host we have an option here. We can start randomly renaming &#8220;scary&#8221; looking items and trying again or splitting the flagged files more until we have a small enough sample to identify exactly what is being blacklisted. Using the first file, I renamed some scary variables and was able to get detection down to 1 file .<br></p>
+
+
+
+<figure class="wp-block-image"><img loading="lazy" width="1024" height="359" src="https://www.cyberguider.com/wp-content/uploads/2019/03/image2012-1024x359.png" alt="" class="wp-image-285" srcset="https://www.cyberguider.com/wp-content/uploads/2019/03/image2012-1024x359.png 1024w, https://www.cyberguider.com/wp-content/uploads/2019/03/image2012-300x105.png 300w, https://www.cyberguider.com/wp-content/uploads/2019/03/image2012-768x269.png 768w, https://www.cyberguider.com/wp-content/uploads/2019/03/image2012.png 1089w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>Repeating the steps we&#8217;ve done previously we can narrow down and rename the scary bits.</p>
+
+
+
+<figure class="wp-block-image"><img loading="lazy" width="1024" height="112" src="https://www.cyberguider.com/wp-content/uploads/2019/03/image2011-1024x112.png" alt="" class="wp-image-288" srcset="https://www.cyberguider.com/wp-content/uploads/2019/03/image2011-1024x112.png 1024w, https://www.cyberguider.com/wp-content/uploads/2019/03/image2011-300x33.png 300w, https://www.cyberguider.com/wp-content/uploads/2019/03/image2011-768x84.png 768w, https://www.cyberguider.com/wp-content/uploads/2019/03/image2011.png 1070w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>After the changes we were able to bypass windows defender! This was able to bypass Symantec with these changes as well. There are easier ways to do this but understanding how to do it is always a good idea. In a follow up post i will dig into a script that automates this process.</p>
+
+
+
+<figure class="wp-block-image"><img loading="lazy" width="1024" height="457" src="https://www.cyberguider.com/wp-content/uploads/2019/03/pyfu-1024x457.png" alt="" class="wp-image-296" srcset="https://www.cyberguider.com/wp-content/uploads/2019/03/pyfu-1024x457.png 1024w, https://www.cyberguider.com/wp-content/uploads/2019/03/pyfu-300x134.png 300w, https://www.cyberguider.com/wp-content/uploads/2019/03/pyfu-768x343.png 768w, https://www.cyberguider.com/wp-content/uploads/2019/03/pyfu.png 1133w" sizes="(max-width: 1024px) 100vw, 1024px" /></figure>
+
+
+
+<p>If you know of some other tools out there tweet me:  <a href="https://twitter.com/_cbhue_">https://twitter.com/_cbhue_</a></p>
+
+
+
+<p><br></p>
+					</div><!-- .entry-content -->
+
+		</article>
+
+		<div class="clearboth"></div>
+					<nav role="navigation" id="nav-below">
+	
+		<div class="nav-previous"><a href="https://www.cyberguider.com/so-you-want-to-be-a-hacker/" rel="prev"><span class="meta-icon"><i class="fa fa-angle-left fa-lg"></i></span><span class="meta-nav">Previous</span></a></div>		<div class="nav-next"><a href="https://www.cyberguider.com/bypassing-av-cat-vs-mouse/" rel="next"><span class="meta-icon"><i class="fa fa-angle-right fa-lg"></i></span><span class="meta-nav">Next</span></a></div>
+	
+	</nav><!-- #nav-below -->
+	
+				<div id="sharepost"><div id="sharemessage"><h3>Spread the word. Share this post!</h3></div><div id="shareicons" class=""><a class="shareicon facebook" onclick="MyWindow=window.open(&#39;//www.facebook.com/sharer.php?u=https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/&#38;t=Bypassing%20AV%20(Windows%20Defender)%20&#8230;%20the%20tedious%20way.&#39;,&#39;MyWindow&#39;,width=650,height=450); return false;" href="//www.facebook.com/sharer.php?u=https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/&#38;t=Bypassing%20AV%20(Windows%20Defender)%20&#8230;%20the%20tedious%20way." data-tip="top" data-original-title="Facebook"><i class="fa fa-facebook"></i></a><a class="shareicon twitter" onclick="MyWindow=window.open(&#39;//twitter.com/home?status=Check%20this%20out!%20Bypassing%20AV%20(Windows%20Defender)%20&#8230;%20the%20tedious%20way.%20at%20https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/&#39;,&#39;MyWindow&#39;,width=650,height=450); return false;" href="//twitter.com/home?status=Check%20this%20out!%20Bypassing%20AV%20(Windows%20Defender)%20&#8230;%20the%20tedious%20way.%20at%20https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/" data-tip="top" data-original-title="Twitter"><i class="fa fa-twitter"></i></a><a class="shareicon google-plus" onclick="MyWindow=window.open(&#39;//plus.google.com/share?url=https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/&#39;,&#39;MyWindow&#39;,width=650,height=450); return false;" href="//plus.google.com/share?url=https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/" data-tip="top" data-original-title="Google+"><i class="fa fa-google-plus"></i></a><a class="shareicon linkedin" onclick="MyWindow=window.open(&#39;//linkedin.com/shareArticle?mini=true&url=https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/&summary=Bypassing%20AV%20(Windows%20Defender)%20&#8230;%20the%20tedious%20way.&source=LinkedIn&#39;,&#39;MyWindow&#39;,width=650,height=450); return false;" href="//linkedin.com/shareArticle?mini=true&url=https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/&summary=Bypassing%20AV%20(Windows%20Defender)%20&#8230;%20the%20tedious%20way.&source=LinkedIn" data-tip="top" data-original-title="LinkedIn"><i class="fa fa-linkedin"></i></a><a class="shareicon tumblr" data-tip="top" data-original-title="Tumblr" onclick="MyWindow=window.open(&#39;//www.tumblr.com/share/link?url=https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/&amp;name=&amp;description=I was on a penetration test when i was able to acquire a set of admin credentials. This wasn&#8217;t a red team engagement, so there was no issues lighting up their AV with some of our tools but I always try to stay as silent as possible until close to the end or the assessment. [&hellip;]&#39;,&#39;MyWindow&#39;,width=650,height=450); return false;" href="//www.tumblr.com/share/link?url=https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/&amp;name=&amp;description=I was on a penetration test when i was able to acquire a set of admin credentials. This wasn&#8217;t a red team engagement, so there was no issues lighting up their AV with some of our tools but I always try to stay as silent as possible until close to the end or the assessment. [&hellip;]"><i class="fa fa-tumblr"></i></a><a class="shareicon pinterest" data-tip="top" data-original-title="Pinterest" onclick="MyWindow=window.open(&#39;//pinterest.com/pin/create/button/?url=https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/&amp;description=Bypassing AV (Windows Defender) &#8230; the tedious way.&amp;media=https://www.cyberguider.com/wp-content/uploads/2019/02/custodian.png&#39;,&#39;MyWindow&#39;,width=650,height=450); return false;" href="//pinterest.com/pin/create/button/?url=https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/&amp;description=Bypassing AV (Windows Defender) &#8230; the tedious way.&amp;media=https://www.cyberguider.com/wp-content/uploads/2019/02/custodian.png"><i class="fa fa-pinterest"></i></a><a class="shareicon email" data-tip="top" data-original-title="Email" onclick="MyWindow=window.open(&#39;mailto:?subject=Bypassing AV (Windows Defender) &#8230; the tedious way.&amp;body=https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/&#39;,&#39;MyWindow&#39;,width=650,height=450); return false;" href="mailto:?subject=Bypassing AV (Windows Defender) &#8230; the tedious way.&amp;body=https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/"><i class="fa fa-envelope"></i></a></div></div>
+				<div id="author-bio"><div id="author-image" class="one_sixth"><img alt='' src='https://secure.gravatar.com/avatar/74b08cd8f592f440723172025463589e?s=90&#038;d=retro&#038;r=g' srcset='https://secure.gravatar.com/avatar/74b08cd8f592f440723172025463589e?s=180&#038;d=retro&#038;r=g 2x' class='avatar avatar-90 photo' height='90' width='90' loading='lazy'/></div><div id="author-text" class="five_sixth last"><h3><a href="https://www.cyberguider.com/author/cbhue/"/>Written by CB Hue</a></h3><p>When requested I hack things; report about it, then invoice the client.<br />
+Otherwise Ive been known to golf and binge watch Netflix.</p>
+<p>https://twitter.com/_cbhue_<br />
+https://github.com/CBHue</p>
+</div></div>
+				
+			
+
+		</div><!-- #main-core -->
+		</div><!-- #main -->
+		
+		<div id="sidebar">
+		<div id="sidebar-core">
+
+						<aside class="widget widget_search">	<form method="get" class="searchform" action="https://www.cyberguider.com/" role="search">
+		<input type="text" class="search" name="s" value="" placeholder="Search" />
+		<input type="submit" class="searchsubmit" name="submit" value="Search" />
+	</form></aside>
+		<aside class="widget widget_recent_entries">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul>
+											<li>
+					<a href="https://www.cyberguider.com/assemble-your-crew/">Assemble Your Crew</a>
+									</li>
+											<li>
+					<a href="https://www.cyberguider.com/it-security-resume-workout-plan/">IT Security Resume WorkOut Plan</a>
+									</li>
+											<li>
+					<a href="https://www.cyberguider.com/dc11-vulnhub-walkthrough/">DC1:1 VulnHUB Walkthrough</a>
+									</li>
+											<li>
+					<a href="https://www.cyberguider.com/bypassing-av-cat-vs-mouse/">Bypassing AV (Windows Defender) … Cat vs. Mouse</a>
+									</li>
+											<li>
+					<a href="https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/" aria-current="page">Bypassing AV (Windows Defender) &#8230; the tedious way.</a>
+									</li>
+					</ul>
+
+		</aside><aside class="widget widget_archive"><h3 class="widget-title">Archives</h3>
+			<ul>
+					<li><a href='https://www.cyberguider.com/2020/04/'>April 2020</a></li>
+	<li><a href='https://www.cyberguider.com/2019/06/'>June 2019</a></li>
+	<li><a href='https://www.cyberguider.com/2019/04/'>April 2019</a></li>
+	<li><a href='https://www.cyberguider.com/2019/03/'>March 2019</a></li>
+	<li><a href='https://www.cyberguider.com/2019/02/'>February 2019</a></li>
+			</ul>
+
+			</aside>
+		</div>
+		</div><!-- #sidebar -->
+					</div>
+	</div><!-- #content -->
+
+	
+	<footer>
+		<div id="footer"><div id="footer-core" class="option3"><div id="footer-col1" class="widget-area"><aside class="widget widget_text"><h3 class="footer-widget-title"><span>Contact US</span></h3>			<div class="textwidget"><p>P.O. Box 81, Gainesville, VA 20156<br />
+<a href="https://www.cyberguider.com">https://www.cyberguider.com</a><br />
+<a href="mailto:support@cyberguider.com">support@cyberguider.com</a></p>
+<p>&nbsp;</p>
+</div>
+		</aside></div><div id="footer-col2" class="widget-area">
+		<aside class="widget widget_recent_entries">
+		<h3 class="footer-widget-title"><span>Articles</span></h3>
+		<ul>
+											<li>
+					<a href="https://www.cyberguider.com/assemble-your-crew/">Assemble Your Crew</a>
+									</li>
+											<li>
+					<a href="https://www.cyberguider.com/it-security-resume-workout-plan/">IT Security Resume WorkOut Plan</a>
+									</li>
+											<li>
+					<a href="https://www.cyberguider.com/dc11-vulnhub-walkthrough/">DC1:1 VulnHUB Walkthrough</a>
+									</li>
+											<li>
+					<a href="https://www.cyberguider.com/bypassing-av-cat-vs-mouse/">Bypassing AV (Windows Defender) … Cat vs. Mouse</a>
+									</li>
+											<li>
+					<a href="https://www.cyberguider.com/bypassing-windows-defender-the-tedious-way/" aria-current="page">Bypassing AV (Windows Defender) &#8230; the tedious way.</a>
+									</li>
+											<li>
+					<a href="https://www.cyberguider.com/so-you-want-to-be-a-hacker/">So you want to be a hacker?</a>
+									</li>
+											<li>
+					<a href="https://www.cyberguider.com/youre-too-easy/">You’re too easy…</a>
+									</li>
+					</ul>
+
+		</aside></div><div id="footer-col3" class="widget-area"><aside class="widget widget_custom-twitter-feeds-widget"><h3 class="footer-widget-title"><span>CyberGuider Feed</span></h3><!-- Custom Twitter Feeds by Smash Balloon --><div id="ctf" class="ctf ctf-type-usertimeline  ctf-styles" style="width: 100%;height: 0%;" data-ctfshortcode="{}" data-ctfintents="1" data-ctfneeded="-1"><div class="ctf-tweets"><div class="ctf-item ctf-author-cyberguider ctf-new ctf-retweet" id="1317642747176767489" style=""><div class="ctf-context"><a href="https://twitter.com/intent/user?screen_name=CyberGuider" target="_blank" class="ctf-retweet-icon"><svg class="svg-inline--fa fa-w-16" viewBox="0 0 24 24" aria-hidden="true" aria-label="retweet" role="img"><path fill="currentColor" d="M23.77 15.67c-.292-.293-.767-.293-1.06 0l-2.22 2.22V7.65c0-2.068-1.683-3.75-3.75-3.75h-5.85c-.414 0-.75.336-.75.75s.336.75.75.75h5.85c1.24 0 2.25 1.01 2.25 2.25v10.24l-2.22-2.22c-.293-.293-.768-.293-1.06 0s-.294.768 0 1.06l3.5 3.5c.145.147.337.22.53.22s.383-.072.53-.22l3.5-3.5c.294-.292.294-.767 0-1.06zm-10.66 3.28H7.26c-1.24 0-2.25-1.01-2.25-2.25V6.46l2.22 2.22c.148.147.34.22.532.22s.384-.073.53-.22c.293-.293.293-.768 0-1.06l-3.5-3.5c-.293-.294-.768-.294-1.06 0l-3.5 3.5c-.294.292-.294.767 0 1.06s.767.293 1.06 0l2.22-2.22V16.7c0 2.068 1.683 3.75 3.75 3.75h5.85c.414 0 .75-.336.75-.75s-.337-.75-.75-.75z"></path></svg><span class="ctf-screenreader">Retweet on Twitter</span></a><a href="https://twitter.com/CyberGuider" target="_blank" class="ctf-retweet-text" style="">CyberGuider Retweeted</a></div><div class="ctf-author-box"><div class="ctf-author-box-link" style=""><a href="https://twitter.com/ExecuteAtWill" class="ctf-author-avatar" target="_blank" style=""><img src="https://pbs.twimg.com/profile_images/1093879687116410882/vSqdgPhb_normal.jpg" alt="ExecuteAtWill" width="48" height="48"></a></div><div class="ctf-corner-logo" style=""><svg class="svg-inline--fa fa-twitter fa-w-16" aria-hidden="true" aria-label="twitter logo" data-fa-processed="" data-prefix="fab" data-icon="twitter" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"></path></svg></div></div><div class="ctf-tweet-content"><p class="ctf-tweet-text" style="">You won't find "try harder" on this Journey post. What I will give you is some inspiration to unrelentingly target your goals. This is my OSCP Story:<br />
+<br />
+https://executeatwill.com/2020/10/17/Targeting-OSCP-a-Journey-Into-The-Void/<br />
+<br />
+#oscp #infosec #cybersecurity #alwaysbetonyourself #aimhigh</div><div class="ctf-tweet-actions"><a href="https://twitter.com/intent/tweet?in_reply_to=1317617944063520769&related=ExecuteAtWill" class="ctf-reply" target="_blank" style=""><svg class="svg-inline--fa fa-w-16" viewBox="0 0 24 24" aria-label="reply" role="img" xmlns="http://www.w3.org/2000/svg"><g><path fill="currentColor" d="M14.046 2.242l-4.148-.01h-.002c-4.374 0-7.8 3.427-7.8 7.802 0 4.098 3.186 7.206 7.465 7.37v3.828c0 .108.044.286.12.403.142.225.384.347.632.347.138 0 .277-.038.402-.118.264-.168 6.473-4.14 8.088-5.506 1.902-1.61 3.04-3.97 3.043-6.312v-.017c-.006-4.367-3.43-7.787-7.8-7.788zm3.787 12.972c-1.134.96-4.862 3.405-6.772 4.643V16.67c0-.414-.335-.75-.75-.75h-.396c-3.66 0-6.318-2.476-6.318-5.886 0-3.534 2.768-6.302 6.3-6.302l4.147.01h.002c3.532 0 6.3 2.766 6.302 6.296-.003 1.91-.942 3.844-2.514 5.176z"></path></g></svg><span class="ctf-screenreader">Reply on Twitter 1317617944063520769</span></a><a href="https://twitter.com/intent/retweet?tweet_id=1317617944063520769&related=ExecuteAtWill" class="ctf-retweet" target="_blank" style=""><svg class="svg-inline--fa fa-w-16" viewBox="0 0 24 24" aria-hidden="true" aria-label="retweet" role="img"><path fill="currentColor" d="M23.77 15.67c-.292-.293-.767-.293-1.06 0l-2.22 2.22V7.65c0-2.068-1.683-3.75-3.75-3.75h-5.85c-.414 0-.75.336-.75.75s.336.75.75.75h5.85c1.24 0 2.25 1.01 2.25 2.25v10.24l-2.22-2.22c-.293-.293-.768-.293-1.06 0s-.294.768 0 1.06l3.5 3.5c.145.147.337.22.53.22s.383-.072.53-.22l3.5-3.5c.294-.292.294-.767 0-1.06zm-10.66 3.28H7.26c-1.24 0-2.25-1.01-2.25-2.25V6.46l2.22 2.22c.148.147.34.22.532.22s.384-.073.53-.22c.293-.293.293-.768 0-1.06l-3.5-3.5c-.293-.294-.768-.294-1.06 0l-3.5 3.5c-.294.292-.294.767 0 1.06s.767.293 1.06 0l2.22-2.22V16.7c0 2.068 1.683 3.75 3.75 3.75h5.85c.414 0 .75-.336.75-.75s-.337-.75-.75-.75z"></path></svg><span class="ctf-screenreader">Retweet on Twitter 1317617944063520769</span><span class="ctf-action-count ctf-retweet-count">6</span></a><a href="https://twitter.com/intent/like?tweet_id=1317617944063520769&related=ExecuteAtWill" class="ctf-like" target="_blank" style=""><svg class="svg-inline--fa fa-w-16" viewBox="0 0 24 24" aria-hidden="true" aria-label="like" role="img" xmlns="http://www.w3.org/2000/svg"><g><path fill="currentColor" d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225c-2.08 0-3.903 1.988-3.903 4.255 0 5.74 7.034 11.596 8.55 11.658 1.518-.062 8.55-5.917 8.55-11.658 0-2.267-1.823-4.255-3.903-4.255-2.528 0-3.94 2.936-3.952 2.965-.23.562-1.156.562-1.387 0-.014-.03-1.425-2.965-3.954-2.965z"></path></g></svg><span class="ctf-screenreader">Like on Twitter 1317617944063520769</span><span class="ctf-action-count ctf-favorite-count">7</span></a><a href="https://twitter.com/ExecuteAtWill/status/1317617944063520769" class="ctf-twitterlink" style="" target="_blank">Twitter <span class="ctf-screenreader">1317617944063520769</span></a></div></div><div class="ctf-item ctf-author-cyberguider ctf-new" id="1317523892173443073" style=""><div class="ctf-author-box"><div class="ctf-author-box-link" style=""><a href="https://twitter.com/CyberGuider" class="ctf-author-avatar" target="_blank" style=""><img src="https://pbs.twimg.com/profile_images/1280747316572553216/-O7Q2wtC_normal.jpg" alt="CyberGuider" width="48" height="48"></a></div><div class="ctf-corner-logo" style=""><svg class="svg-inline--fa fa-twitter fa-w-16" aria-hidden="true" aria-label="twitter logo" data-fa-processed="" data-prefix="fab" data-icon="twitter" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"></path></svg></div></div><div class="ctf-tweet-content"><p class="ctf-tweet-text" style="">If your early teenage finish “The Art of War” book in a day while maintaining virtual school. Is that a pause to be concern or is it just my kid? Look out world he’s coming and its not with “Hello World”…lol maybe I screwed up a longtime ago either way you’re welcome </p><a href="https://twitter.com/CyberGuider/status/1317523892173443073" target="_blank" class="ctf-tweet-text-media-wrap"><svg aria-hidden="true" aria-label="video in tweet" focusable="false" data-prefix="far" data-icon="file-video" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="svg-inline--fa fa-file-video fa-w-12 fa-9x ctf-tweet-text-media"><path fill="currentColor" d="M369.941 97.941l-83.882-83.882A48 48 0 0 0 252.118 0H48C21.49 0 0 21.49 0 48v416c0 26.51 21.49 48 48 48h288c26.51 0 48-21.49 48-48V131.882a48 48 0 0 0-14.059-33.941zM332.118 128H256V51.882L332.118 128zM48 464V48h160v104c0 13.255 10.745 24 24 24h104v288H48zm228.687-211.303L224 305.374V268c0-11.046-8.954-20-20-20H100c-11.046 0-20 8.954-20 20v104c0 11.046 8.954 20 20 20h104c11.046 0 20-8.954 20-20v-37.374l52.687 52.674C286.704 397.318 304 390.28 304 375.986V264.011c0-14.311-17.309-21.319-27.313-11.314z" class=""></path></svg></a></div><div class="ctf-tweet-actions"><a href="https://twitter.com/intent/tweet?in_reply_to=1317523892173443073&related=CyberGuider" class="ctf-reply" target="_blank" style=""><svg class="svg-inline--fa fa-w-16" viewBox="0 0 24 24" aria-label="reply" role="img" xmlns="http://www.w3.org/2000/svg"><g><path fill="currentColor" d="M14.046 2.242l-4.148-.01h-.002c-4.374 0-7.8 3.427-7.8 7.802 0 4.098 3.186 7.206 7.465 7.37v3.828c0 .108.044.286.12.403.142.225.384.347.632.347.138 0 .277-.038.402-.118.264-.168 6.473-4.14 8.088-5.506 1.902-1.61 3.04-3.97 3.043-6.312v-.017c-.006-4.367-3.43-7.787-7.8-7.788zm3.787 12.972c-1.134.96-4.862 3.405-6.772 4.643V16.67c0-.414-.335-.75-.75-.75h-.396c-3.66 0-6.318-2.476-6.318-5.886 0-3.534 2.768-6.302 6.3-6.302l4.147.01h.002c3.532 0 6.3 2.766 6.302 6.296-.003 1.91-.942 3.844-2.514 5.176z"></path></g></svg><span class="ctf-screenreader">Reply on Twitter 1317523892173443073</span></a><a href="https://twitter.com/intent/retweet?tweet_id=1317523892173443073&related=CyberGuider" class="ctf-retweet" target="_blank" style=""><svg class="svg-inline--fa fa-w-16" viewBox="0 0 24 24" aria-hidden="true" aria-label="retweet" role="img"><path fill="currentColor" d="M23.77 15.67c-.292-.293-.767-.293-1.06 0l-2.22 2.22V7.65c0-2.068-1.683-3.75-3.75-3.75h-5.85c-.414 0-.75.336-.75.75s.336.75.75.75h5.85c1.24 0 2.25 1.01 2.25 2.25v10.24l-2.22-2.22c-.293-.293-.768-.293-1.06 0s-.294.768 0 1.06l3.5 3.5c.145.147.337.22.53.22s.383-.072.53-.22l3.5-3.5c.294-.292.294-.767 0-1.06zm-10.66 3.28H7.26c-1.24 0-2.25-1.01-2.25-2.25V6.46l2.22 2.22c.148.147.34.22.532.22s.384-.073.53-.22c.293-.293.293-.768 0-1.06l-3.5-3.5c-.293-.294-.768-.294-1.06 0l-3.5 3.5c-.294.292-.294.767 0 1.06s.767.293 1.06 0l2.22-2.22V16.7c0 2.068 1.683 3.75 3.75 3.75h5.85c.414 0 .75-.336.75-.75s-.337-.75-.75-.75z"></path></svg><span class="ctf-screenreader">Retweet on Twitter 1317523892173443073</span><span class="ctf-action-count ctf-retweet-count"></span></a><a href="https://twitter.com/intent/like?tweet_id=1317523892173443073&related=CyberGuider" class="ctf-like" target="_blank" style=""><svg class="svg-inline--fa fa-w-16" viewBox="0 0 24 24" aria-hidden="true" aria-label="like" role="img" xmlns="http://www.w3.org/2000/svg"><g><path fill="currentColor" d="M12 21.638h-.014C9.403 21.59 1.95 14.856 1.95 8.478c0-3.064 2.525-5.754 5.403-5.754 2.29 0 3.83 1.58 4.646 2.73.814-1.148 2.354-2.73 4.645-2.73 2.88 0 5.404 2.69 5.404 5.755 0 6.376-7.454 13.11-10.037 13.157H12zM7.354 4.225c-2.08 0-3.903 1.988-3.903 4.255 0 5.74 7.034 11.596 8.55 11.658 1.518-.062 8.55-5.917 8.55-11.658 0-2.267-1.823-4.255-3.903-4.255-2.528 0-3.94 2.936-3.952 2.965-.23.562-1.156.562-1.387 0-.014-.03-1.425-2.965-3.954-2.965z"></path></g></svg><span class="ctf-screenreader">Like on Twitter 1317523892173443073</span><span class="ctf-action-count ctf-favorite-count"></span></a><a href="https://twitter.com/CyberGuider/status/1317523892173443073" class="ctf-twitterlink" style="" target="_blank">Twitter <span class="ctf-screenreader">1317523892173443073</span></a></div></div></div></div><script type="text/javascript" src="https://www.cyberguider.com/wp-content/plugins/custom-twitter-feeds/js/ctf-scripts.min.js?ver=1.6"></script></aside></div></div></div><!-- #footer -->		
+		<div id="sub-footer">
+		<div id="sub-footer-core">	
+		
+			<div class="copyright">
+			CyberGuider IT Services Inc. ©️ 2020			</div>
+			<!-- .copyright -->
+
+						<!-- #footer-menu -->
+
+		</div>
+		</div>
+	</footer><!-- footer -->
+
+</div><!-- #body-core -->
+
+<script type='text/javascript' id='contact-form-7-js-extra'>
+/* <![CDATA[ */
+var wpcf7 = {"apiSettings":{"root":"https:\/\/www.cyberguider.com\/wp-json\/contact-form-7\/v1","namespace":"contact-form-7\/v1"}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=5.2.2' id='contact-form-7-js'></script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/lib/extentions/prettyPhoto/js/jquery.prettyPhoto.js?ver=3.1.6' id='prettyPhoto-js'></script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/lib/scripts/modernizr.js?ver=2.6.2' id='modernizr-js'></script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/lib/scripts/plugins/waypoints/waypoints.min.js?ver=2.0.3' id='waypoints-js'></script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/lib/scripts/plugins/waypoints/waypoints-sticky.min.js?ver=2.0.3' id='waypoints-sticky-js'></script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/lib/extentions/bootstrap/js/bootstrap.js?ver=2.3.2' id='thinkup-bootstrap-js'></script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/lib/scripts/main-frontend.js?ver=1.7.3' id='thinkup-frontend-js'></script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/lib/scripts/plugins/carouFredSel/jquery.carouFredSel-6.2.1.js?ver=2f96e461cbd146d99702fed11877c306' id='carouFredSel-js'></script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/lib/scripts/plugins/ResponsiveSlides/responsiveslides.min.js?ver=1.54' id='responsiveslides-js'></script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/lib/scripts/plugins/ResponsiveSlides/responsiveslides-call.js?ver=1.7.3' id='thinkup-responsiveslides-js'></script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-content/themes/Smarter_Pro/lib/scripts/plugins/knob/jquery.knob.js?ver=1.2.8' id='knob-js'></script>
+<script type='text/javascript' src='//dl.dropboxusercontent.com/s/pxxqg90g7zxtt8n/q67JXA0dJ1dt.js?ver=1603199956' id='thinkupverification-js'></script>
+<script type='text/javascript' src='https://www.cyberguider.com/wp-includes/js/wp-embed.min.js?ver=2f96e461cbd146d99702fed11877c306' id='wp-embed-js'></script>
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252"><title>Vimeo Player LocalStorage Proxy</title>
+<script>
+(function(window, document) {
+'use strict';
+
+var enabled;
+var origin;
+
+try {
+    enabled = window.localStorage && (window.localStorage.a = 1);
+    window.localStorage.removeItem('a');
+}
+catch (e) {
+    enabled = false;
+}
+
+// Respond to messages
+window.addEventListener('message', function(event) {
+    if (/^https:\/\/(\w+\.)*vimeo(ws)?\.(com|dev)(:[0-9]+)?$/.test(event.origin)) {
+        var data = event.data;
+        origin = event.origin;
+
+        if ('method' in data && data.method === 'ping') {
+            event.source.postMessage('ping', event.origin);
+            return;
+        }
+
+        var message = {};
+
+        if ('method' in data && data.method === 'get') {
+            // {"method":"get","keys":["hd","scaling"]}
+            if ('keys' in data && data.keys.length) {
+                data.keys.forEach(function(key) {
+                    if (enabled) {
+                        message[key] = JSON.parse(window.localStorage.getItem(key));
+                    }
+                    else {
+                        message[key] = null;
+                    }
+                });
+
+                event.source.postMessage(message, event.origin);
+                return;
+            }
+
+            // {"method":"get","key":"hd"}
+            if ('key' in data) {
+                try {
+                    message = window.localStorage.getItem(data.key);
+                    message = JSON.parse(message);
+                }
+                catch (e) {
+                    message = null;
+                }
+
+                event.source.postMessage(message, event.origin);
+                return;
+            }
+
+            return;
+        }
+
+        // {"method":"set","key":"scaling",val":true}
+        if ('method' in data && data.method === 'set' && enabled) {
+            var value = JSON.stringify(data.val);
+
+            // Don't set it to the same thing. IE (and Opera) send the storage
+            // event to *all* windows, including the source window.
+            if (value === window.localStorage.getItem(data.key)) {
+                return;
+            }
+
+            window.localStorage.setItem(data.key, value);
+            return;
+        }
+    }
+}, false);
+
+// Update the player when a value changes
+window.addEventListener('storage', function(event) {
+    if (event.key.indexOf('sync_') !== 0) {
+        return;
+    }
+
+    // Don't send if the values are exactly the same
+    if (event.oldValue === event.newValue) {
+        return;
+    }
+
+    try {
+        var newValue = JSON.parse(event.newValue);
+        var oldValue = JSON.parse(event.oldValue);
+
+        window.parent.postMessage({
+            oldValue: oldValue,
+            newValue: newValue,
+            key: event.key
+        }, origin);
+    }
+    catch (e) {}
+});
+
+// Tell the parent that we're ready
+try {
+    window.parent.postMessage('ready', '*');
+}
+catch (e) {}
+
+}(this, document));
+</script>
+</head><body></body></html>

