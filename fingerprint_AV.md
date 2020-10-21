@@ -12,3 +12,7 @@ There are different techniques:
 
 - On a wired network, perform ARP poisoning to
   some windows host and check the domains again.
+
+
+In general it is interesting to understand what DNS names
+are resolved on a network to check what AV solution is used.
