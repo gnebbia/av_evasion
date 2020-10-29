@@ -53,3 +53,8 @@ The standard techniques are:
 - adjusting the binary (like by compiling it from scratch instead of using a precompiled version);
 - adjusting the behavior (sleep a bit, make some calculations then do bad things);
 - do custom stuff;
+
+# NOTES
+If we are dealing with executables, it is a good idea to sign them. We can do this:
+by using:
+https://github.com/secretsquirrel/SigThief
