@@ -58,3 +58,10 @@ The standard techniques are:
 If we are dealing with executables, it is a good idea to sign them. We can do this:
 by using:
 https://github.com/secretsquirrel/SigThief
+
+
+## Appendix
+
+A good metasploit module to check if there are AV exclusion paths is:
+msf post/windows/gather/enum_av_excluded
+
