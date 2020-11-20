@@ -10,6 +10,7 @@ The goal is to obtain remote code execution on  machine through, e.g.,:
 - [Top 5 ways to breach the external perimeter][1]
 - [External engagement through spear-phishing][2]
 - [AV/EDR Bypass for Mimikatz][3]
+- [Malware Development][4]
 
 
 
@@ -65,3 +66,4 @@ https://github.com/gnebbia/Pentesting
 [1]: https://medium.com/@adam.toscher/top-five-ways-the-red-team-breached-the-external-perimeter-262f99dc9d17
 [2]: https://blog.sublimesecurity.com/red-team-techniques-gaining-access-on-an-external-engagement-through-spear-phishing/
 [3]:_https://s3cur3th1ssh1t.github.io/Building-a-custom-Mimikatz-binary/
+[4]: https://0xdarkvortex.dev/index.php/category/malware-development/
