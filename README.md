@@ -19,6 +19,19 @@ The goal is to obtain remote code execution on  machine through, e.g.,:
 To test virus/backdoor/payload without pushing files to virustotal:
 - [NoDistribute](http://nodistribute.com/)
 - [SpyralScanner](https://www.spyralscanner.net)
+- [AVCheck](https://avcheck.net/)
+- [DynCheck](https://dyncheck.com/)
+- [AntiSCAN](https://antiscan.me/)
+- [AVBoX](https://avbox.info/)
+- [KleeScan](https://kleenscan.com/)
+
+These DO NOT CHECK encrypted/payload files on scanners such as: 
+- novirusthanks.org
+- virustotal.com
+- virusscan.jotti.org
+- virscan.org
+- metascan-online.com
+- www.virusimune.com.br
 
 To dynamically run an executable without using our own machine, we can use the
 following online service:
