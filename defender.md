@@ -1,4 +1,9 @@
 # Windows Defender
+NOTE: Look in kb, there is a more updated version of this
+
+
+## Check if Defender is enabled
+Get-service Windefend
 
 
 ## Disable Defender
