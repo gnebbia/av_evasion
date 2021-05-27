@@ -80,3 +80,12 @@ https://github.com/gnebbia/Pentesting
 [2]: https://blog.sublimesecurity.com/red-team-techniques-gaining-access-on-an-external-engagement-through-spear-phishing/
 [3]:_https://s3cur3th1ssh1t.github.io/Building-a-custom-Mimikatz-binary/
 [4]: https://0xdarkvortex.dev/index.php/category/malware-development/
+
+
+
+## Serious References:
+https://arty-hlr.com/blog/2021/05/06/how-to-bypass-defender/
+
+And look into: ./malware_dev/
+
+https://0x00sec.org/t/my-antivirus-evasion-journey/25744
